@@ -1,0 +1,40 @@
+package com.fil.workerappz;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by HS on 24-Feb-18.
+ * FIL AHM
+ */
+
+public class BankAccountActivity extends ActionBarActivity {
+
+    @BindView(R.id.backImageViewHeader)
+    ImageView backImageViewHeader;
+    @BindView(R.id.titleTextViewViewHeader)
+    TextView titleTextViewViewHeader;
+    @BindView(R.id.skipTextViewViewHeader)
+    TextView skipTextViewViewHeader;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.bank_account);
+        ButterKnife.bind(this);
+
+        titleTextViewViewHeader.setText(getResources().getString(R.string.bank_account));
+    }
+
+    @OnClick(R.id.backImageViewHeader)
+    public void onViewClicked() {
+        finish();
+    }
+}

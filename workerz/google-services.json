@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "104652623130",
+    "firebase_url": "https://workerappz.firebaseio.com",
+    "project_id": "workerappz",
+    "storage_bucket": "workerappz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104652623130:android:712ce92427843e23",
+        "android_client_info": {
+          "package_name": "com.fil.workerappz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104652623130-nqk6flm660q1e80kmu0s1b5clrsnis1q.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "104652623130-hjh03arlnt37ingaj2mr7jbnkpj5aup6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2Re0PiPlDeAqthLS6phR4P6-eKtLORtw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainMobileTopUpLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.fil.workerappz.utils.SlideHolder
+            android:id="@+id/slideHolderMobileTopUp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <view
+                class="com.fil.workerappz.utils.DrawerMenu"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/my_header2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.30">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/linearspinner"
+                                android:layout_marginTop="@dimen/_10sdp">
+
+                                <TextView
+                                    android:id="@+id/textcontrycode"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_weight="0.15"
+                                    android:gravity="center"
+                                    android:text="@string/country"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="@dimen/_12ssp"
+                                    android:visibility="visible" />
+
+                                <!--<fr.ganfra.materialspinner.MaterialSpinner-->
+                                <!--android:id="@+id/countrySpinnerMobileTopUp"-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/_20sdp"-->
+                                <!--android:layout_weight="0.10"-->
+                                <!--android:textColor="@color/colorBlack"-->
+                                <!--android:textSize="@dimen/_8sdp"-->
+                                <!--app:ms_alignLabels="true"-->
+                                <!--android:visibility="visible"-->
+                                <!--app:ms_arrowColor="@color/colorGreen"-->
+                                <!--app:ms_arrowSize="@dimen/_12sdp"-->
+                                <!--app:ms_baseColor="@color/colorWhite"-->
+                                <!--app:ms_enableErrorLabel="false"-->
+                                <!--app:ms_enableFloatingLabel="false"-->
+                                <!--app:ms_highlightColor="@color/colorWhite"-->
+                                <!--app:ms_multiline="false"-->
+                                <!--/>   -->
+                                <Spinner
+                                    android:id="@+id/countrySpinnerMobileTopUpSpinner"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_weight="0.15"
+                                    android:backgroundTint="@color/colorGreen"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="@dimen/_7sdp"
+                                    android:dropDownWidth="@dimen/_200sdp"/>
+                            </LinearLayout>
+                        </FrameLayout>
+                        <!--<ImageView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="@dimen/_30sdp"-->
+                        <!--android:visibility="gone"-->
+                        <!--android:layout_weight="0.20"-->
+                        <!--android:id="@+id/imagecountrycode"-->
+                        <!--android:src="@drawable/dropdown_arrow"-->
+                        <!--/>-->
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:id="@+id/mobileNumberEditTextRecharge"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.70"
+                            android:hint="@string/recharge_phone_number"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:paddingLeft="@dimen/_7sdp"
+                            android:text=""
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_11ssp"
+                            app:met_baseColor="@color/colorBlack"
+                            app:met_floatingLabel="highlight"
+                            app:met_floatingLabelTextSize="@dimen/_10ssp"
+                            app:met_primaryColor="@color/colorGreen"
+                            app:met_singleLineEllipsis="false" />
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp">
+
+                        <EditText
+                            android:id="@+id/serviceProviderEditTextMobileTopUp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:hint="@string/service_provider"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text=""
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_11ssp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/browserPlansEditTextMobileTopUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:drawableRight="@drawable/next_arrow"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/browse_plans"
+                        android:imeOptions="actionDone"
+                        android:inputType="none"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_11ssp"
+                        app:met_baseColor="@color/colorBlack"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelTextSize="@dimen/_10ssp"
+                        app:met_primaryColor="@color/colorGreen"
+                        app:met_singleLineEllipsis="false" />
+
+                    <LinearLayout
+                        android:id="@+id/mobileTopUpProductDetailLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/validityTextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:text="@string/validity" />
+
+                            <TextView
+                                android:id="@+id/validityMobileTopUpProductDetailLinearLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp">
+
+                            <TextView
+                                android:id="@+id/chargetextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:text="@string/charge" />
+
+                            <TextView
+                                android:id="@+id/chargeMobileTopUpProductDetailLinearLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:text="" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp">
+
+                            <TextView
+                                android:id="@+id/receivevaluetextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:text="@string/receive_value" />
+
+                            <TextView
+                                android:id="@+id/receiveValueMobileTopUpProductDetailLinearLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:text="" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/submit_textview"
+                        style="@style/CustomButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_35sdp"
+                        android:background="@drawable/yellow_btn"
+                        android:text="@string/proceed_to_pay" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.fil.workerappz.utils.SlideHolder>
+    </LinearLayout>
+</LinearLayout>

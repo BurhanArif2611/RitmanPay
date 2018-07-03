@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainUploadYourDocumentLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <com.fil.workerappz.utils.SlideHolder
+      android:id="@+id/slideHolderKYC"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <view
+        class="com.fil.workerappz.utils.DrawerMenu"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <include
+          layout="@layout/my_header2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+      </include>
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/uploadDocumentRecyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="1">
+
+      </android.support.v7.widget.RecyclerView>
+
+      <LinearLayout
+          android:id="@+id/myFooterUploadDocument"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone">
+
+        <include
+            layout="@layout/my_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </include>
+      </LinearLayout>
+    </LinearLayout>
+  </com.fil.workerappz.utils.SlideHolder>
+</LinearLayout>
