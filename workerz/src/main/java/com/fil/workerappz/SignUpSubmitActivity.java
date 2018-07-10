@@ -569,7 +569,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (mobileNoEditTextSignUpSubmit.getText().toString().length() == 0 || mobileNoEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,mobilenumber );
             checkFlag = false;
-        } else if (mobileNoEditTextSignUpSubmit.getText().toString().length() > 0 && mobileNoEditTextSignUpSubmit.getText().toString().length() < 10) {
+        } else if (mobileNoEditTextSignUpSubmit.getText().toString().length() > 0 && mobileNoEditTextSignUpSubmit.getText().toString().length() < 7) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,validmobilenumber);
             checkFlag = false;
         } else if (emailEditTextSignUpSubmit.getText().toString().length() == 0) {
@@ -590,10 +590,12 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (passportNoEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,passportmsg );
             checkFlag = false;
-        } else if (passportNoEditTextSignUpSubmit.getText().toString().length() <10) {
+        }
+        else if (passportNoEditTextSignUpSubmit.getText().toString().length() <8) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,passportvalidationmsg);
             checkFlag = false;
-        } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() == 0) {
+        }
+        else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,emiratesidmsg);
             checkFlag = false;
         } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() <10) {

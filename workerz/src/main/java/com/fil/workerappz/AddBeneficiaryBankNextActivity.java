@@ -369,7 +369,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             ,mobilenumber);
 
-                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 9) {
+                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , validmobilenumber);
 

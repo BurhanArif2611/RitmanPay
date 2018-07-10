@@ -592,7 +592,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, mobilenumber);
             checkFlag = false;
-        } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() < 9) {
+        } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, validmobilenumber);
 
             checkFlag = false;

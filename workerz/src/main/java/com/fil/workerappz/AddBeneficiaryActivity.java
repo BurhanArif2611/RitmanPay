@@ -508,7 +508,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, mobilenumber);
             checkFlag = false;
-        } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() < 9) {
+        } else if (mobileNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, validmobilenumber);
 
             checkFlag = false;
@@ -723,7 +723,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<List<CountryListPojo>> call, Throwable t) {
-//                Constants.closeProgress();
+                Constants.closeProgress();
             }
         });
     }
@@ -746,7 +746,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
             @Override
             public void onResponse(Call<List<IdTypeListJsonPojo>> call, Response<List<IdTypeListJsonPojo>> response) {
-//                Constants.closeProgress();
+                Constants.closeProgress();
                 idTypePojos.clear();
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     idTypePojos.addAll(response.body());

@@ -318,7 +318,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this,mobilenumber);
 
-                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 9) {
+                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, validmobilenumber);
 
                 } else if (purposeOfTransferSpinnerAddBeneficiary == null && purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
