@@ -6,7 +6,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by HS on 09-Mar-18.
@@ -14,6 +16,7 @@ import java.util.List;
  */
 
 public class BankNetworkListJsonPojo implements Serializable {
+
 
     @Expose
     @SerializedName("info")
@@ -24,7 +27,6 @@ public class BankNetworkListJsonPojo implements Serializable {
     @Expose
     @SerializedName("status")
     private boolean status;
-
 
 
     public String getInfo() {
@@ -74,6 +76,12 @@ public class BankNetworkListJsonPojo implements Serializable {
         }
 
         public String getBranchName() {
+////            String normalizedbranchname = Normalizer.normalize(BranchName, Normalizer.Form.NFD)
+////                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+////            return normalizedbranchname;
+//            String temp = Normalizer.normalize(BranchName, Normalizer.Form.NFD);
+//            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+//            return pattern.matcher(temp).replaceAll("");
             return BranchName;
         }
 
@@ -82,7 +90,11 @@ public class BankNetworkListJsonPojo implements Serializable {
         }
 
         public String getBankAddress() {
+//            String normalizedbankaddress = Normalizer.normalize(BankAddress, Normalizer.Form.NFD)
+//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+//            return normalizedbankaddress;
             return BankAddress;
+
         }
 
         public void setBankAddress(String BankAddress) {
@@ -90,6 +102,9 @@ public class BankNetworkListJsonPojo implements Serializable {
         }
 
         public String getBankName() {
+//            String normalized = Normalizer.normalize(BankName, Normalizer.Form.NFD)
+//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+//            return normalized;
             return BankName;
         }
 
@@ -97,4 +112,5 @@ public class BankNetworkListJsonPojo implements Serializable {
             this.BankName = BankName;
         }
     }
+
 }
