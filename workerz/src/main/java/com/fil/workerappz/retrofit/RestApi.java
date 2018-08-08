@@ -18,6 +18,7 @@ import com.fil.workerappz.pojo.CustomerCardJsonPojo;
 import com.fil.workerappz.pojo.DingTransferPayJsonPojo;
 import com.fil.workerappz.pojo.DocumentListCountryWiseJsonPojo;
 import com.fil.workerappz.pojo.EditBeneficiaryJsonPojo;
+import com.fil.workerappz.pojo.GetLanguageList;
 import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.ImageListPojo;
 import com.fil.workerappz.pojo.JsonListPojo;
@@ -250,6 +251,9 @@ public interface RestApi {
 
     @GET("wallettransactions/get-ding-countries")
     Call<List<GetCountryList>> getDingCountryListJsonCall();
+
+    @GET("language/list-language")
+    Call<List<GetLanguageList>> getLanguageistJsonCall();
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-providers")

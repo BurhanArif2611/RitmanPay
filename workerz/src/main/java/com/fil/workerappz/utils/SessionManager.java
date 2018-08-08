@@ -135,6 +135,14 @@ public class SessionManager {
         editor.putBoolean("is_verify", flag);
         editor.commit();
     }
+    public boolean getlanguageselection() {
+        return pref.getBoolean("language_selection", false);
+    }
+
+    public void setlanguageselection(boolean flag) {
+        editor.putBoolean("language_selection", flag);
+        editor.commit();
+    }
 
     public void clearUser() {
         editor.clear();

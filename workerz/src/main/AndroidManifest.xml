@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fil.workerappz">
@@ -5,171 +6,140 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <permission android:name="android.permission.INTERACT_ACROSS_USERS"/>
-    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
+
+    <permission android:name="android.permission.INTERACT_ACROSS_USERS" />
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
 
     <application
         android:name=".utils.MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
+        android:permissionGroup="definition"
+        android:protectionLevel="signature"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:protectionLevel="signature"
-        android:permissionGroup= "definition"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
         <activity
-            android:name="com.fil.workerappz.SplashActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.fil.workerappz.SignUpActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.ActionBarActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.SignInActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.VerificationActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.SignUpSubmitActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.ForgotPinActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.MoreActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.WalletActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.fil.workerappz.CreditDebitActivity"
+            android:name=".SignUpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.fil.workerappz.UploadYourDocumentActivity"
+            android:name=".ActionBarActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.fil.workerappz.PrepaidCardActivity"
+            android:name=".SignInActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.BankAccountActivity"
+            android:name=".VerificationActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.AddMoneyToWalletActivity"
+            android:name=".SignUpSubmitActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.ProfileActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity
-            android:name="com.fil.workerappz.ChangePinActivity"
+            android:name=".ForgotPinActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.HomeActivity"
+            android:name=".MoreActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.NotificationActivity"
+            android:name=".WalletActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.BillPaymentActivity"
+            android:name=".CreditDebitActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.TransactionHistoryActivity"
+            android:name=".UploadYourDocumentActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.SendMoneyActivity"
+            android:name=".PrepaidCardActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.SelectPaymentMethodActivity"
+            android:name=".BankAccountActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.TermsAndPrivacyActivity"
+            android:name=".AddMoneyToWalletActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.fil.workerappz.SettingsActivity"
+            android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ChangePinActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BillPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransactionHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SendMoneyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SelectPaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TermsAndPrivacyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoyaltyProgramActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".WalletSummaryActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".QuickPayActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".PinVerificationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".SelectBeneficiaryActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".AddBeneficiaryActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".AddBeneficiaryNextActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".CashPickupAddBeneficiaryNextActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".AddBeneficiaryBankNextActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".AddBeneficiaryCashNextActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".SelectBeneficiaryViewActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".MobileTopUpActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".BrowsePlansActivity"
             android:screenOrientation="portrait" />
@@ -180,6 +150,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCKHZ_-XnOcENYMeVnxAETVe7ExFJQjrS8" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -195,13 +166,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".firebase.MyFireBaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".firebase.MyJobService"
             android:exported="false">
@@ -209,25 +178,26 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/app_icon" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationName"
             android:value="@string/app_name" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"
@@ -260,5 +230,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="95f5709e4f63ecbfd13969d5991aa1512cf4cbc9" />
+
+        <activity android:name=".MainLanguageActivity" />
+        <activity android:name=".ChangeLanguageActivity"></activity>
     </application>
+
 </manifest>

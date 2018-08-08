@@ -55,7 +55,7 @@ public class Constants {
     public static final String user_type = "Individual";
     public static String latitude = "0.0";
     public static String longitude = "0.0";
-    public static final String language_id = "1";
+    public static String language_id = "1";
     public static String filter = "all";
     public static int country_selection_position = -1;
     public static int ca = -1;

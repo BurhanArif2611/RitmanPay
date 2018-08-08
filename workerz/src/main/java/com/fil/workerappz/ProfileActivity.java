@@ -410,7 +410,7 @@ public class ProfileActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture})
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture,R.id.changeLanguageTextViewProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -421,6 +421,10 @@ public class ProfileActivity extends ActionBarActivity {
                 break;
             case R.id.changePinTextViewProfile:
                 mIntent = new Intent(ProfileActivity.this, ChangePinActivity.class);
+                startActivity(mIntent);
+                break;
+            case R.id.changeLanguageTextViewProfile:
+                mIntent = new Intent(ProfileActivity.this, ChangeLanguageActivity.class);
                 startActivity(mIntent);
                 break;
             case R.id.editProfilePicture:

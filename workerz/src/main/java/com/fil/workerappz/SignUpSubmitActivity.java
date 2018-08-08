@@ -533,7 +533,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         }, spanTxt.length() - datumLable_languages.getTermsConditions().length(), spanTxt.length(), 0);
         spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() - datumLable_languages.getTermsConditions().length(), spanTxt.length(), 0);
         spanTxt.append(" "+datumLable_languages.getAnd()+" ");
-        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGrey)), 60, spanTxt.length(), 0);
+        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGrey)), spanTxt.length() -datumLable_languages.getPrivacyPolicy().length(), spanTxt.length(), 0);
         spanTxt.append(datumLable_languages.getPrivacyPolicy());
         spanTxt.setSpan(new ClickableSpan() {
             @Override
