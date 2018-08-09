@@ -246,7 +246,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                                         countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
                                     } else {
                                         textcontrycode.setText(" ");
-                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
+//                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
                                     }
                                 }
                             }

@@ -62,6 +62,7 @@ public class SplashActivity extends Activity {
         ButterKnife.bind(this);
         final SessionManager sessionManager = new SessionManager(SplashActivity.this);
         Constants.device_token = FirebaseInstanceId.getInstance().getToken();
+         Constants.language_id_label_msg=sessionManager.getlanguageselection();
 
 
 
@@ -90,14 +91,14 @@ public class SplashActivity extends Activity {
 //                    startActivity(mIntent);
 //                }
 
-//                language updated code
-                if (sessionManager.getlanguageselection()==false) {
-
-                    mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
-//                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
-                    startActivity(mIntent);
-                }
-                else {
+////                language updated code
+//                if (!sessionManager.getLogin()&&sessionManager.getRememberMe() == true) {
+//
+//                    mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
+////                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
+//                    startActivity(mIntent);
+//                }
+//                else {
                     if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
                         mIntent = new Intent(SplashActivity.this, HomeActivity.class);
 //                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
@@ -107,10 +108,10 @@ public class SplashActivity extends Activity {
 //                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
                         startActivity(mIntent);
                     } else {
-                        mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
+                        mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
                         startActivity(mIntent);
                     }
-                }
+//                }
                 finish();
             }
         }, 2000);

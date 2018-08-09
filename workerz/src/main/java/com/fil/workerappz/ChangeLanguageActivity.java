@@ -71,10 +71,10 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_language);
         ButterKnife.bind(this);
         titleTextViewViewHeader.setText(getResources().getString(R.string.change_language));
-        dingCountryListJsonCall();
+        LanguageListJsonCall();
     }
 
-    private void dingCountryListJsonCall() {
+    private void LanguageListJsonCall() {
         Constants.showProgress(ChangeLanguageActivity.this);
         Call<List<GetLanguageList>> call = RestClient.get().getLanguageistJsonCall();
         call.enqueue(new Callback<List<GetLanguageList>>() {
@@ -93,7 +93,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
                         }
                             for (int i1=0;i1<stockArr.length;i1++)
                         {
-                            if (Constants.language_id.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID())))
+                            if (Constants.language_id_label_msg.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID())))
                             {
 
                                 languageTextviewchange.setText(stockArr[i1]);
@@ -122,7 +122,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
                 {
                     if (languageTextviewchange.getText().toString().equalsIgnoreCase(new String(Base64.decode(languagesListPojo.get(0).getData().get(i1).getLanguageName().trim().getBytes(), Base64.DEFAULT))))
                     {
-                        Constants.language_id= String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID());
+                        Constants.language_id_label_msg= String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID());
                     }
                 }
                 dialogInterface.dismiss();
@@ -162,7 +162,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         Constants.showProgress(ChangeLanguageActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("languageID", Constants.language_id_label_msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -200,7 +200,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         Constants.showProgress(ChangeLanguageActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("languageID", Constants.language_id_label_msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -222,7 +222,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
                         linearlanguagechange.setEnabled(false);
                         SessionManager sessionManager = new SessionManager(ChangeLanguageActivity.this);
                         sessionManager.setAppLanguageMessage(messageListdataPojos.get(0));
-                        sessionManager.setlanguageselection(true);
+                        sessionManager.setlanguageselection(Constants.language_id_label_msg);
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override

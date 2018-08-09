@@ -356,8 +356,9 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                             sessionManager.clearUser();
                         }
 //                        sessionManager.clearUser();
-                        sessionManager.setAppLanguageLabel(datumLable_languages);
-                        sessionManager.setAppLanguageMessage(datumLable_languages_msg);
+//                        sessionManager.setAppLanguageLabel(datumLable_languages);
+//                        sessionManager.setAppLanguageMessage(datumLable_languages_msg);
+
                         Constants.cashBenificaryCount = 0;
                         Constants.bankNextBenificaryCount = 0;
                         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

@@ -99,8 +99,8 @@ public class MainLanguageActivity extends AppCompatActivity {
                         languageSpinner.setAdapter(adapter);
 
                         for (int i = 0; i < languagesListPojo.get(0).getData().size(); i++) {
-                            if (Constants.language_id.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i).getLanguageID()))) {
-                                Constants.language_id = Constants.language_id;
+                            if (Constants.language_id_label_msg.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i).getLanguageID()))) {
+                                Constants.language_id_label_msg = Constants.language_id_label_msg;
                                 languageSpinner.setSelection(i + 1);
 
                             }
@@ -111,7 +111,7 @@ public class MainLanguageActivity extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     languageid = String.valueOf(languagesListPojo.get(0).getData().get(position).getLanguageID());
-                                    Constants.language_id = languageid;
+                                    Constants.language_id_label_msg = languageid;
 
                                 }
 
@@ -138,7 +138,7 @@ public class MainLanguageActivity extends AppCompatActivity {
         Constants.showProgress(MainLanguageActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("languageID", Constants.language_id_label_msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -160,7 +160,7 @@ public class MainLanguageActivity extends AppCompatActivity {
 //                        SugarRecord.save(messageListPojos.get(0).getData());
 
                         sessionManager.setAppLanguageMessage(messageListdataPojos.get(0));
-                        sessionManager.setlanguageselection(true);
+
                         if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
                             mIntent = new Intent(MainLanguageActivity.this, HomeActivity.class);
 //                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
@@ -175,19 +175,20 @@ public class MainLanguageActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        sessionManager.setlanguageselection(true);
-                        if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
-                            mIntent = new Intent(MainLanguageActivity.this, HomeActivity.class);
-//                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
-                            startActivity(mIntent);
-                        } else if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == false) {
-                            mIntent = new Intent(MainLanguageActivity.this, SignInActivity.class);
-//                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
-                            startActivity(mIntent);
-                        } else {
-                            mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
-                            startActivity(mIntent);
-                        }
+//                        sessionManager.setlanguageselection(true);
+//                        if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
+//                            mIntent = new Intent(MainLanguageActivity.this, HomeActivity.class);
+////                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
+//                            startActivity(mIntent);
+//                        } else if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == false) {
+//                            mIntent = new Intent(MainLanguageActivity.this, SignInActivity.class);
+////                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
+//                            startActivity(mIntent);
+//                        } else {
+//                            mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
+//                            startActivity(mIntent);
+//                        }
+                        Constants.showMessage(mainlanguagelayout, MainLanguageActivity.this, getResources().getString(R.string.no_record_found));
                     }
                 }
             }
@@ -203,7 +204,7 @@ public class MainLanguageActivity extends AppCompatActivity {
 //        Constants.showProgress(MainLanguageActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("languageID", Constants.language_id_label_msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
