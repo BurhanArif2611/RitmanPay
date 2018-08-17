@@ -105,11 +105,14 @@
   <string name="valid_amount">Please Enter Valid Amount</string>
   <string name="edit">Edit</string>
   <string name="change_pin">Change PIN</string>
+  <string name="change_language">Change Language</string>
   <string name="a_c_balance">Balance:&#160;</string>
   <string name="points">Points:</string>
   <string name="add_money">Add Money</string>
   <string name="add_money_to_wallet">Add Money to Wallet</string>
   <string name="select_payment_method">Select Payment Method</string>
+  <string name="select_your_language">Select Your Language</string>
+  <string name="your_language"> Your Language</string>
   <string name="enter_amount">Enter Amount</string>
   <string name="total_payment_to_be_made">Total payment to be made:</string>
   <string name="stored_bank_account">Stored Bank Account</string>

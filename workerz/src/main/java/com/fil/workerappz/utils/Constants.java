@@ -35,18 +35,18 @@ import java.util.regex.Pattern;
 public class Constants {
 
     public static final boolean ENABLE_LOG = true;
-//    public static final String FLAG_URL = "http://betaapplication.com/workerzapp/backend/web/uploads/flag/";
+    public static final String FLAG_URL = "http://betaapplication.com/workerzapp/backend/web/uploads/flag/";
 //    public static final String FLAG_URL = "http://180.179.114.39/backend/web/uploads/flag/";
-    public static final String FLAG_URL = "https://m.workerappz.com/backend/web/uploads/flag/";
-//    public static final String IMAGE_URL = "http://betaapplication.com/workerzapp/backend/web/index.php/api/";
+//    public static final String FLAG_URL = "https://m.workerappz.com/backend/web/uploads/flag/";
+    public static final String IMAGE_URL = "http://betaapplication.com/workerzapp/backend/web/index.php/api/";
 //    public static final String IMAGE_URL = "http://180.179.114.39/backend/web/index.php/api/";
-    public static final String IMAGE_URL = "https://m.workerappz.com/backend/web/index.php/api/";
-//    public static final String IMAGE_URL_KYC = "http://betaapplication.com/workerzapp/backend/web/uploads/kycdocs/";
+//    public static final String IMAGE_URL = "https://m.workerappz.com/backend/web/index.php/api/";
+    public static final String IMAGE_URL_KYC = "http://betaapplication.com/workerzapp/backend/web/uploads/kycdocs/";
 //    public static final String IMAGE_URL_KYC = "http://180.179.114.39/backend/web/uploads/kycdocs/";
-    public static final String IMAGE_URL_KYC = "https://m.workerappz.com/backend/web/uploads/kycdocs/";
-//    public static final String IMAGE_URL_USER = "http://betaapplication.com/workerzapp/backend/web/uploads/user/";
+//    public static final String IMAGE_URL_KYC = "https://m.workerappz.com/backend/web/uploads/kycdocs/";
+    public static final String IMAGE_URL_USER = "http://betaapplication.com/workerzapp/backend/web/uploads/user/";
 //    public static final String IMAGE_URL_USER = "http://180.179.114.39/backend/web/uploads/user/";
-    public static final String IMAGE_URL_USER = "https://m.workerappz.com/backend/web/uploads/user/";
+//    public static final String IMAGE_URL_USER = "https://m.workerappz.com/backend/web/uploads/user/";
     public static final String api_type = "android";
     public static final String version = "1.0";
     public static final String device_type = "android";
@@ -55,7 +55,9 @@ public class Constants {
     public static final String user_type = "Individual";
     public static String latitude = "0.0";
     public static String longitude = "0.0";
-    public static final String language_id = "1";
+    public static String language_id = "1";
+    public static String language_id_label_msg = "1";
+
     public static String filter = "all";
     public static int country_selection_position = -1;
     public static int ca = -1;

@@ -289,4 +289,19 @@
       android:text="@string/change_pin"
       android:textColor="@color/colorGreen"
       android:textSize="@dimen/_10ssp" />
+  <TextView
+      android:id="@+id/changeLanguageTextViewProfile"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/_5sdp"
+      android:background="@color/colorLightGrey"
+      android:drawableRight="@drawable/arrow_orange"
+      android:drawableTint="@color/colorGreen"
+      android:paddingBottom="15dp"
+      android:paddingLeft="@dimen/_20sdp"
+      android:paddingRight="@dimen/_20sdp"
+      android:paddingTop="@dimen/_15sdp"
+      android:text="@string/change_language"
+      android:textColor="@color/colorGreen"
+      android:textSize="@dimen/_10ssp" />
 </LinearLayout>

@@ -62,6 +62,14 @@ public class SessionManager {
         editor.putString("device_token", deviceToken);
         editor.commit();
     }
+    public String getlanguageselection() {
+        return pref.getString("language_selection", "1");
+    }
+
+    public void setlanguageselection(String languageId) {
+        editor.putString("language_selection", languageId);
+        editor.commit();
+    }
     public void setLoginWith(String loginwith) {
         editor.putString("login_with", loginwith);
         editor.commit();
@@ -135,6 +143,7 @@ public class SessionManager {
         editor.putBoolean("is_verify", flag);
         editor.commit();
     }
+
 
     public void clearUser() {
         editor.clear();

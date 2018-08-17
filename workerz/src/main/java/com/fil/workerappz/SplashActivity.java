@@ -52,10 +52,7 @@ public class SplashActivity extends Activity {
     private Intent mIntent;
     private CountryData countryData;
     private final ArrayList<CountryListPojo> countryListPojos = new ArrayList<>();
-    private final ArrayList<LabelListJsonPojo> labelListPojos = new ArrayList<>();
-    private final ArrayList<MessageListJsonPojo> messageListPojos = new ArrayList<>();
-    private final ArrayList<LabelListData> labelListdataPojos = new ArrayList<>();
-    private final ArrayList<MessagelistData> messageListdataPojos = new ArrayList<>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,15 +62,9 @@ public class SplashActivity extends Activity {
         ButterKnife.bind(this);
         final SessionManager sessionManager = new SessionManager(SplashActivity.this);
         Constants.device_token = FirebaseInstanceId.getInstance().getToken();
+         Constants.language_id_label_msg=sessionManager.getlanguageselection();
 
-        if (IsNetworkConnection.checkNetworkConnection(this)) {
-//            if (sessionManager.getAppLanguageLabel() == null || sessionManager.getAppLanguageLabel() == null) {
-                labelListJsonCall();
 
-//            }
-        } else {
-            Constants.showMessage(splashmainlinearlayout, this, getResources().getString(R.string.no_internet));
-        }
 
         if (IsNetworkConnection.checkNetworkConnection(this)) {
             if (SugarRecord.count(CountryData.class) <= 0) {
@@ -99,18 +90,28 @@ public class SplashActivity extends Activity {
 //                    mIntent = new Intent(SplashActivity.this, HomeActivity.class);
 //                    startActivity(mIntent);
 //                }
-                if (sessionManager.getRememberMe() == true&&sessionManager.getVerify() == true) {
-                    mIntent = new Intent(SplashActivity.this, HomeActivity.class);
+
+////                language updated code
+//                if (!sessionManager.getLogin()&&sessionManager.getRememberMe() == true) {
+//
+//                    mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
+////                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
+//                    startActivity(mIntent);
+//                }
+//                else {
+                    if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
+                        mIntent = new Intent(SplashActivity.this, HomeActivity.class);
 //                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
-                    startActivity(mIntent);
-                } else  if (sessionManager.getRememberMe() == true&&sessionManager.getVerify() == false) {
-                    mIntent = new Intent(SplashActivity.this, SignInActivity.class);
+                        startActivity(mIntent);
+                    } else if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == false) {
+                        mIntent = new Intent(SplashActivity.this, SignInActivity.class);
 //                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
-                    startActivity(mIntent);
-                } else {
-                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
-                    startActivity(mIntent);
-                }
+                        startActivity(mIntent);
+                    } else {
+                        mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
+                        startActivity(mIntent);
+                    }
+//                }
                 finish();
             }
         }, 2000);
@@ -163,75 +164,7 @@ public class SplashActivity extends Activity {
         });
     }
 
-    private void labelListJsonCall() {
-//        Constants.showProgress(SplashActivity.this);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("languageID", Constants.language_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        String json = "[" + jsonObject + "]";
-        Call<List<LabelListJsonPojo>> call = RestClient.get().labelListJsonCall(json);
-        call.enqueue(new Callback<List<LabelListJsonPojo>>() {
-            @Override
-            public void onResponse(Call<List<LabelListJsonPojo>> call, Response<List<LabelListJsonPojo>> response) {
-//                Constants.closeProgress();
-                labelListdataPojos.clear();
-                labelListPojos.clear();
-                if (response.body() != null && response.body() instanceof ArrayList) {
-                    labelListPojos.addAll(response.body());
-                    if (labelListPojos.get(0).getStatus() == true) {
-                        messageListJsonCall();
-//                        SugarRecord.save(labelListPojos.get(0).getData());
-                        labelListdataPojos.add(labelListPojos.get(0).getData().get(0));
-                        SessionManager sessionManager = new SessionManager(SplashActivity.this);
-                        sessionManager.setAppLanguageLabel(labelListdataPojos.get(0));
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<LabelListJsonPojo>> call, Throwable t) {
-                Constants.closeProgress();
-            }
-        });
-    }
-
-    private void messageListJsonCall() {
-//        Constants.showProgress(SplashActivity.this);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("languageID", Constants.language_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String json = "[" + jsonObject + "]";
-        Call<List<MessageListJsonPojo>> call = RestClient.get().messageListJsonCall(json);
-        call.enqueue(new Callback<List<MessageListJsonPojo>>() {
-            @Override
-            public void onResponse(Call<List<MessageListJsonPojo>> call, Response<List<MessageListJsonPojo>> response) {
-//                Constants.closeProgress();
-                messageListPojos.clear();
-                messageListdataPojos.clear();
-                if (response.body() != null && response.body() instanceof ArrayList) {
-                    messageListPojos.addAll(response.body());
-                    if (messageListPojos.get(0).getStatus() == true) {
-                        messageListdataPojos.add(messageListPojos.get(0).getData().get(0));
-//                        SugarRecord.save(messageListPojos.get(0).getData());
-                        SessionManager sessionManager = new SessionManager(SplashActivity.this);
-                        sessionManager.setAppLanguageMessage(messageListdataPojos.get(0));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MessageListJsonPojo>> call, Throwable t) {
-                Constants.closeProgress();
-            }
-        });
-    }
 
 }
