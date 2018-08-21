@@ -302,7 +302,7 @@
       android:paddingRight="@dimen/_20sdp"
       android:paddingTop="@dimen/_15sdp"
       android:text="@string/change_language"
-      android:visibility="gone"
+      android:visibility="visible"
       android:textColor="@color/colorGreen"
       android:textSize="@dimen/_10ssp" />
 </LinearLayout>

@@ -22,6 +22,7 @@ import com.fil.workerappz.MobileTopUpActivity;
 import com.fil.workerappz.MoreActivity;
 import com.fil.workerappz.NotificationActivity;
 import com.fil.workerappz.PinVerificationActivity;
+import com.fil.workerappz.PrepaidCardActivity;
 import com.fil.workerappz.ProfileActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SendMoneyActivity;
@@ -77,6 +78,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
     private final LinearLayout moreLinearLayoutMoreActivity;
     private final LinearLayout notificationLinearLayoutDrawerMenu;
     private final LinearLayout profileLinearLayoutDrawerMenu;
+    private final LinearLayout prepaiedcardLinearLayoutDrawerMenu;
     private final TextView helpNSupportTextView;
     private final TextView Hometextview;
     private final TextView LegaldocTextview;
@@ -138,6 +140,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
         loyaltyProgramLinearLayoutDrawerMenu = view.findViewById(R.id.loyaltyProgramLinearLayoutDrawerMenu);
         moneyTransferLinearLayoutDrawerMenu = view.findViewById(R.id.moneyTransferLinearLayoutDrawerMenu);
         homeLinearLayoutDrawerMenu = view.findViewById(R.id.homeLinearLayoutDrawerMenu);
+        prepaiedcardLinearLayoutDrawerMenu = view.findViewById(R.id.prepaiedcardLinearLayoutDrawerMenu);
         legalDocumentLinearLayoutDrawerMenu = view.findViewById(R.id.legalDocumentLinearLayoutDrawerMenu);
         notificationLinearLayoutDrawerMenu = view.findViewById(R.id.notificationLinearLayoutDrawerMenu);
         moreLinearLayoutMoreActivity = view.findViewById(R.id.moreLinearLayoutMoreActivity);
@@ -177,6 +180,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
         billPaymentLinearLayoutDrawerMenu.setOnClickListener(this);
         loyaltyProgramLinearLayoutDrawerMenu.setOnClickListener(this);
         profileLinearLayoutDrawerMenu.setOnClickListener(this);
+        prepaiedcardLinearLayoutDrawerMenu.setOnClickListener(this);
         helpNSupportTextView.setOnClickListener(this);
         logoutTextViewDrawerMenu.setOnClickListener(this);
         inviteTextViewDrawerMenu.setOnClickListener(this);
@@ -197,7 +201,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                 TextviewBalancePrepaidCarddrawermenu.setText(datumLable_languages.getPrepaidCard());
                 billPaymentTextViewDrawerMenu.setText(datumLable_languages.getBillPay());
                 walletTextViewDrawerMenu.setText(datumLable_languages.getWallet());
-                loyaltyProgramTextViewDrawerMenu.setText(datumLable_languages.getLoyaltyProgram());
+                loyaltyProgramTextViewDrawerMenu.setText(datumLable_languages.getLoyaltyPoints());
                 notificationTextViewDrawerMenu.setText(datumLable_languages.getNotification());
                 moretextviewdrawermenu.setText(datumLable_languages.getMore());
                 aboutsettingTextview.setText(datumLable_languages.getAboutSettingsEtc());
@@ -242,8 +246,9 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
             mIntent.putExtra("come_from", "wallet_summary");
             mContext.startActivity(mIntent);
         } else if (v == loyaltyProgramLinearLayoutDrawerMenu) {
-//            mIntent = new Intent(mContext, LoyaltyProgramActivity.class);
-//            mContext.startActivity(mIntent);
+            mIntent = new Intent(mContext, LoyaltyProgramActivity.class);
+            mIntent.putExtra("come_from", "loyality");
+            mContext.startActivity(mIntent);
         } else if (v == moneyTransferLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, SendMoneyActivity.class);
             mContext.startActivity(mIntent);
@@ -268,8 +273,15 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
 //            mIntent.putExtra("home_bean", homeDataBeans);
 //            mIntent.putExtra("home_bean_selection", 0);
 //            mContext.startActivity(mIntent);
+            mIntent = new Intent(mContext, BillPaymentActivity.class);
+            mIntent.putExtra("come_from", "bill");
+            mContext.startActivity(mIntent);
         } else if (v == profileLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, ProfileActivity.class);
+            mContext.startActivity(mIntent);
+        }else if (v == prepaiedcardLinearLayoutDrawerMenu) {
+            mIntent = new Intent(mContext, PrepaidCardActivity.class);
+            mIntent.putExtra("come_from", "prepaiedcard");
             mContext.startActivity(mIntent);
         } else if (v == helpNSupportTextView) {
             mIntent = new Intent(mContext, TermsAndPrivacyActivity.class);

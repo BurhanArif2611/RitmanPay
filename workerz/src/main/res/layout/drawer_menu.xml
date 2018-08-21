@@ -261,6 +261,7 @@
           android:gravity="center|left"
           android:orientation="horizontal"
           android:padding="@dimen/_10sdp"
+          android:id="@+id/prepaiedcardLinearLayoutDrawerMenu"
           android:baselineAligned="false">
 
         <LinearLayout
