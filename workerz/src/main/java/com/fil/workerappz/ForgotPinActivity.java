@@ -112,6 +112,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                 titleTextViewViewHeader.setText(datumLable_languages.getForgotPIN());
                 dontwrrytextview.setText(datumLable_languages.getResetYourPIN());
                 emailMobileNoEditTextForgotPinActivity.setHint(datumLable_languages.getEmailMobileNo());
+                emailMobileNoEditTextForgotPinActivity.setFloatingLabelText(datumLable_languages.getEmailMobileNo());
                 sendTextViewForgotPinActivity.setText(datumLable_languages.getSend());
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
 

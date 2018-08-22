@@ -91,6 +91,7 @@ public class PinVerificationActivity extends ActionBarActivity {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
                 pinEditTextVerifiedPinActivity.setHint(datumLable_languages.getEnterPin());
+                pinEditTextVerifiedPinActivity.setFloatingLabelText(datumLable_languages.getEnterPin());
                 submitTextViewVerifiedPin.setText(datumLable_languages.getSubmit());
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
 

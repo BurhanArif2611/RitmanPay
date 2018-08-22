@@ -65,8 +65,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     ImageView filterImageViewHeader2;
     @BindView(R.id.mobileNumberEditTextRecharge)
     MaterialEditText mobileNumberEditTextRecharge;
-    @BindView(R.id.serviceProviderEditTextMobileTopUp)
-    EditText ServiceProviderEditTextMobileTopUp;
+
     @BindView(R.id.browserPlansEditTextMobileTopUp)
     MaterialEditText BrowserPlansEditTextMobileTopUp;
     @BindView(R.id.submit_textview)
@@ -98,6 +97,9 @@ public class MobileTopUpActivity extends ActionBarActivity {
     TextView chargetextview;
     @BindView(R.id.receivevaluetextview)
     TextView receivevaluetextview;
+    @BindView(R.id.serviceProviderEditTextMobileTopUp)
+    EditText serviceProviderEditTextMobileTopUp;
+
     //        @BindView(R.id.imagecountrycode)
 //    ImageView imagecountrycode;
     private String countryIso = "";
@@ -135,7 +137,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 titleTextViewViewHeader2.setText(datumLable_languages.getMobileTopup());
                 textcontrycode.setText(datumLable_languages.getCountry());
                 mobileNumberEditTextRecharge.setHint(datumLable_languages.getRechargePhoneNumber());
-                ServiceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
+                mobileNumberEditTextRecharge.setFloatingLabelText(datumLable_languages.getRechargePhoneNumber());
+                serviceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
                 BrowserPlansEditTextMobileTopUp.setHint(datumLable_languages.getBrowsePlans());
                 validityTextview.setText(datumLable_languages.getValidity());
                 receivevaluetextview.setText(datumLable_languages.getReceiveValue());
@@ -149,7 +152,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 titleTextViewViewHeader2.setText(getResources().getString(R.string.mobile_recharge));
                 textcontrycode.setText(getResources().getString(R.string.country));
                 mobileNumberEditTextRecharge.setHint(getResources().getString(R.string.recharge_phone_number));
-                ServiceProviderEditTextMobileTopUp.setText(getResources().getString(R.string.service_provider));
+                serviceProviderEditTextMobileTopUp.setHint(getResources().getString(R.string.service_provider));
                 BrowserPlansEditTextMobileTopUp.setHint(getResources().getString(R.string.browse_plans));
                 validityTextview.setText(getResources().getString(R.string.validity));
                 receivevaluetextview.setText(getResources().getString(R.string.receive_value));
@@ -186,7 +189,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Constants.hideKeyboard(MobileTopUpActivity.this);
-                    ServiceProviderEditTextMobileTopUp.setText("");
+                    serviceProviderEditTextMobileTopUp.setText("");
                     mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
 //                    linearbrowserplans.setVisibility(View.GONE);
                     BrowserPlansEditTextMobileTopUp.setText("");
@@ -294,7 +297,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                     serviceProviderJsonPojos.addAll(response.body());
                     if (serviceProviderJsonPojos.get(0).getStatus() == true) {
                         if (serviceProviderJsonPojos.get(0).getData().size() != 0) {
-                            ServiceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
+                            serviceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
                         } else {
                             Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
                         }
@@ -343,7 +346,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                } else if (ServiceProviderEditTextMobileTopUp.getText().toString().length() == 0) {
+                } else if (serviceProviderEditTextMobileTopUp.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
                 } else {
 

@@ -150,11 +150,16 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
                 bankAccountNumberEditTextAddBeneficiaryNext.setHint(datumLable_languages.getAccountNumber());
+                bankAccountNumberEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getAccountNumber());
                 bankNameEditTextAddBeneficiary.setHint(datumLable_languages.getBankName());
                 bankCodeEditTextAddBeneficiary.setHint(datumLable_languages.getBranchCode());
+                bankCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchCode());
                 bankAddressEditTextAddBeneficiary.setHint(datumLable_languages.getBranchAddress());
+                bankAddressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchAddress());
                 phoneNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber());
+                phoneNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber());
                 purposeOfTransferSpinnerAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer());
+                purposeOfTransferSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getPurposeOfTransfer());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();

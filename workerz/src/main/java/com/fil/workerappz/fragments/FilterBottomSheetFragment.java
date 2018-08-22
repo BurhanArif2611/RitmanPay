@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.fil.workerappz.R;
 import com.fil.workerappz.TransactionHistoryActivity;
@@ -23,6 +24,7 @@ import com.fil.workerappz.utils.SessionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by HS on 14-Mar-18.
@@ -31,6 +33,9 @@ import butterknife.ButterKnife;
 
 public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
 
+
+    @BindView(R.id.flitertransactionlabelTextview)
+    TextView flitertransactionlabelTextview;
     @BindView(R.id.filterTransactionTextView)
     ImageView filterTransactionTextView;
     @BindView(R.id.allRadioButtonFilterTransaction)
@@ -83,17 +88,20 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
             sessionManager = new SessionManager(getActivity());
             datumLable_languages = sessionManager.getAppLanguageLabel();
             if (datumLable_languages != null) {
+//                flitertransactionlabelTextview.setText(datumLable_languages.filt);
                 all = datumLable_languages.getAll();
+                allRadioButtonFilterTransaction.setText(all);
                 banktransfer = datumLable_languages.getBankTransfer();
+                bankRadioButtonFilterTransaction.setText(banktransfer);
                 cashtransfer = datumLable_languages.getCashTransfer();
+                cashRadioButtonFilterTransaction.setText(cashtransfer);
                 topup = datumLable_languages.getTopup();
-            }
-            else
-            {
-                all=getResources().getString(R.string.all);
-                banktransfer=getResources().getString(R.string.bank_transfer);
-                cashtransfer=getResources().getString(R.string.cash_transfer);
-                topup=getResources().getString(R.string.topup);
+                topUpRadioButtonFilterTransaction.setText(topup);
+            } else {
+                all = getResources().getString(R.string.all);
+                banktransfer = getResources().getString(R.string.bank_transfer);
+                cashtransfer = getResources().getString(R.string.cash_transfer);
+                topup = getResources().getString(R.string.topup);
 
             }
         } catch (Exception e) {
@@ -107,13 +115,13 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
-        if (Constants.filter.equalsIgnoreCase(all)) {
+        if (Constants.filter.equalsIgnoreCase(getString(R.string.all))) {
             allRadioButtonFilterTransaction.setChecked(true);
-        } else if (Constants.filter.equalsIgnoreCase(banktransfer)) {
+        } else if (Constants.filter.equalsIgnoreCase(getString(R.string.bank_transfer))) {
             bankRadioButtonFilterTransaction.setChecked(true);
-        } else if (Constants.filter.equalsIgnoreCase(cashtransfer)) {
+        } else if (Constants.filter.equalsIgnoreCase(getString(R.string.cash_transfer))) {
             cashRadioButtonFilterTransaction.setChecked(true);
-        } else if (Constants.filter.equalsIgnoreCase(topup)) {
+        } else if (Constants.filter.equalsIgnoreCase(getString(R.string.topup))) {
             topUpRadioButtonFilterTransaction.setChecked(true);
         }
 
@@ -122,16 +130,16 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.allRadioButtonFilterTransaction:
-                        Constants.filter = all;
+                        Constants.filter = getString(R.string.all);
                         break;
                     case R.id.bankRadioButtonFilterTransaction:
-                        Constants.filter = banktransfer;
+                        Constants.filter = getString(R.string.bank_transfer);
                         break;
                     case R.id.cashRadioButtonFilterTransaction:
-                        Constants.filter = cashtransfer;
+                        Constants.filter = (getString(R.string.cash_transfer));
                         break;
                     case R.id.topUpRadioButtonFilterTransaction:
-                        Constants.filter = topup;
+                        Constants.filter = getString(R.string.topup);
                         break;
                 }
 
@@ -144,6 +152,7 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+
 
         return rootView;
     }
@@ -161,5 +170,11 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         } else {
             walletSummaryActivity = (WalletSummaryActivity) this.activity;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 }

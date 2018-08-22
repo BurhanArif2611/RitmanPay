@@ -176,13 +176,20 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
                 firstNameEditTextSignUpSubmit.setHint(datumLable_languages.getFirstName());
+                firstNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getFirstName());
                 lastNameEditTextSignUpSubmit.setHint(datumLable_languages.getLastName());
+                lastNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getLastName());
                 mobileNoEditTextSignUpSubmit.setHint(datumLable_languages.getMobileNumber());
+                mobileNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getMobileNumber());
                 emailEditTextSignUpSubmit.setHint(datumLable_languages.getEmail());
+                emailEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmail());
                 addressEditTextSignUpSubmit.setHint(datumLable_languages.getAddress());
+                addressEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getAddress());
                 countryOfResidenceSpinnerSignUpSubmit.setHint(datumLable_languages.getCountryOfResidence());
                 passportNoEditTextSignUpSubmit.setHint(datumLable_languages.getPassportNo());
+                passportNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getPassportNo());
                 emiratesIdEditTextSignUpSubmit.setHint(datumLable_languages.getEmiratesId());
+                emiratesIdEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmiratesId());
                 countryOfResidenceSpinnerSignUpSubmit.setFloatingLabelText(datumLable_languages.getCountryOfResidence());
                 textviewgender.setText(datumLable_languages.getGender());
                 maleRadioButtonSignUpSubmit.setText(datumLable_languages.getMale());
@@ -319,9 +326,9 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 //                    gender = "Female";
 //                }
                 if (gender1.equalsIgnoreCase(datumLable_languages.getMale())) {
-                    gender = datumLable_languages.getMale();
+                    gender = "Male";
                 } else {
-                    gender = datumLable_languages.getFemale();
+                    gender = "Female";
                 }
             }
         });

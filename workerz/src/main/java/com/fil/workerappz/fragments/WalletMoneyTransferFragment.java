@@ -134,17 +134,20 @@ public class WalletMoneyTransferFragment extends BaseFragment {
 
             if (datumLable_languages != null) {
                 amountSendMoneyEditText.setHint(datumLable_languages.getAmount());
+                amountSendMoneyEditText.setFloatingLabelText(datumLable_languages.getAmount());
                 mobileNoSendMoneyEditText.setHint(datumLable_languages.getMobileNumber());
                 walletNameSendMoneyEditText.setHint(datumLable_languages.getWalletName());
+                walletNameSendMoneyEditText.setFloatingLabelText(datumLable_languages.getWalletName());
                 descriptionSendMoneyEditText.setHint(datumLable_languages.getDescription());
-                sendNowWalletMoneyTransfer.setHint(datumLable_languages.getSendNow());
+                descriptionSendMoneyEditText.setFloatingLabelText(datumLable_languages.getDescription());
+                sendNowWalletMoneyTransfer.setText(datumLable_languages.getSendNow());
 
             } else {
                 amountSendMoneyEditText.setHint(getResources().getString(R.string.amount));
                 mobileNoSendMoneyEditText.setHint(getResources().getString(R.string.mobile_number));
                 walletNameSendMoneyEditText.setHint(getResources().getString(R.string.wallet_name));
                 descriptionSendMoneyEditText.setHint(getResources().getString(R.string.description));
-                sendNowWalletMoneyTransfer.setHint(getResources().getString(R.string.send_now));
+                sendNowWalletMoneyTransfer.setText(getResources().getString(R.string.send_now));
 
             }
         } catch (Exception e)

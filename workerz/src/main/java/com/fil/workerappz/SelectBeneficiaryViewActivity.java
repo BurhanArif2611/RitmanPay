@@ -159,20 +159,33 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 firstNameEditTextAddBeneficiary.setHint(datumLable_languages.getFirstName());
+                firstNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getFirstName());
                 lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName());
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName());
                 mobileNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber());
+                mobileNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber());
                 middleNameEditTextAddBeneficiary.setHint(datumLable_languages.getMiddleName());
+                middleNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMiddleName());
                 lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName());
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName());
                 nickNameEditTextAddBeneficiary.setHint(datumLable_languages.getNickName());
+                nickNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getNickName());
                 emailEditTextAddBeneficiary.setHint(datumLable_languages.getEmail());
+                emailEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getEmail());
                 dateOfBirthEditTextAddBeneficiary.setHint(datumLable_languages.getDateOfBirth());
+                dateOfBirthEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDateOfBirth());
 
                 addressEditTextAddBeneficiary.setHint(datumLable_languages.getAddress());
+                addressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getAddress());
                 landmarkEditTextAddBeneficiary.setHint(datumLable_languages.getLandmark());
+                landmarkEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLandmark());
                 zipcodeEditTextAddBeneficiary.setHint(datumLable_languages.getZipCode());
+                zipcodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getZipCode());
                 idTypeSpinnerAddBeneficiary.setHint(datumLable_languages.getIdType());
+                idTypeSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdType());
                 idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber());
-                nextAddBeneficiaryTextView.setHint(datumLable_languages.getNext());
+                idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber());
+                nextAddBeneficiaryTextView.setText(datumLable_languages.getNext());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.getNationality());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
@@ -194,7 +207,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 nationalitySpinnerAddBeneficiary.setHint(getResources().getString(R.string.nationality));
                 idTypeSpinnerAddBeneficiary.setHint(getResources().getString(R.string.id_type));
                 idNumberEditTextAddBeneficiary.setHint(getResources().getString(R.string.id_number));
-                nextAddBeneficiaryTextView.setHint(getResources().getString(R.string.next));
+                nextAddBeneficiaryTextView.setText(getResources().getString(R.string.next));
                 nointernetmsg = getResources().getString(R.string.no_internet);
 
 

@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
-            android:hint="@string/mobile_number"
             android:inputType="number|textAutoComplete"
             android:maxLength="13"
             android:paddingLeft="@dimen/_5sdp"

@@ -14,6 +14,7 @@
         android:background="@color/colorWhite"
         android:gravity="center|left"
         android:padding="@dimen/_10ssp"
+        android:id="@+id/labelselectcountryTextView"
         android:text="@string/select_country"
         android:textColor="@color/Black"
         android:textSize="@dimen/_13ssp"

@@ -117,6 +117,7 @@ public class AddMoneyToWalletActivity extends ActionBarActivity {
                 textviewbalnce.setText(datumLable_languages.getBalance() + ":");
                 textviewpoints.setText(datumLable_languages.getPoints() + ":");
                 addMoneyAmountEditText.setHint(datumLable_languages.getEnterAmount());
+                addMoneyAmountEditText.setFloatingLabelText(datumLable_languages.getEnterAmount());
                 addMoneyTextViewToWallet.setText(datumLable_languages.getAddMoney());
                 titleTextViewViewHeader.setText(datumLable_languages.getAddMoneyToWallet());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();

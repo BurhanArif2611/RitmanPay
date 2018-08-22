@@ -68,7 +68,7 @@ public class MainLanguageActivity extends AppCompatActivity {
 
                 if (IsNetworkConnection.checkNetworkConnection(MainLanguageActivity.this)) {
                     labelListJsonCall();
-                    messageListJsonCall();
+
 
                 } else {
                                     Constants.showMessage(mainlanguagelayout, MainLanguageActivity.this, getResources().getString(R.string.no_internet));
@@ -201,7 +201,7 @@ public class MainLanguageActivity extends AppCompatActivity {
     }
 
     private void labelListJsonCall() {
-//        Constants.showProgress(MainLanguageActivity.this);
+        Constants.showProgress(MainLanguageActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("languageID", Constants.language_id_label_msg);
@@ -216,7 +216,7 @@ public class MainLanguageActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<LabelListJsonPojo>>() {
             @Override
             public void onResponse(Call<List<LabelListJsonPojo>> call, Response<List<LabelListJsonPojo>> response) {
-//                Constants.closeProgress();
+                Constants.closeProgress();
                 labelListdataPojos.clear();
                 labelListPojos.clear();
                 if (response.body() != null && response.body() instanceof ArrayList) {
@@ -227,6 +227,7 @@ public class MainLanguageActivity extends AppCompatActivity {
                         labelListdataPojos.add(labelListPojos.get(0).getData().get(0));
                         SessionManager sessionManager = new SessionManager(MainLanguageActivity.this);
                         sessionManager.setAppLanguageLabel(labelListdataPojos.get(0));
+                        messageListJsonCall();
                     }
                 }
             }

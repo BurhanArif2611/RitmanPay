@@ -118,7 +118,7 @@ public class BrowsePlansActivity extends ActionBarActivity {
                     if (getProductsLists.get(0).getStatus() == true) {
                         if (getProductsLists.get(0).getData().size() > 0) {
                             layoutManager = new LinearLayoutManager(BrowsePlansActivity.this);
-                            browsePlansListAdapter = new BrowsePlansListAdapter(BrowsePlansActivity.this, getProductsLists);
+                            browsePlansListAdapter = new BrowsePlansListAdapter(BrowsePlansActivity.this, getProductsLists,datumLable_languages.getValidity(),datumLable_languages.getReceiveValue());
                             browsePlanRecyclerView.setLayoutManager(layoutManager);
                             browsePlanRecyclerView.setAdapter(browsePlansListAdapter);
                         }

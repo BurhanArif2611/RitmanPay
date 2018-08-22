@@ -86,6 +86,7 @@ public class WalletActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
                 walletsuretextview.setText(datumLable_languages.getDeductMoneyFromWallet());
                 pinEditTextWallet.setHint(datumLable_languages.getEnterWalletPIN());
+                pinEditTextWallet.setFloatingLabelText(datumLable_languages.getEnterWalletPIN());
                 payNowTextViewWallet.setText(datumLable_languages.getPayNow());
                 titleTextViewViewHeader.setText(datumLable_languages.getWallet());
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();

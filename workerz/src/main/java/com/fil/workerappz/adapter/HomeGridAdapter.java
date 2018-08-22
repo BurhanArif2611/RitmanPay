@@ -13,9 +13,11 @@ import android.widget.TextView;
 import com.fil.workerappz.BillPaymentActivity;
 import com.fil.workerappz.LoyaltyProgramActivity;
 import com.fil.workerappz.MobileTopUpActivity;
+import com.fil.workerappz.PinVerificationActivity;
 import com.fil.workerappz.PrepaidCardActivity;
 import com.fil.workerappz.ProfileActivity;
 import com.fil.workerappz.R;
+import com.fil.workerappz.WalletActivity;
 import com.fil.workerappz.pojo.HomeDataBean;
 
 import java.util.ArrayList;
@@ -63,8 +65,9 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                         mContext.startActivity(mIntent);
                         break;
                     case 1:
-//                    mIntent = new Intent(mContext, WalletActivity.class);
-//                    mContext.startActivity(mIntent);
+                        mIntent = new Intent(mContext, PinVerificationActivity.class);
+                        mIntent.putExtra("come_from", "wallet_summary");
+                        mContext.startActivity(mIntent);
                         break;
                     case 2:
                     mIntent = new Intent(mContext, PrepaidCardActivity.class);

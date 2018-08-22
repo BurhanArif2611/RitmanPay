@@ -208,10 +208,11 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                 helpNSupportTextView.setText(datumLable_languages.getHelpSupport());
                 inviteTextViewDrawerMenu.setText(datumLable_languages.getInvite());
                 logoutTextViewDrawerMenu.setText(datumLable_languages.getLogout());
+                accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance());
 
             } else {
                 shareString = "I love using WorkerAppz, It's simple and incredible. Sign up with my code " + userListPojo.getUserReferKey() + ". " + "You should try it here. " + userListPojo.getAndroidAppUrl();
-                accountBalanceTextViewDrawerMenu.setText("Balance: " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
+                accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance()+": " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
                 pointdrawermenutextview.setText(getResources().getString(R.string.points));
                 Hometextview.setText(getResources().getString(R.string.home));
                 LegaldocTextview.setText(getResources().getString(R.string.legal_documents));
@@ -410,7 +411,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                     balanceListJsonPojos.addAll(response.body());
                     if (balanceListJsonPojos.get(0).getStatus() == true) {
                         sessionManager.setWalletBalance((float) balanceListJsonPojos.get(0).getData().get(0).getBalance());
-                        accountBalanceTextViewDrawerMenu.setText("Balance: " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
+                        accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance()+": "+ " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
 
 
 //                        Constants.showMessage(mainHomeActivityLinearLayout, HomeActivity.this, balanceListJsonPojos.get(0).getInfo());

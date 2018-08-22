@@ -66,14 +66,14 @@ sessionManager=new SessionManager(getActivity());
 
             if (datumLable_languages != null) {
 
-                addBeneficiaryTextView.setHint(datumLable_languages.getAddBeneficiary());
-                selectBeneficiaryTextView.setHint(datumLable_languages.getSelectBeneficiary());
+                addBeneficiaryTextView.setText(datumLable_languages.getAddBeneficiary());
+                selectBeneficiaryTextView.setText(datumLable_languages.getSelectBeneficiary());
 
             }
             else
             {
-                addBeneficiaryTextView.setHint(getResources().getString(R.string.add_beneficiary));
-                selectBeneficiaryTextView.setHint(getResources().getString(R.string.select_beneficiary));
+                addBeneficiaryTextView.setText(getResources().getString(R.string.add_beneficiary));
+                selectBeneficiaryTextView.setText(getResources().getString(R.string.select_beneficiary));
 
             }
         }

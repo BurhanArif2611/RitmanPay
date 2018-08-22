@@ -127,7 +127,10 @@ public class SignInActivity extends ActionBarActivity {
                 textviewwelcomeback.setText(datumLable_languages.getWelcomeBack());
                 textviewsignincontinue.setText(datumLable_languages.getSignInToContinue());
                 emailMobileNoEditTextSignInActivity.setHint(datumLable_languages.getEmailMobileNo());
+                emailMobileNoEditTextSignInActivity.setFloatingLabelText(datumLable_languages.getEmailMobileNo());
                 pinEditTextSignInActivity.setHint(datumLable_languages.getPIN());
+                pinEditTextSignInActivity.setFloatingLabelText(
+                        datumLable_languages.getPIN());
                 forgotPinEditTextSignInActivity.setText(datumLable_languages.getForgotPIN()+"?");
                 signInTextViewSignInActivity.setText(datumLable_languages.getSignIn());
                 rememberMeCheckBox.setText(datumLable_languages.getRememberMe());

@@ -59,12 +59,10 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
     TextView texdtviewor;
     @BindView(R.id.textviewsigninwithgoogle)
     TextView textviewsigninwithgoogle;
-    @BindView(R.id.signInWithGoogle)
-    FrameLayout signInWithGoogle;
+
     @BindView(R.id.textviewsigninwithfacebook)
     TextView textviewsigninwithfacebook;
-    @BindView(R.id.signInWithFacebook)
-    FrameLayout signInWithFacebook;
+
     //G+ Login
     private GoogleApiClient mGoogleApiClient;
     private Intent mIntent;

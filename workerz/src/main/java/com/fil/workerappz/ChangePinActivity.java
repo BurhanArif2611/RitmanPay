@@ -80,9 +80,12 @@ public class ChangePinActivity extends ActionBarActivity {
 
                 titleTextViewViewHeader.setText(datumLable_languages.getChangePIN());
                 oldPinEditText.setHint(datumLable_languages.getOldWalletPIN());
+                oldPinEditText.setFloatingLabelText(datumLable_languages.getOldWalletPIN());
                 newPinEditText.setHint(datumLable_languages.getNewWalletPIN());
+                newPinEditText.setFloatingLabelText(datumLable_languages.getNewWalletPIN());
                 repeatPinEditText.setHint(datumLable_languages.getRepeatNewWalletPIN());
-                savePinTextView.setHint(datumLable_languages.getSave());
+                repeatPinEditText.setFloatingLabelText(datumLable_languages.getRepeatNewWalletPIN());
+                savePinTextView.setText(datumLable_languages.getSave());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
@@ -91,7 +94,7 @@ public class ChangePinActivity extends ActionBarActivity {
                 oldPinEditText.setHint(getResources().getString(R.string.old_wallet_pin));
                 newPinEditText.setHint(getResources().getString(R.string.new_wallet_pin));
                 repeatPinEditText.setHint(getResources().getString(R.string.repeat_new_wallet_pin));
-                savePinTextView.setHint(getResources().getString(R.string.save));
+                savePinTextView.setText(getResources().getString(R.string.save));
                 nointernetmsg = getResources().getString(R.string.no_internet);
 
             }

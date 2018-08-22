@@ -79,22 +79,22 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         holder.textviewupload.setText(datumLable_languages.getUpload());
         holder.textviewremove.setText(datumLable_languages.getRemove());
         holder.documentNameTextView.setText(new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(position).getKycdoctypeName().trim().getBytes(), Base64.DEFAULT)) + " - " + new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(position).getKycdocnameName().trim().getBytes(), Base64.DEFAULT)));
-        if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getApproved())) {
+        if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Approved")) {
             holder.uploadSignImageView.setVisibility(View.INVISIBLE);
             Constants.Updateflag = false;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
-        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getPending())) {
+        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Pending")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
             Constants.Updateflag = true;
-        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getRejected())) {
+        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Rejected")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
             Constants.Updateflag = true;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
 
-        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getQuery())) {
+        } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Query")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
             Constants.Updateflag = true;

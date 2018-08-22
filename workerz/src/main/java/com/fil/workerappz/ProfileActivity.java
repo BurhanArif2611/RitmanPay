@@ -176,13 +176,20 @@ public class ProfileActivity extends ActionBarActivity {
                 titleTextViewViewHeader.setText(datumLable_languages.getProfile());
                 editProfilePicture.setText(datumLable_languages.getEdit());
                 firstNameEditTextProfile.setHint(datumLable_languages.getFirstName());
+                firstNameEditTextProfile.setFloatingLabelText(datumLable_languages.getFirstName());
                 lastNameEditTextProfile.setHint(datumLable_languages.getLastName());
+                lastNameEditTextProfile.setFloatingLabelText(datumLable_languages.getLastName());
                 mobileNumberEditTextProfile.setHint(datumLable_languages.getMobileNumber());
+                mobileNumberEditTextProfile.setFloatingLabelText(datumLable_languages.getMobileNumber());
                 emailEditTextProfile.setHint(datumLable_languages.getEmail());
+                emailEditTextProfile.setFloatingLabelText(datumLable_languages.getEmail());
                 addressEditTextProfile.setHint(datumLable_languages.getAddress());
+                addressEditTextProfile.setFloatingLabelText(datumLable_languages.getAddress());
                 countryOfResidenceEditTextProfile.setHint(datumLable_languages.getCountryOfResidence());
                 passportNoEditTextProfile.setHint(datumLable_languages.getPassportNo());
+                passportNoEditTextProfile.setFloatingLabelText(datumLable_languages.getPassportNo());
                 emiratesIdEditTextProfile.setHint(datumLable_languages.getEmiratesId());
+                emiratesIdEditTextProfile.setFloatingLabelText(datumLable_languages.getEmiratesId());
                 countryOfResidenceEditTextProfile.setFloatingLabelText(datumLable_languages.getCountryOfResidence());
                 textviewgendeprofile.setText(datumLable_languages.getGender());
                 maleRadioButtonProfile.setText(datumLable_languages.getMale());
@@ -370,7 +377,7 @@ public class ProfileActivity extends ActionBarActivity {
 //            gender = "Female";
 //        }
 
-        if (userListPojo.getUserGender().equalsIgnoreCase(datumLable_languages.getMale())) {
+        if (userListPojo.getUserGender().equalsIgnoreCase("Male")) {
             maleRadioButtonProfile.setChecked(true);
             gender = datumLable_languages.getMale();
         } else {
@@ -397,9 +404,9 @@ public class ProfileActivity extends ActionBarActivity {
 //                    gender = "Female";
 //                }
                 if (gender1.equalsIgnoreCase(datumLable_languages.getMale())) {
-                    gender = datumLable_languages.getMale();
+                    gender = "Male";
                 } else {
-                    gender = datumLable_languages.getFemale();
+                    gender = "Female";
                 }
             }
         });
