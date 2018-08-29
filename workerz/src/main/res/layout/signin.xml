@@ -118,6 +118,7 @@
             app:met_primaryColor="@color/colorGreen"
             app:met_singleLineEllipsis="false"
             app:met_errorColor="@color/Red"
+
             />
     </LinearLayout>
 
