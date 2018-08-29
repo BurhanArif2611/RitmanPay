@@ -27,14 +27,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/app_icon"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/workerapp_home_label"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:contentDescription="TODO"
+            android:src="@drawable/login_logo" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -19,17 +19,18 @@
         android:id="@+id/homeImageViewFooter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_3sdp"
+        android:padding="@dimen/_2sdp"
         android:src="@drawable/footer_icon_home_unselected"
         android:contentDescription="TODO" />
 
-    <TextView
-        android:id="@+id/homeTextViewFooter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home"
-        android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_11ssp" />
+      <TextView
+          android:id="@+id/homeTextViewFooter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/home"
+          android:gravity="center"
+          android:textColor="@color/colorGreen"
+          android:textSize="@dimen/_13ssp" />
   </LinearLayout>
 
   <LinearLayout
@@ -45,7 +46,7 @@
         android:id="@+id/kycImageViewFooter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_3sdp"
+        android:padding="@dimen/_2sdp"
         android:src="@drawable/footer_icon_kyc_unselected"
         android:contentDescription="TODO" />
 
@@ -55,7 +56,7 @@
         android:layout_height="wrap_content"
         android:text="@string/kyc"
         android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_11ssp" />
+        android:textSize="@dimen/_13ssp" />
   </LinearLayout>
 
   <LinearLayout
@@ -70,7 +71,7 @@
         android:id="@+id/quickPayImageViewFooter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_3sdp"
+        android:padding="@dimen/_1sdp"
         android:src="@drawable/footer_icon_quick_pay_unselected"
         android:contentDescription="TODO" />
 
@@ -79,8 +80,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/quick_pay"
+        android:gravity="center"
         android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_11ssp" />
+        android:textSize="@dimen/_13ssp" />
   </LinearLayout>
 
   <LinearLayout
@@ -99,13 +101,14 @@
         android:src="@drawable/footer_icon_beneficiary_unselected"
         android:contentDescription="TODO" />
 
-    <TextView
-        android:id="@+id/beneficiaryTextViewFooter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/beneficiary"
-        android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_11ssp" />
+      <TextView
+          android:id="@+id/beneficiaryTextViewFooter"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/beneficiary"
+          android:gravity="center"
+          android:textColor="@color/colorGreen"
+          android:textSize="@dimen/_13ssp" />
   </LinearLayout>
 
   <LinearLayout
@@ -129,7 +132,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/history"
+        android:gravity="center"
         android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_11ssp" />
+        android:textSize="@dimen/_13ssp" />
   </LinearLayout>
 </LinearLayout>

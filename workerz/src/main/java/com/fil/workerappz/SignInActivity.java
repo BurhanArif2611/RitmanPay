@@ -10,7 +10,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
 import com.fil.workerappz.utils.SessionManager;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
@@ -37,7 +35,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +82,10 @@ public class SignInActivity extends ActionBarActivity {
     TextView textviewsignincontinue;
     @BindView(R.id.textviewdontaccount)
     TextView textviewdontaccount;
+    @BindView(R.id.textViewSignInerror)
+    TextView textViewSignInerror;
+    @BindView(R.id.signInerrorLayoyt)
+    LinearLayout signInerrorLayoyt;
 
     private Intent mIntent;
     private boolean showFlag = false;
@@ -97,11 +98,11 @@ public class SignInActivity extends ActionBarActivity {
     private String signInWith = "Email";
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
-    private MessagelistData datumLable_languages_msg=new MessagelistData();
-    private String emailmobilemsg,pinmsg,nointernetmsg;
+    private MessagelistData datumLable_languages_msg = new MessagelistData();
+    private String emailmobilemsg, pinmsg, nointernetmsg;
     private String validemail;
     private String validmobilenumber;
-    private ArrayList<MessagelistData> Messagearray=new ArrayList<MessagelistData>();
+    private ArrayList<MessagelistData> Messagearray = new ArrayList<MessagelistData>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class SignInActivity extends ActionBarActivity {
         locale = getResources().getConfiguration().locale.getISO3Country();
         CustomLog.d("System out", locale);
 
-                   try {
+        try {
             sessionManager = new SessionManager(SignInActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
@@ -131,12 +132,12 @@ public class SignInActivity extends ActionBarActivity {
                 pinEditTextSignInActivity.setHint(datumLable_languages.getPIN());
                 pinEditTextSignInActivity.setFloatingLabelText(
                         datumLable_languages.getPIN());
-                forgotPinEditTextSignInActivity.setText(datumLable_languages.getForgotPIN()+"?");
+                forgotPinEditTextSignInActivity.setText(datumLable_languages.getForgotPIN() + "?");
                 signInTextViewSignInActivity.setText(datumLable_languages.getSignIn());
                 rememberMeCheckBox.setText(datumLable_languages.getRememberMe());
                 textviewdontaccount.setText(datumLable_languages.getDontHaveAnAccount());
                 createNewAccountTextViewSignInActivity.setText(datumLable_languages.getCreateNewAccount());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
 
             } else {
@@ -150,22 +151,22 @@ public class SignInActivity extends ActionBarActivity {
                 rememberMeCheckBox.setText(getResources().getString(R.string.remember_me));
                 textviewdontaccount.setText(getResources().getString(R.string.don_t_have_an_account));
                 createNewAccountTextViewSignInActivity.setText(getResources().getString(R.string.create_new_account));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            emailmobilemsg=datumLable_languages_msg.getEnterEmailOrMobileNumber();
-            validemail=datumLable_languages_msg.getEnterValidEmail();
-            validmobilenumber=datumLable_languages_msg.getEnterValidMobileNumber();
-            pinmsg=datumLable_languages_msg.getEnter6DigitPIN();
+            emailmobilemsg = datumLable_languages_msg.getEnterEmailOrMobileNumber();
+            validemail = datumLable_languages_msg.getEnterValidEmail();
+            validmobilenumber = datumLable_languages_msg.getEnterValidMobileNumber();
+            pinmsg = datumLable_languages_msg.getEnter6DigitPIN();
 
         } else {
-            emailmobilemsg=getResources().getString(R.string.Please_Enter_Email_mobile_number);
-            validemail=getResources().getString(R.string.Please_Enter_vaild_email);
-            validmobilenumber=getResources().getString(R.string.Please_Enter_valid_Mobile_number);
-            pinmsg=getResources().getString(R.string.Please_Enter_pin);
+            emailmobilemsg = getResources().getString(R.string.Please_Enter_Email_mobile_number);
+            validemail = getResources().getString(R.string.Please_Enter_vaild_email);
+            validmobilenumber = getResources().getString(R.string.Please_Enter_valid_Mobile_number);
+            pinmsg = getResources().getString(R.string.Please_Enter_pin);
 
         }
 
@@ -186,19 +187,16 @@ public class SignInActivity extends ActionBarActivity {
                 countryListJsonCall();
             }
         } else {
-            Constants.showMessage(mainLinearLayoutSignIn, this,nointernetmsg);
+            Constants.showMessage(mainLinearLayoutSignIn, this, nointernetmsg);
         }
-        if (sessionManager.getRememberMe()==true)
-        {
+        if (sessionManager.getRememberMe() == true) {
             rememberMeCheckBox.setChecked(true);
             countryCode = sessionManager.userProfileData().getUserCountryCode();
             countryCodeTextView.setText(sessionManager.userProfileData().getUserCountryCode());
             Picasso.with(SignInActivity.this).load(Constants.FLAG_URL + sessionManager.getuserflagimage()).into(countryCodeImageView);
             if (sessionManager.getLoginWith().equalsIgnoreCase("Email")) {
                 emailMobileNoEditTextSignInActivity.setText(sessionManager.userProfileData().getUserEmail());
-            }
-            else
-            {
+            } else {
                 emailMobileNoEditTextSignInActivity.setText(sessionManager.userProfileData().getUserMobile());
             }
         }
@@ -268,8 +266,10 @@ public class SignInActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 break;
             case R.id.signInTextViewSignInActivity:
+                signInerrorLayoyt.setVisibility(View.INVISIBLE);
                 if (checkValidation() == true) {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
+
                         userLoginJsonCall();
                     } else {
                         Constants.showMessage(mainLinearLayoutSignIn, this, nointernetmsg);
@@ -302,16 +302,23 @@ public class SignInActivity extends ActionBarActivity {
         inputType = emailMobileNoEditTextSignInActivity.getText().toString().trim().matches("^[0-9]+$");
 
         if (emailMobileNoEditTextSignInActivity.getText().toString().trim().length() == 0) {
-            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this,emailmobilemsg);
+            emailMobileNoEditTextSignInActivity.setError(emailmobilemsg);
+
+//            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, emailmobilemsg);
             checkFlag = false;
         } else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().trim().length() < 10) {
-            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
+            emailMobileNoEditTextSignInActivity.setError(validmobilenumber);
+
+//            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
             checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailMobileNoEditTextSignInActivity.getText().toString().trim()) == false) {
-            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this,validemail);
+
+            emailMobileNoEditTextSignInActivity.setError(validemail);
+//            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validemail);
             checkFlag = false;
         } else if (pinEditTextSignInActivity.getText().toString().length() == 0) {
-            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this,pinmsg);
+            pinEditTextSignInActivity.setError(pinmsg);
+//            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, pinmsg);
             checkFlag = false;
         }
 
@@ -357,14 +364,11 @@ public class SignInActivity extends ActionBarActivity {
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
                         sessionManager.setlanguageselection(Constants.language_id_label_msg);
 
-                        if (rememberMeCheckBox.isChecked()==true)
-                        {
+                        if (rememberMeCheckBox.isChecked() == true) {
 
                             sessionManager.setRememberMe(true);
                             sessionManager.setLoginWith(signInWith);
-                        }
-                        else
-                        {
+                        } else {
                             sessionManager.setRememberMe(false);
                         }
 
@@ -399,7 +403,18 @@ public class SignInActivity extends ActionBarActivity {
                     } else {
                         Constants.closeProgress();
                         Object object = userListPojos.get(0).getInfo();
-                        Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this,datumLable_languages_msg.getMessage(object.toString()));
+                        String s = String.valueOf(object);
+                        String test = datumLable_languages_msg.getMessage(s);
+                        if (test.equalsIgnoreCase("")) {
+//                            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, s);
+                            signInerrorLayoyt.setVisibility(View.VISIBLE);
+                            textViewSignInerror.setText(s);
+                        } else {
+//                            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, datumLable_languages_msg.getMessage(s));
+                            signInerrorLayoyt.setVisibility(View.VISIBLE);
+                            textViewSignInerror.setText(datumLable_languages_msg.getMessage(s));
+                        }
+
                     }
                 }
             }
@@ -439,11 +454,9 @@ public class SignInActivity extends ActionBarActivity {
                         for (int i = 0; i < countryListPojos.size(); i++) {
                             if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
                                 countryCode = countryListPojos.get(i).getCountryDialCode();
-                                if (sessionManager.getRememberMe()==true) {
+                                if (sessionManager.getRememberMe() == true) {
                                     countryCodeTextView.setText(sessionManager.userProfileData().getUserCountryCode());
-                                }
-                                else
-                                {
+                                } else {
 
                                     countryCodeTextView.setText(countryListPojos.get(i).getCountryDialCode());
                                 }
