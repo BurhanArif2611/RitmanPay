@@ -14,7 +14,7 @@
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
-
+    //testlast3131
     <application
         android:name=".utils.MainApplication"
         android:allowBackup="true"
@@ -149,7 +149,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCKHZ_-XnOcENYMeVnxAETVe7ExFJQjrS8" />
+            android:value="AIzaSyA1Wx-OZFnuNdkHwggP4b1JC2KGVbsfgRQ" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
