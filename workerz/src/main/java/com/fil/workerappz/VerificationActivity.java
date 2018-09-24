@@ -64,7 +64,7 @@ public class VerificationActivity extends ActionBarActivity {
     private final ArrayList<JsonListPojo> jsonListPojos = new ArrayList<>();
     private UserListPojo.Data userListPojo;
     private LabelListData datumLable_languages = new LabelListData();
-    private MessagelistData datumLable_languages_msg=new MessagelistData();
+    private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String verificayionmsg;
     private String nointernetmsg;
 
@@ -80,7 +80,6 @@ public class VerificationActivity extends ActionBarActivity {
 
 
 
-        customTextView(verificationCodeTextView);
         backImageViewHeader.setVisibility(View.INVISIBLE);
         mIntent = getIntent();
         try {
@@ -93,13 +92,13 @@ public class VerificationActivity extends ActionBarActivity {
                 textviewVerificationCode.setText(datumLable_languages.getVerificationCode());
                 submitTextViewVerification.setText(datumLable_languages.getSubmit());
                 titleTextViewViewHeader.setText(datumLable_languages.getVerification());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
             } else {
                 titleTextViewViewHeader.setText(getResources().getString(R.string.verification));
                 verificationCodeTextView.setText(getResources().getString(R.string.please_type_the_verification_code_sent_to_your_mobile_number));
                 textviewVerificationCode.setText(getResources().getString(R.string.verification_code));
                 submitTextViewVerification.setText(getResources().getString(R.string.submit));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (
                 Exception e)
@@ -108,28 +107,31 @@ public class VerificationActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-           verificayionmsg=datumLable_languages_msg.getEnterVerificationCode();
+            verificayionmsg = datumLable_languages_msg.getEnterVerificationCode();
         } else {
-            verificayionmsg=getResources().getString(R.string.Please_Enter_Verification_Code);
+            verificayionmsg = getResources().getString(R.string.Please_Enter_Verification_Code);
         }
-
+        customTextView(verificationCodeTextView);
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.submitTextViewVerification})
+    @OnClick({R.id.backImageViewHeader, R.id.submitTextViewVerification, R.id.resendOtp})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
                 finish();
                 break;
+            case R.id.resendOtp:
+                resendOTPJsonCall();
+                break;
             case R.id.submitTextViewVerification:
                 Constants.hideKeyboard(VerificationActivity.this);
                 if (exitTextVerification.getText().toString().length() != 4) {
-                    Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this,verificayionmsg);
+                    Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, verificayionmsg);
                 } else {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
                         verifyVerificationCode();
                     } else {
-                        Constants.showMessage(mainLinearLayoutVerification, this,nointernetmsg);
+                        Constants.showMessage(mainLinearLayoutVerification, this, nointernetmsg);
                     }
                 }
                 break;
@@ -204,7 +206,7 @@ public class VerificationActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos.get(0).getStatus() == true) {
                         sessionManager.setVerify(true);
-                      sessionManager.setWalletBalance((float) 0.0);
+                        sessionManager.setWalletBalance((float) 0.0);
                         mIntent = new Intent(VerificationActivity.this, HomeActivity.class);
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         mIntent.putExtra("come_from", "Registration");
@@ -255,7 +257,7 @@ public class VerificationActivity extends ActionBarActivity {
                         startActivity(mIntent);
                         finish();
                     } else {
-                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this,datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
                     }
                 }
             }
@@ -269,18 +271,54 @@ public class VerificationActivity extends ActionBarActivity {
 
     private void customTextView(TextView view) {
         SpannableStringBuilder spanTxt;
-        if (  datumLable_languages.getPleaseTypeOTP()!=null) {
-             spanTxt = new SpannableStringBuilder(
-                    datumLable_languages.getPleaseTypeOTP());
-        }
-        else
-        {
+        if (datumLable_languages.getPleaseTypeOTP() != null) {
             spanTxt = new SpannableStringBuilder(
-                    getResources().getString(R.string.please_type_the_verification_code_sent_to_your_mobile_number));
+                    datumLable_languages.getPleaseTypeOTP()+" ");
+        } else {
+            spanTxt = new SpannableStringBuilder(
+                    getResources().getString(R.string.please_type_the_verification_code_sent_to_your_mobile_number)+" " );
         }
-        spanTxt.append(" " + userListPojo.getUserCountryCode() + userListPojo.getUserMobile());
-        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() - (userListPojo.getUserCountryCode() + "" + userListPojo.getUserMobile()).length(), spanTxt.length(), 0);
+        spanTxt.append(userListPojo.getUserMobile());
+        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() -  userListPojo.getUserMobile().length(), spanTxt.length(), 0);
         view.setMovementMethod(LinkMovementMethod.getInstance());
         view.setText(spanTxt, TextView.BufferType.SPANNABLE);
+    }
+
+    private void resendOTPJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            jsonObject.put("userMobile", userListPojo.getUserMobile());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        CustomLog.d("System out", "json " + json);
+
+        Constants.showProgress(VerificationActivity.this);
+        Call<List<JsonListPojo>> call = RestClient.get().resendOTPJsonCall(json);
+
+        call.enqueue(new Callback<List<JsonListPojo>>() {
+            @Override
+            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    jsonListPojos.clear();
+                    jsonListPojos.addAll(response.body());
+                    if (jsonListPojos.get(0).getStatus() == true) {
+                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+                    } else {
+                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
     }
 }

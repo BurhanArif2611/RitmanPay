@@ -195,7 +195,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("users/resend-otp")
-    Call<List<JsonListPojo>> resendOTPJsonCall(@Field("json") String json);
+    Call<List<JsonListPojo>>resendOTPJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("user-bank-account/list-bank")

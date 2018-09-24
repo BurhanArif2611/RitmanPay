@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -206,12 +207,16 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
         bankNameEditTextAddBeneficiary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Log.d("System out",selectedItem);
 
-                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(position).getBankCode());
-                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(position).getBankAddress());
-                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
-                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(position).getBankCode();
-                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(position).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
+                int index = stringArrayList.indexOf(bankNameEditTextAddBeneficiary.getText().toString());
+                Log.d("System out", String.valueOf(index));
+                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode());
+                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankAddress());
+                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
+                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode();
+                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(index).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
 //                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(position).get;
 //                receiverId = walletSuggestionListPojos.get(0).getData().get(position).getUserID();
             }

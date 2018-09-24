@@ -199,6 +199,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
                     } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+                    } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
                     } else {
                         if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
                             serviceProviderJsonCall();
@@ -345,6 +347,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
+                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+                }else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
                 } else if (serviceProviderEditTextMobileTopUp.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());

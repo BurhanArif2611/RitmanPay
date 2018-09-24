@@ -227,7 +227,6 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:hint="@string/landmark"
                         android:inputType="textPostalAddress"
-                        android:maxLength="25"
                         android:paddingLeft="@dimen/_5sdp"
                         android:text=""
                         android:textColor="@color/colorBlack"

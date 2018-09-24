@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -101,6 +102,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String accountnumbermsg,minimumaccountmsg,banknamemsg,branchcodemsg,branchaddmsg,validbankmsg,mobilenumber,validmobilenumber,purposetransfermsg;
     private String nointernetmsg;
+    ArrayList<String> stringArrayList = new ArrayList<>();
 
 
     @Override
@@ -253,11 +255,16 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     // An item has been selected from the list. Ignore.
                     return;
                 }
-                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(position).getBankCode());
-                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(position).getBankAddress());
-                bankbranchname = bankNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
-                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(position).getBankCode();
-                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(position).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Log.d("System out",selectedItem);
+
+                int index = stringArrayList.indexOf(bankNameEditTextAddBeneficiary.getText().toString());
+                Log.d("System out", String.valueOf(index));
+                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode());
+                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankAddress());
+                bankbranchname = bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
+                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode();
+                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(index).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
 //                receiverId = walletSuggestionListPojos.get(0).getData().get(position).getUserID();
             }
         });
@@ -531,7 +538,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     bankNetworkListJsonPojos.addAll(response.body());
                     if (!bankNetworkListJsonPojos.get(0).equals(null)) {
                         if (bankNetworkListJsonPojos.get(0).getStatus() == true) {
-                            ArrayList<String> stringArrayList = new ArrayList<>();
+
                             ArrayAdapter bankAdapter = null;
                             if (bankNetworkListJsonPojos.get(0).getData() != null) {
                                 for (int i = 0; i < bankNetworkListJsonPojos.get(0).getData().size(); i++) {

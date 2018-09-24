@@ -579,6 +579,9 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (mobileNoEditTextSignUpSubmit.getText().toString().length() > 0 && mobileNoEditTextSignUpSubmit.getText().toString().length() < 7) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,validmobilenumber);
             checkFlag = false;
+        }else if (mobileNoEditTextSignUpSubmit.getText().toString().startsWith("0")) {
+            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,validmobilenumber);
+            checkFlag = false;
         } else if (emailEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,email);
             checkFlag = false;

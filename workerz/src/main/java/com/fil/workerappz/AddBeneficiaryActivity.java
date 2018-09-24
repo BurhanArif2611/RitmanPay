@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -430,7 +431,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setIDType(idType);
                     beneficiaryInfoListPojo.setIDNumber(idNumberEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setIDtype_Description(idTypeDescription);
-                    beneficiaryInfoListPojo.setNationality(nationalitySpinnerAddBeneficiary.getSelectedItem().toString());
+//                    beneficiaryInfoListPojo.setNationality(nationalitySpinnerAddBeneficiary.getSelectedItem().toString());
+                    beneficiaryInfoListPojo.setNationality(countryShortCode);
                     if (comeFrom.equalsIgnoreCase("bank")) {
                         Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
                         beneficiaryInfoListPojo.setPayoutcurrency(countryCurrency);
@@ -676,8 +678,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                         ArrayList<String> countryList = new ArrayList<>();
                         for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
                             Constants.closeProgress();
-//                            countryList.add(new String(Base64.decode(countryListPojos.get(0).getData().get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-                            countryList.add(countryListPojos.get(0).getData().get(i).getCountryShortCode().trim());
+                            countryList.add(new String(Base64.decode(countryListPojos.get(0).getData().get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+//                            countryList.add(countryListPojos.get(0).getData().get(i).getCountryShortCode().trim());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, countryList);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

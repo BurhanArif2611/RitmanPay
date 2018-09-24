@@ -267,6 +267,10 @@ public class ForgotPinActivity extends ActionBarActivity {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validemailormobile);
             checkFlag = false;
         }
+        else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().startsWith("0")) {
+            Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validmobilenumber);
+            checkFlag = false;
+        }
 
         if (inputType == true) {
             signInWith = "Mobile";

@@ -233,7 +233,7 @@
   <string name="browse_plans">Browse Plans</string>
   <string name="filter_transactions">Filter Transactions</string>
   <string name="bank_transfer">Bank Transfer</string>
-  <string name="cash_transfer">Cash Transfer</string>
+  <string name="cash_transfer">Cash Transfer</string>a
   <string name="topup">TopUp</string>
   <string name="hi">Hi&#160;</string>
   <string name="good_to_have_you_back">Good to have you back</string>
@@ -244,4 +244,6 @@
     <string name="card_no">Card No:</string>
     <string name="sign_in_with_facebook">Sign In with Facebook</string>
   <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="didn_t_receive_otp">Didn\'t Receive OTP?  <u>Resend OTP</u></string>
+  <string name="resend_otp"></string>
 </resources>

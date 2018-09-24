@@ -311,6 +311,12 @@ public class SignInActivity extends ActionBarActivity {
 
 //            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
             checkFlag = false;
+        }
+        else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().startsWith("0")) {
+            emailMobileNoEditTextSignInActivity.setError(validmobilenumber);
+
+//            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
+            checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailMobileNoEditTextSignInActivity.getText().toString().trim()) == false) {
 
             emailMobileNoEditTextSignInActivity.setError(validemail);
