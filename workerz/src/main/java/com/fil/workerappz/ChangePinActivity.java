@@ -117,6 +117,12 @@ public class ChangePinActivity extends ActionBarActivity {
             pinnotmatch = getResources().getString(R.string.Pin_does_not_match);
 
         }
+        oldPinEditText.setHint("Old PIN");
+        oldPinEditText.setFloatingLabelText("Old PIN");
+        newPinEditText.setHint("New PIN");
+        newPinEditText.setFloatingLabelText("New PIN");
+        repeatPinEditText.setHint("Repeat New PIN");
+        repeatPinEditText.setFloatingLabelText("Repeat New PIN");
 
 
     }

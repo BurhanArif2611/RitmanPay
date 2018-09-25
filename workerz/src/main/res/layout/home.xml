@@ -40,7 +40,7 @@
                     android:contentDescription="@string/todo"
                     android:padding="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:src="@drawable/workerapp_home_label" />
+                    android:src="@drawable/workerapp_home_label1" />
             </FrameLayout>
 
             <LinearLayout

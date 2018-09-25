@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_10sdp"
         android:contentDescription="TODO"
-        android:src="@drawable/login_logo" />
+        android:src="@drawable/login_logo1" />
 
     <LinearLayout
         android:id="@+id/signInWithGoogle"

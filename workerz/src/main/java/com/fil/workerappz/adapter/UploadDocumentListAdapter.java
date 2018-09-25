@@ -50,21 +50,24 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
     private final Activity mContext;
 
     private int userId = 0;
+    private int counter = 0;
 
     private int uploadDocForPosition;
     private final List<KYCUploadedDocumentListJsonPojo.Info> kycUploadedDocumentListJsonPojos;
     TextView skipTextViewViewHeader2;
+    LinearLayout mainUploadYourDocumentLinearLayout;
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private LabelListData datumLable_languages = new LabelListData();
 
 
-    public UploadDocumentListAdapter(Activity mContext, List<KYCUploadedDocumentListJsonPojo.Info> kycUploadedDocumentListJsonPojos, int userId, TextView skipTextViewViewHeader2, LabelListData datumLable_languages, MessagelistData datumLable_languages_msg) {
+    public UploadDocumentListAdapter(Activity mContext, List<KYCUploadedDocumentListJsonPojo.Info> kycUploadedDocumentListJsonPojos, int userId, TextView skipTextViewViewHeader2, LabelListData datumLable_languages, MessagelistData datumLable_languages_msg, LinearLayout mainUploadYourDocumentLinearLayout) {
         this.mContext = mContext;
         this.userId = userId;
         this.kycUploadedDocumentListJsonPojos = kycUploadedDocumentListJsonPojos;
         this.datumLable_languages_msg = datumLable_languages_msg;
         this.datumLable_languages = datumLable_languages;
         this.skipTextViewViewHeader2 = skipTextViewViewHeader2;
+        this.mainUploadYourDocumentLinearLayout = mainUploadYourDocumentLinearLayout;
     }
 
 
@@ -86,16 +89,19 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Pending")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
+            holder.textviewupload.setText("Reupload");
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
             Constants.Updateflag = true;
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Rejected")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
+            holder.textviewupload.setText("Reupload");
             Constants.Updateflag = true;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
 
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Query")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
+            holder.textviewupload.setText("Reupload");
             holder.removeSignImageView.setVisibility(View.VISIBLE);
             Constants.Updateflag = true;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
@@ -116,15 +122,30 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         holder.uploadSignImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadDocForPosition = holder.getAdapterPosition();
+                if (kycUploadedDocumentListJsonPojos.size()>0) {
+                    counter=0;
+                    for (int i = 0; i < kycUploadedDocumentListJsonPojos.size(); i++) {
+                        if (kycUploadedDocumentListJsonPojos.get(i).getUserkycImage().equals("")) {
 
-                if (kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase("") || kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getApproved())) {
-                    Constants.Updateflag = false;
-                } else {
-                    Constants.Updateflag = true;
+                        } else {
+                            counter++;
+                        }
+                    }
                 }
-                MediaChooseFragmentForKYC mediaChooseFragmentForKYC = new MediaChooseFragmentForKYC();
-                mediaChooseFragmentForKYC.show(((UploadYourDocumentActivity) mContext).getSupportFragmentManager(), "BottomSheet Fragment");
+                Constants.uploaddocument=counter;
+                if (counter >=3) {
+                    Constants.showMessage(mainUploadYourDocumentLinearLayout, mContext, "You can Upload maximum Three documents");
+                } else {
+                    uploadDocForPosition = holder.getAdapterPosition();
+
+                    if (kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase("") || kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getApproved())) {
+                        Constants.Updateflag = false;
+                    } else {
+                        Constants.Updateflag = true;
+                    }
+                    MediaChooseFragmentForKYC mediaChooseFragmentForKYC = new MediaChooseFragmentForKYC();
+                    mediaChooseFragmentForKYC.show(((UploadYourDocumentActivity) mContext).getSupportFragmentManager(), "BottomSheet Fragment");
+                }
             }
         });
 
@@ -166,6 +187,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
 
                 if (response.body() != null) {
                     if (response.body().get(0).getStatus() == true) {
+
                         Constants.closeProgress();
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserID(String.valueOf(userId));
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycImage(response.body().get(0).getInfo().get(0).getUserkycImage());
@@ -250,6 +272,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
 
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     if (response.body().get(0).getStatus() == true) {
+
                         kycUploadedDocumentListJsonPojos.get(position).setUserkycID("0");
 //                        kycUploadedDocumentListJsonPojos.get(position).setKycdocnameID("0");
                         kycUploadedDocumentListJsonPojos.get(position).setUserID("0");
@@ -306,6 +329,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                 if (response.body() != null) {
                     if (response.body().get(0).getStatus() == true) {
                         Constants.closeProgress();
+
 //                        kycUploadedDocumentListJsonPojos.get(0).getData().get(uploadDocForPosition).setUserkycID(response.body().get(0).getInfo().get(0).getUserkycID());
 //                        kycUploadedDocumentListJsonPojos.get(0).getData().get(uploadDocForPosition).setKycdocnameID(response.body().get(0).getInfo().get(0).getKycdocnameID());
 //                        kycUploadedDocumentListJsonPojos.get(0).getData().get(uploadDocForPosition).setKycdocnameName(response.body().get(0).getInfo().get(0).getKycdocnameName());

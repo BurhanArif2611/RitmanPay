@@ -169,12 +169,12 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getLegalDocuments());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 //                skipTextViewViewHeader2.setText(datumLable_languages.getSkip());
 
             } else {
                 titleTextViewViewHeader2.setText("Upload KYC");
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 //                skipTextViewViewHeader2.setText(getResources().getString(R.string.skip));
             }
         } catch (Exception e) {
@@ -210,9 +210,20 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 
                 break;
             case R.id.skipTextViewViewHeader2:
+//                if (Constants.uploaddocument>3)
+//                {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "You can Upload maximum Three documents");
+//                }
+//                else if (Constants.uploaddocument<1)
+//                {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "You can Upload minimum Two documents");
+//                }
+//                else {
                 mIntent = new Intent(UploadYourDocumentActivity.this, VerificationActivity.class);
                 startActivity(mIntent);
                 break;
+//                }
+
         }
     }
 
@@ -299,7 +310,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                         if (documentListCountryWiseJsonPojos.size() > 0) {
                             layoutManager = new LinearLayoutManager(UploadYourDocumentActivity.this);
                             uploadDocumentRecyclerView.setLayoutManager(layoutManager);
-                            uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2,datumLable_languages,datumLable_languages_msg);
+                            uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2, datumLable_languages, datumLable_languages_msg, mainUploadYourDocumentLinearLayout);
                             uploadDocumentRecyclerView.setAdapter(uploadDocumentListAdapter);
                             uploadDocumentListAdapter.notifyDataSetChanged();
                         }
@@ -409,7 +420,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
                     uploadKYCDoc();
                 } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this,nointernetmsg );
+                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
                 }
             } else if (requestCode == SELECT_PICTURE) {
                 timeForImageName = System.currentTimeMillis();
@@ -454,7 +465,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
                     uploadKYCDoc();
                 } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this,  nointernetmsg);
+                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
                 }
             }
         }

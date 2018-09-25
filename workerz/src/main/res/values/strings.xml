@@ -246,4 +246,5 @@
   <string name="sign_in_with_google">Sign In with Google</string>
     <string name="didn_t_receive_otp">Didn\'t Receive OTP?  <u>Resend OTP</u></string>
   <string name="resend_otp"></string>
+  <string name="convert">Convert</string>
 </resources>

@@ -59,6 +59,7 @@ public class Constants {
     public static String language_id_label_msg = "1";
 
     public static String filter = "all";
+    public static int uploaddocument = 0;
     public static int country_selection_position = -1;
     public static int ca = -1;
 

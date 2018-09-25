@@ -125,7 +125,7 @@ public class PinVerificationActivity extends ActionBarActivity {
             titleTextViewViewHeader2.setText(datumLable_languages.getTransactionHistory());
 
         } else if (comeFrom.equalsIgnoreCase("selectcashnext")) {
-            titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
+            titleTextViewViewHeader2.setText("Authenticate Benificiary");
         }
         else
         {

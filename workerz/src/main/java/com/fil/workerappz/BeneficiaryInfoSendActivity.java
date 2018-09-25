@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,6 +92,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
     TextView receivingamounttextview;
     @BindView(R.id.totalpayabletextview)
     TextView totalpayabletextview;
+    @BindView(R.id.converttextview)
+    TextView converttextview;
     private ArrayList<SendReceiveMoneyJsonPojo> sendReceiveMoneyJsonPojos = new ArrayList<>();
     private ArrayList<SendMoneyBeneficiaryJsonPojo> sendReceiveMoneyBeneficiaryJsonPojos = new ArrayList<>();
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
@@ -150,6 +150,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        titleTextViewViewHeader2.setText("Transfer Details");
 
         if (datumLable_languages_msg != null) {
 
@@ -164,7 +165,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             receivemoneymsg = getResources().getString(R.string.Please_Enter_receive_money);
 
         }
-        setupUI(LinearBeneficiarSendLayout);
+//        setupUI(LinearBeneficiarSendLayout);
         Picasso.with(this)
                 .load(Constants.FLAG_URL + getIntent().getExtras().getString("flagimage"))
                 .placeholder(R.drawable.place_holder_image)
@@ -180,6 +181,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
         beneficiaryInfoListPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiary_data");
         textReceiverCountryName.setText(beneficiaryInfoListPojo.getPayoutcurrency());
+
+
 
 
         EdittextSendMoney.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -212,8 +215,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                         CheckFlag = false;
                         if (EdittextSendMoney.getText().toString().length() == 0) {
                             Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                        }
-                        else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
+                        } else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
                             Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
                         } else {
                             sendReceiveMoneyJsonCall(EdittextSendMoney.getText().toString(), getUserData().getCountryCurrencySymbol());
@@ -240,8 +242,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                         if (EdittextReceiveMoney.getText().toString().length() == 0) {
 
                             Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                        }
-                        else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
+                        } else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
                             Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
                         } else {
                             sendReceiveMoneyJsonCall(EdittextReceiveMoney.getText().toString(), beneficiaryInfoListPojo.getPayoutcurrency());
@@ -258,11 +259,39 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         });
     }
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.send_now_textview, R.id.appImageViewHeader2})
+    @OnClick({R.id.menuImageViewHeader2, R.id.send_now_textview, R.id.appImageViewHeader2,R.id.converttextview})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
                 finish();
+                break;
+                case R.id.converttextview:
+                    if (IsNetworkConnection.checkNetworkConnection(BeneficiaryInfoSendActivity.this)) {
+                        if (CheckFlag) {
+                            Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
+                            if (EdittextReceiveMoney.getText().toString().length() == 0) {
+
+                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                            } else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
+                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                            } else {
+                                sendReceiveMoneyJsonCall(EdittextReceiveMoney.getText().toString(), beneficiaryInfoListPojo.getPayoutcurrency());
+                            }
+
+                        } else {
+                            Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
+                            if (EdittextSendMoney.getText().toString().length() == 0) {
+                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                            } else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
+                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                            } else {
+                                sendReceiveMoneyJsonCall(EdittextSendMoney.getText().toString(), getUserData().getCountryCurrencySymbol());
+                            }
+
+                        }
+                    } else {
+                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, nointernetmsg);
+                    }
                 break;
             case R.id.appImageViewHeader2:
                 Intent mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
@@ -403,6 +432,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             }
         });
     }
+
     public void setupUI(View view) {
 
         //Set up touch listener for non-text box views to hide keyboard.
@@ -417,31 +447,24 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                             if (EdittextReceiveMoney.getText().toString().length() == 0) {
 
                                 Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            }
-                           else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
+                            } else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
                                 Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            }
-                             else {
+                            } else {
                                 sendReceiveMoneyJsonCall(EdittextReceiveMoney.getText().toString(), beneficiaryInfoListPojo.getPayoutcurrency());
                             }
 
-                        }
-                        else
-                        {
+                        } else {
                             Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
-                             if (EdittextSendMoney.getText().toString().length() == 0) {
-                            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                        }
-                           else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
+                            if (EdittextSendMoney.getText().toString().length() == 0) {
                                 Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            }
-                           else {
+                            } else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
+                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                            } else {
                                 sendReceiveMoneyJsonCall(EdittextSendMoney.getText().toString(), getUserData().getCountryCurrencySymbol());
                             }
 
                         }
-                    }
-                    else {
+                    } else {
                         Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, nointernetmsg);
                     }
 
@@ -461,7 +484,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 
                 View innerView = ((ViewGroup) view).getChildAt(i);
 
-                setupUI(innerView);
+//                setupUI(innerView);
             }
         }
     }
@@ -507,7 +530,9 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 //                        startActivity(mIntent);
 //                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, datumLable_languages_msg.getRequestSuccessful()+sendReceiveMoneyBeneficiaryJsonPojos.get(0).getBalance());
 
-                        Constants.showMessage(LinearBeneficiarSendLayout,BeneficiaryInfoSendActivity.this,"Your money is transferred successfully, current balance is"+" "+sendReceiveMoneyBeneficiaryJsonPojos.get(0).getBalance());
+                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this,   TextviewSendingAmount.getText().toString()+" "+"deducted from your account and receiver will get"+" "+TextviewReceivingAmount.getText().toString());
+
+
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -524,7 +549,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 
 
                     } else {
-                        if (response.body().get(0).getInfo()!= null) {
+                        if (response.body().get(0).getInfo() != null) {
                             if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()).equalsIgnoreCase("")) {
                                 Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, response.body().get(0).getInfo().toString());
                             } else {
