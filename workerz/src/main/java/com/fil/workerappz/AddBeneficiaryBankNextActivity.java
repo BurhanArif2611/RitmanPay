@@ -516,6 +516,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         try {
             jsonObject.put("countryCode", Countryshortcode);
             jsonObject.put("bankName", "");
+            jsonObject.put("bankIFSC", "");
             jsonObject.put("branchName", beneficiaryinfoPojo.getLandMark());
         } catch (JSONException e) {
             e.printStackTrace();
