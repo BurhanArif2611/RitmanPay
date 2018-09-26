@@ -1,5 +1,6 @@
 package com.fil.workerappz;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -269,8 +270,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     private void cashAgentNetworkListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-//            jsonObject.put("countryCode", countryCode);
-            jsonObject.put("countryCode", "NPL");
+            jsonObject.put("countryCode", cashbeneficiarinfopojo.getBenificaryNationality());
+//            jsonObject.put("countryCode", "NPL");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -290,60 +291,66 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     cashnetworklistListPojos.addAll(response.body());
                     if (cashnetworklistListPojos.get(0).getStatus() == true) {
-                        ArrayList<String> countryList1 = new ArrayList<>();
+                        if (cashnetworklistListPojos.get(0).getInfo().equalsIgnoreCase("NORECORD")) {
 
-
-                        for (int i = 0; i < cashnetworklistListPojos.get(0).getData().size(); i++) {
-                            countryList1.add(cashnetworklistListPojos.get(0).getData().get(i).getPayOutAgent().trim());
                         }
+                        else
+                        {
+                            ArrayList<String> countryList1 = new ArrayList<>();
 
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(AddBeneficiaryCashNextActivity.this, android.R.layout.simple_spinner_dropdown_item, countryList1);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        agentsSpinnerAddBeneficiary.setAdapter(adapter1);
+
+                            for (int i = 0; i < cashnetworklistListPojos.get(0).getData().size(); i++) {
+                                countryList1.add(cashnetworklistListPojos.get(0).getData().get(i).getPayOutAgent().trim());
+                            }
+
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(AddBeneficiaryCashNextActivity.this, android.R.layout.simple_spinner_dropdown_item, countryList1);
+                            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            agentsSpinnerAddBeneficiary.setAdapter(adapter1);
 
 
-                        for (int i = 0; i < cashnetworklistListPojos.get(0).getData().size(); i++) {
-                            if (agentname.equalsIgnoreCase(cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode())) {
+                            for (int i = 0; i < cashnetworklistListPojos.get(0).getData().size(); i++) {
+                                if (agentname.equalsIgnoreCase(cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode())) {
 //                                countryId = getUserData().getCountryID();
 //                                countryCode = getUserData().getUserCountryCode();
-                                agentsSpinnerAddBeneficiary.setSelection(i + 1);
-                                payoutBranchCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode();
-                                payoutCountry = cashnetworklistListPojos.get(0).getData().get(i).getCountry();
-                                payoutCountryCode = cashnetworklistListPojos.get(0).getData().get(i).getCountryCode();
-                                branchName = cashnetworklistListPojos.get(0).getData().get(i).getBranchName();
-                                address = cashnetworklistListPojos.get(0).getData().get(i).getAddress().toString();
-                                branchCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode();
-                                payoutCurrencyCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutCurrencyCode();
-                                agentname = cashnetworklistListPojos.get(0).getData().get(i).getPayOutAgent();
-                                break;
-                            }
-                        }
-                        agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-                                    payoutBranchCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCountry = cashnetworklistListPojos.get(0).getData().get(position).getCountry();
-                                    payoutCountryCode = cashnetworklistListPojos.get(0).getData().get(position).getCountryCode();
-                                    branchName = cashnetworklistListPojos.get(0).getData().get(position).getBranchName();
-                                    address = cashnetworklistListPojos.get(0).getData().get(position).getAddress().toString();
-                                    branchCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCurrencyCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutCurrencyCode();
-                                    agentname = cashnetworklistListPojos.get(0).getData().get(position).getPayOutAgent();
-//                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
-                                    if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryCashNextActivity.this)) {
-                                        purposeOfTransferJsonCall();
-                                    } else {
-                                        Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, nointernetmsg);
-                                    }
+                                    agentsSpinnerAddBeneficiary.setSelection(i + 1);
+                                    payoutBranchCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode();
+                                    payoutCountry = cashnetworklistListPojos.get(0).getData().get(i).getCountry();
+                                    payoutCountryCode = cashnetworklistListPojos.get(0).getData().get(i).getCountryCode();
+                                    branchName = cashnetworklistListPojos.get(0).getData().get(i).getBranchName();
+                                    address = cashnetworklistListPojos.get(0).getData().get(i).getAddress().toString();
+                                    branchCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutBranchCode();
+                                    payoutCurrencyCode = cashnetworklistListPojos.get(0).getData().get(i).getPayOutCurrencyCode();
+                                    agentname = cashnetworklistListPojos.get(0).getData().get(i).getPayOutAgent();
+                                    break;
                                 }
                             }
+                            agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position != -1) {
+                                        payoutBranchCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCountry = cashnetworklistListPojos.get(0).getData().get(position).getCountry();
+                                        payoutCountryCode = cashnetworklistListPojos.get(0).getData().get(position).getCountryCode();
+                                        branchName = cashnetworklistListPojos.get(0).getData().get(position).getBranchName();
+                                        address = cashnetworklistListPojos.get(0).getData().get(position).getAddress().toString();
+                                        branchCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCurrencyCode = cashnetworklistListPojos.get(0).getData().get(position).getPayOutCurrencyCode();
+                                        agentname = cashnetworklistListPojos.get(0).getData().get(position).getPayOutAgent();
+//                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
+                                        if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryCashNextActivity.this)) {
+                                            purposeOfTransferJsonCall();
+                                        } else {
+                                            Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, nointernetmsg);
+                                        }
+                                    }
+                                }
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -494,7 +501,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
         try {
             // The autocomplete activity requires Google Play Services to be available. The intent
             // builder checks this and throws an exception if it is not the case.
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).zzit(destinationAddressEditTextAddBeneficiaryNext.getText().toString()).build(this);
+            @SuppressLint("RestrictedApi") Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).zzit(destinationAddressEditTextAddBeneficiaryNext.getText().toString()).build(this);
             startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
         } catch (GooglePlayServicesRepairableException e) {
             // Indicates that Google Play Services is either not installed or not up to date. Prompt

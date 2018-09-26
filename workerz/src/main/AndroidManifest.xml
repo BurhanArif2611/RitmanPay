@@ -232,7 +232,8 @@
             android:value="95f5709e4f63ecbfd13969d5991aa1512cf4cbc9" />
 
         <activity android:name=".MainLanguageActivity" />
-        <activity android:name=".ChangeLanguageActivity"></activity>
+        <activity android:name=".ChangeLanguageActivity" />
+        <activity android:name=".CropActivity"></activity>
     </application>
 
 </manifest>

@@ -109,6 +109,8 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         } else {
             holder.removeSignImageView.setVisibility(View.INVISIBLE);
             holder.uploadStatusTextView.setText("");
+            holder.uploadSignImageView.setVisibility(View.VISIBLE);
+            holder.textviewupload.setText(datumLable_languages.getUpload());
             Constants.Updateflag = false;
         }
 

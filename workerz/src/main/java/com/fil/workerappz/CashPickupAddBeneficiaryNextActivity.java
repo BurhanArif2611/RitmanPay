@@ -241,8 +241,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     private void cashAgentNetworkListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-//            jsonObject.put("countryCode", countryCode);
-            jsonObject.put("countryCode", "NPL");
+            jsonObject.put("countryCode", beneficiaryInfoListPojo.getNationality());
+//            jsonObject.put("countryCode", "NPL");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -263,13 +263,18 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     Constants.closeProgress();
                     cashNetworkListJsonPojos.addAll(response.body());
                     if (cashNetworkListJsonPojos.get(0).getStatus() == true) {
-                        ArrayList<String> countryList = new ArrayList<>();
-                        for (int i = 0; i < cashNetworkListJsonPojos.get(0).getData().size(); i++) {
-                            countryList.add(new String(cashNetworkListJsonPojos.get(0).getData().get(i).getPayOutAgent().trim()));
+                        if (cashNetworkListJsonPojos.get(0).getInfo().equalsIgnoreCase("NORECORD")) {
+
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(CashPickupAddBeneficiaryNextActivity.this, android.R.layout.simple_spinner_item, countryList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        agentsSpinnerAddBeneficiary.setAdapter(adapter);
+                        else
+                        {
+                            ArrayList<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < cashNetworkListJsonPojos.get(0).getData().size(); i++) {
+                                countryList.add(new String(cashNetworkListJsonPojos.get(0).getData().get(i).getPayOutAgent().trim()));
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(CashPickupAddBeneficiaryNextActivity.this, android.R.layout.simple_spinner_item, countryList);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            agentsSpinnerAddBeneficiary.setAdapter(adapter);
 
 //                        for (int i = 0; i < purposeOfTransferListPojos.get(0).getData().size(); i++) {
 //                            if (getUserData().getCountryID() == purposeOfTransferListPojos.get(0).getData().get(i).getCountryID()) {
@@ -280,32 +285,33 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
 //                            }
 //                        }
 
-                        agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-                                    payoutBranchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCountry = cashNetworkListJsonPojos.get(0).getData().get(position).getCountry();
-                                    payoutCountryCode = cashNetworkListJsonPojos.get(0).getData().get(position).getCountryCode();
-                                    branchName = cashNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
-                                    address = cashNetworkListJsonPojos.get(0).getData().get(position).getAddress().toString();
-                                    branchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCurrencyCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutCurrencyCode();
-                                    agentName = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutAgent();
+                            agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position != -1) {
+                                        payoutBranchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCountry = cashNetworkListJsonPojos.get(0).getData().get(position).getCountry();
+                                        payoutCountryCode = cashNetworkListJsonPojos.get(0).getData().get(position).getCountryCode();
+                                        branchName = cashNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
+                                        address = cashNetworkListJsonPojos.get(0).getData().get(position).getAddress().toString();
+                                        branchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCurrencyCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutCurrencyCode();
+                                        agentName = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutAgent();
 //                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
 //                                    if (IsNetworkConnection.checkNetworkConnection(CashPickupAddBeneficiaryNextActivity.this)) {
 //
 //                                    } else {
 //                                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, getResources().getString(R.string.no_internet));
 //                                    }
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 }
             }

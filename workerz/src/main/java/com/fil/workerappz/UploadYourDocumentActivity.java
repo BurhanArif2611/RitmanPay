@@ -14,10 +14,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fil.workerappz.adapter.UploadDocumentListAdapter;
 import com.fil.workerappz.pojo.DocumentListCountryWiseJsonPojo;
@@ -120,10 +122,11 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     private LinearLayoutManager layoutManager;
     private UploadDocumentListAdapter uploadDocumentListAdapter;
     private Intent mIntent;
-    private File file;
+    private File file, imgFile;
     private long timeForImageName;
     private String imgName = "";
-    private Uri pictureUri = null;
+    private String imgName1 = "";
+    private Uri pictureUri = null, myUri;
     private final int docNameId = 0;
     private final int uploadDocForPosition = 0;
     private String comeFrom = "";
@@ -132,6 +135,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private SessionManager sessionManager;
     private String nointernetmsg;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -384,6 +388,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
         timeForImageName = System.currentTimeMillis();
         imgName = "img" + timeForImageName + ".jpg";
         file = new File(getExternalFilesDir(null), imgName);
+//        fileUri = Constants.getOutputMediaFileUri();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             mIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         } else {
@@ -405,26 +410,50 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getParent());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getAbsolutePath());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getPath());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(new File(file.getPath()).getAbsolutePath(), options);
+                int imageHeight = options.outHeight;
+                int imageWidth = options.outWidth;
+//                try {
+//                    compressedImage = new Compressor(this)
+//                            .setMaxWidth(640)
+//                            .setMaxHeight(480)
+//                            .setQuality(75)
+//                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                            .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                    Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                            .compressToFile(file);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 try {
-                    compressedImage = new Compressor(this)
-                            .setMaxWidth(640)
-                            .setMaxHeight(480)
-                            .setQuality(75)
-                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                            .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                            .compressToFile(file);
-                } catch (IOException e) {
+                    imgName1 = "img" + timeForImageName;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
-                    uploadKYCDoc();
-                } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+                String imgStorepath = "";
+                imgStorepath = Environment.getExternalStorageDirectory() + "/" + getString(R.string.app_name) + "/";
+                try {
+                    Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                    i.putExtra("fileUri", pictureUri.toString());
+                    i.putExtra("width", String.valueOf(imageWidth));
+                    i.putExtra("height",  String.valueOf(imageHeight));
+                    i.putExtra("imgStrPath", file.getPath());
+                    i.putExtra("fileName", imgName1);
+                    startActivityForResult(i, 525);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+//                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+//                    uploadKYCDoc();
+//                } else {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+//                }
             } else if (requestCode == SELECT_PICTURE) {
                 timeForImageName = System.currentTimeMillis();
                 imgName = "img" + timeForImageName + ".jpg";
+                imgName1 = "img" + timeForImageName;
                 pictureUri = data.getData();
 
                 String[] projection = {MediaStore.Images.Media.DATA};
@@ -446,26 +475,61 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 CustomLog.d("System out", "width " + imageWidth);
                 CustomLog.d("System out", "height " + imageHeight);
 
-                if (imageWidth < 400 || imageHeight < 700) {
-                    compressedImage = file;
-                } else {
-                    try {
-                        compressedImage = new Compressor(this)
-                                .setMaxWidth(640)
-                                .setMaxHeight(480)
-                                .setQuality(75)
-                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                                .compressToFile(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                if (imageWidth < 400 || imageHeight < 700) {
+//                    compressedImage = file;
+//                } else {
+//                    try {
+//                        compressedImage = new Compressor(this)
+//                                .setMaxWidth(640)
+//                                .setMaxHeight(480)
+//                                .setQuality(75)
+//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                                .compressToFile(file);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+
+                try {
+                    Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                    i.putExtra("fileUri", pictureUri.toString());
+                    i.putExtra("width", String.valueOf(imageWidth));
+                    i.putExtra("height",  String.valueOf(imageHeight));
+                    i.putExtra("imgStrPath", file.getPath());
+//                    i.putExtra("fileName", imgStorepath);
+                    startActivityForResult(i, 525);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
-                    uploadKYCDoc();
-                } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+//                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+//                    uploadKYCDoc();
+//                } else {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+//                }
+            } else if (requestCode == 525) {
+
+                Log.e("!_!525 Data Crop ?>>", data.getStringExtra("myFileName") + "");
+
+                try {
+                    imgFile = new File(data.getStringExtra("myFileName"));
+
+                    myUri = Uri.parse(data.getStringExtra("myFileName"));
+
+                    if (imgFile.exists()) {
+                        if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+                            compressedImage = new File(String.valueOf(myUri));
+                            uploadKYCDoc();
+                        } else {
+                            Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Image is not cropped", Toast.LENGTH_SHORT).show();
+                        uploadKYCDoc();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
