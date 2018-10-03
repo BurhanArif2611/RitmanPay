@@ -29,6 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 >
@@ -37,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Page under construction and will release it soon.Please get back later. "
+                    android:text="Coming soon"
                     android:textSize="22dp"
                     android:textColor="@color/Green"/>
 

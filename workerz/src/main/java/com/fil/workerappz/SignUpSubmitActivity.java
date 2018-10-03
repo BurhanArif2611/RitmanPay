@@ -540,7 +540,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         }, spanTxt.length() - datumLable_languages.getTermsConditions().length(), spanTxt.length(), 0);
         spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() - datumLable_languages.getTermsConditions().length(), spanTxt.length(), 0);
         spanTxt.append(" "+datumLable_languages.getAnd()+" ");
-        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGrey)), spanTxt.length() -datumLable_languages.getPrivacyPolicy().length(), spanTxt.length(), 0);
+        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGrey)), spanTxt.length() -datumLable_languages.getAnd().length(), spanTxt.length(), 0);
         spanTxt.append(datumLable_languages.getPrivacyPolicy());
         spanTxt.setSpan(new ClickableSpan() {
             @Override
@@ -608,7 +608,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,emiratesidmsg);
             checkFlag = false;
-        } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() <10) {
+        } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() <7) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,emiratesvalidationmsg);
             checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {

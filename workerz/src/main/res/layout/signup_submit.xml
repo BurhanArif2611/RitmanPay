@@ -292,7 +292,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:hint="@string/emirates_id"
                 android:inputType="number"
-                android:maxLength="15"
+                android:maxLength="16"
                 android:paddingLeft="@dimen/_5sdp"
                 android:text=""
                 android:textColor="@color/colorBlack"

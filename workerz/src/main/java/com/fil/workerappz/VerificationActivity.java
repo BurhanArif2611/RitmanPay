@@ -2,6 +2,7 @@ package com.fil.workerappz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
@@ -207,11 +208,22 @@ public class VerificationActivity extends ActionBarActivity {
                     if (jsonListPojos.get(0).getStatus() == true) {
                         sessionManager.setVerify(true);
                         sessionManager.setWalletBalance((float) 0.0);
-                        mIntent = new Intent(VerificationActivity.this, HomeActivity.class);
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        mIntent.putExtra("come_from", "Registration");
-                        startActivity(mIntent);
-                        finish();
+                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                handler.removeCallbacks(this);
+                                finish();
+                                mIntent = new Intent(VerificationActivity.this, HomeActivity.class);
+                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                mIntent.putExtra("come_from", "Registration");
+                                startActivity(mIntent);
+
+
+                            }
+                        }, 2000);
+
                     } else {
                         Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
                     }

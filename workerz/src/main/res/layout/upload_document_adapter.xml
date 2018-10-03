@@ -64,8 +64,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/uploadSignImageView">
               <ImageView
-                  android:layout_width="60dp"
-                  android:layout_height="60dp"
+                  android:layout_width="65dp"
+                  android:layout_height="65dp"
                   android:src="@drawable/upload_btn_language"
                   android:contentDescription="TODO" />
               <TextView
@@ -73,10 +73,10 @@
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
                   android:gravity="center"
-                  android:layout_marginTop="@dimen/_5sdp"
+                  android:layout_marginTop="@dimen/_7sdp"
                   android:id="@+id/textviewupload"
                   android:textColor="@color/colorWhite"
-                  android:textSize="@dimen/_10ssp"
+                  android:textSize="@dimen/_9ssp"
                   android:text="Upload"/>
             </FrameLayout>
               <FrameLayout
@@ -85,8 +85,8 @@
                   android:layout_height="wrap_content"
                   android:visibility="visible">
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:src="@drawable/remove_btn_language"
                 android:contentDescription="TODO" />
@@ -96,10 +96,10 @@
                       android:layout_gravity="center"
                       android:gravity="center"
                       android:layout_marginLeft="@dimen/_5sdp"
-                      android:layout_marginTop="@dimen/_5sdp"
+                      android:layout_marginTop="@dimen/_7sdp"
                       android:id="@+id/textviewremove"
                       android:textColor="@color/colorWhite"
-                      android:textSize="@dimen/_10ssp"
+                      android:textSize="@dimen/_9ssp"
                       android:text="Remove"/>
               </FrameLayout>
           </LinearLayout>

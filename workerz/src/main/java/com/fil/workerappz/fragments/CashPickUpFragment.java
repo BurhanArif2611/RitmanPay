@@ -26,10 +26,7 @@ import butterknife.Unbinder;
 
 public class CashPickUpFragment extends BaseFragment {
 
-    @BindView(R.id.addBeneficiaryTextView)
-    TextView addBeneficiaryTextView;
-    @BindView(R.id.selectBeneficiaryTextView)
-    TextView selectBeneficiaryTextView;
+
     private Unbinder unbinder;
 
     private Intent mIntent;
@@ -56,39 +53,40 @@ public class CashPickUpFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.bank_tab, container, false);
+//        View view = inflater.inflate(R.layout.bank_tab, container, false);
+        View view = inflater.inflate(R.layout.cash_tab, container, false);
 
         unbinder = ButterKnife.bind(this, view);
-        if (Constants.cashBenificaryCount==0)
-        {
-            selectBeneficiaryTextView.setVisibility(View.GONE);
-        }
-        else
-        {
-            selectBeneficiaryTextView.setVisibility(View.VISIBLE);
-        }
-
-        try {
-            sessionManager=new SessionManager(getActivity());
-            datumLable_languages = sessionManager.getAppLanguageLabel();
-
-            if (datumLable_languages != null) {
-
-                addBeneficiaryTextView.setText(datumLable_languages.getAddBeneficiary());
-                selectBeneficiaryTextView.setText(datumLable_languages.getSelectBeneficiary());
-
-            }
-            else
-            {
-                addBeneficiaryTextView.setText(getResources().getString(R.string.add_beneficiary));
-                selectBeneficiaryTextView.setText(getResources().getString(R.string.select_beneficiary));
-
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        if (Constants.cashBenificaryCount==0)
+//        {
+//            selectBeneficiaryTextView.setVisibility(View.GONE);
+//        }
+//        else
+//        {
+//            selectBeneficiaryTextView.setVisibility(View.VISIBLE);
+//        }
+//
+//        try {
+//            sessionManager=new SessionManager(getActivity());
+//            datumLable_languages = sessionManager.getAppLanguageLabel();
+//
+//            if (datumLable_languages != null) {
+//
+//                addBeneficiaryTextView.setText(datumLable_languages.getAddBeneficiary());
+//                selectBeneficiaryTextView.setText(datumLable_languages.getSelectBeneficiary());
+//
+//            }
+//            else
+//            {
+//                addBeneficiaryTextView.setText(getResources().getString(R.string.add_beneficiary));
+//                selectBeneficiaryTextView.setText(getResources().getString(R.string.select_beneficiary));
+//
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
         return view;
     }
 
@@ -98,21 +96,21 @@ public class CashPickUpFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.addBeneficiaryTextView, R.id.selectBeneficiaryTextView})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.addBeneficiaryTextView:
-                mIntent = new Intent(getActivity(), AddBeneficiaryActivity.class);
-                mIntent.putExtra("come_from", "cash");
-                mIntent.putExtra("activitytype", "cashadd");
-                mIntent.putExtra("customernumber", String.valueOf(Constants.bankBenificaryCount));
-                startActivity(mIntent);
-                break;
-            case R.id.selectBeneficiaryTextView:
-                mIntent = new Intent(getActivity(), SelectBeneficiaryActivity.class);
-                mIntent.putExtra("come_from", "cash");
-                startActivity(mIntent);
-                break;
-        }
-    }
+//    @OnClick({R.id.addBeneficiaryTextView, R.id.selectBeneficiaryTextView})
+//    public void onViewClicked(View view) {
+//        switch (view.getId()) {
+//            case R.id.addBeneficiaryTextView:
+//                mIntent = new Intent(getActivity(), AddBeneficiaryActivity.class);
+//                mIntent.putExtra("come_from", "cash");
+//                mIntent.putExtra("activitytype", "cashadd");
+//                mIntent.putExtra("customernumber", String.valueOf(Constants.bankBenificaryCount));
+//                startActivity(mIntent);
+//                break;
+//            case R.id.selectBeneficiaryTextView:
+//                mIntent = new Intent(getActivity(), SelectBeneficiaryActivity.class);
+//                mIntent.putExtra("come_from", "cash");
+//                startActivity(mIntent);
+//                break;
+//        }
+//    }
 }
