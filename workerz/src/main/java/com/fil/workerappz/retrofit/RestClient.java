@@ -14,9 +14,9 @@ public class RestClient {
     private static final String Google_BASE_AutoComplete_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/";
 //        private static final String base_url = "http://betaapplication.com/workerzapp/backend/web/index.php/api/";
 
-    private static final String base_url = "http://180.179.114.39/backend/web/index.php/api/";
+//    private static final String base_url = "http://180.179.114.39/backend/web/index.php/api/";
 //    live
-//    private static final String base_url = "https://m.workerappz.com/backend/web/index.php/api/";
+    private static final String base_url = "https://m.workerappz.com/backend/web/index.php/api/";
     private static RestApi REST_CLIENT;
     private static Retrofit restAdapter;
     private static Retrofit retrofit_google = null;

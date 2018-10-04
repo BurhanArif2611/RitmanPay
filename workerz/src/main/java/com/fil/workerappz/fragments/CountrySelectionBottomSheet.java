@@ -21,9 +21,7 @@ import com.fil.workerappz.R;
 import com.fil.workerappz.SignInActivity;
 import com.fil.workerappz.SignUpSubmitActivity;
 import com.fil.workerappz.pojo.CountryData;
-import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.utils.Constants;
-import com.fil.workerappz.utils.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,31 +30,24 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by HS on 21-Mar-18.
  * FIL AHM
  */
-
+@SuppressLint("RestrictedApi")
 public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 
-
-
-    @BindView(R.id.labelselectcountryTextView)
-    TextView labelselectcountryTextView;
-    @BindView(R.id.closeCountrySelectionImageView)
-    ImageView closeCountrySelectionImageView;
     @BindView(R.id.countrySelectionRecyclerView)
     RecyclerView countrySelectionRecyclerView;
+    @BindView(R.id.closeCountrySelectionImageView)
+    ImageView closeCountrySelectionImageView;
+
     private List<CountryData> countryListPojos = new ArrayList<>();
     private Activity activity;
     private RecyclerView.LayoutManager layoutManager;
     private CountryListAdapter countryListAdapter;
-    private SessionManager sessionManager;
-    private LabelListData datumLable_languages = new LabelListData();
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
@@ -89,18 +80,6 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        try {
-            sessionManager = new SessionManager(getActivity());
-            datumLable_languages = sessionManager.getAppLanguageLabel();
-            if (datumLable_languages != null) {
-                labelselectcountryTextView.setText(datumLable_languages.getSelectCountry());
-            } else {
-
-                labelselectcountryTextView.setText(getResources().getString(R.string.select_country));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         closeCountrySelectionImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,13 +92,6 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         countrySelectionRecyclerView.setLayoutManager(layoutManager);
 
         return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-
     }
 
 

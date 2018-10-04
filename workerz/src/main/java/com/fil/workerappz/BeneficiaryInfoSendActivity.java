@@ -530,7 +530,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 //                        startActivity(mIntent);
 //                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, datumLable_languages_msg.getRequestSuccessful()+sendReceiveMoneyBeneficiaryJsonPojos.get(0).getBalance());
 
-                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this,   TextviewSendingAmount.getText().toString()+" "+"deducted from your account and receiver will get"+" "+TextviewReceivingAmount.getText().toString());
+                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, TextviewTotalPayble.getText().toString()+" "+"deducted from your account and receiver will get"+" "+TextviewReceivingAmount.getText().toString());
 
 
                         final Handler handler = new Handler();

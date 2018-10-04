@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +88,30 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     private SessionManager sessionManager;
     private String idtypemsg, idnumbermsg, valididnumbermsg, dateofbirthmsg,iddescriptionmsg;
     private String nointernetmsg;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
+                idTypeJsonCall();
+            } else {
+                Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),nointernetmsg);
+            }
+        }else{
+            // fragment is no longer visible
+        }
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
 
     @Nullable
     @Override
@@ -166,13 +193,95 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                 DataPickerDialog1();
             }
         });
-        if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
-            idTypeJsonCall();
-        } else {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),nointernetmsg);
-        }
+
+        idNumberEditTextAddBeneficiaryCustomerInfo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(idNumberEditTextAddBeneficiaryCustomerInfo);
+            }
+        });
+
+
 
         return view;
+    }
+    public static void OnlyCharacter1(MaterialEditText editText) {
+//        if (editText.getText().toString().length() > 0) {
+//
+//            char x;
+//            int[] t = new int[editText.getText().toString()
+//                    .length()];
+//
+//            for (int i = 0; i < editText.getText().toString()
+//                    .length(); i++) {
+//                x = editText.getText().toString().charAt(i);
+//                int z = (int) x;
+//                t[i] = z;
+//
+//                if ((z > 64 && z < 91)
+//                        || (z > 96 && z < 123)|| (z > 47 && z < 58) ) {
+//
+//                }
+//                else {
+//
+//                    editText.setText(editText
+//                            .getText()
+//                            .toString()
+//                            .substring(
+//                                    0,
+//                                    (editText.getText()
+//                                            .toString().length()) - 1));
+//                    editText.setSelection(editText
+//                            .getText().length());
+//                }
+//                Log.d("System out", "decimal value of character" + z);
+//
+//            }
+//        }
+
+        if (editText.getText().toString().length() > 0) {
+
+            char x;
+            int[] t = new int[editText.getText().toString()
+                    .length()];
+
+            for (int i = 0; i < editText.getText().toString()
+                    .length(); i++) {
+                x = editText.getText().toString().charAt(i);
+                int z = (int) x;
+                t[i] = z;
+
+                if ((z > 64 && z < 91)
+                        || (z > 96 && z < 123) || (z >= 48 && z <= 57)) {
+
+                } else {
+
+                    editText.setText(editText
+                            .getText()
+                            .toString()
+                            .substring(
+                                    0,
+                                    (editText.getText()
+                                            .toString().length()) - 1));
+                    editText.setSelection(editText
+                            .getText().length());
+                }
+
+            }
+        }
+
     }
 
     @Override
@@ -241,13 +350,15 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         JSONObject jsonObject = new JSONObject();
         Constants.showProgress(getActivity());
         try {
-            jsonObject.put("countryCode", "India");
+//            jsonObject.put("countryCode", "India");
+            jsonObject.put("countryCode", sessionManager.userProfileData().getCountryShortCode());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String json = "[" + jsonObject + "]";
 //        Constants.showProgress(ProfileActivity.this);
+        CustomLog.i("System out", "json " + json);
         Call<List<IdTypeListJsonPojo>> call = RestClient.get().getIdTypeJsonCall(json);
 
         call.enqueue(new Callback<List<IdTypeListJsonPojo>>() {

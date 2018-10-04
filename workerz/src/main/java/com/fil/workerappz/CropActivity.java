@@ -76,7 +76,10 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
         // as per data we set the CROP
         try {
             //set aspect ratio
+            float aspect_ratio = (float)widht / (float)height ;
+            Log.d("System out", String.valueOf(aspect_ratio));
             mCropView.setCustomRatio(widht, height);
+            mCropView.setCropMode(CropImageView.CropMode.FIT_IMAGE,0);
         } catch (Exception e) {
             e.printStackTrace();
         }

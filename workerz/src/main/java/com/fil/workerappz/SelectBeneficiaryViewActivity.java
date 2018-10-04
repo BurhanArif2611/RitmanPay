@@ -410,6 +410,91 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 OnlyCharacter(middleNameEditTextAddBeneficiary);
             }
         });
+
+        idNumberEditTextAddBeneficiary.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(idNumberEditTextAddBeneficiary);
+            }
+        });
+    }
+    public static void OnlyCharacter1(MaterialEditText editText) {
+//        if (editText.getText().toString().length() > 0) {
+//
+//            char x;
+//            int[] t = new int[editText.getText().toString()
+//                    .length()];
+//
+//            for (int i = 0; i < editText.getText().toString()
+//                    .length(); i++) {
+//                x = editText.getText().toString().charAt(i);
+//                int z = (int) x;
+//                t[i] = z;
+//
+//                if ((z > 64 && z < 91)
+//                        || (z > 96 && z < 123)|| (z > 47 && z < 58) ) {
+//
+//                }
+//                else {
+//
+//                    editText.setText(editText
+//                            .getText()
+//                            .toString()
+//                            .substring(
+//                                    0,
+//                                    (editText.getText()
+//                                            .toString().length()) - 1));
+//                    editText.setSelection(editText
+//                            .getText().length());
+//                }
+//                Log.d("System out", "decimal value of character" + z);
+//
+//            }
+//        }
+
+        if (editText.getText().toString().length() > 0) {
+
+            char x;
+            int[] t = new int[editText.getText().toString()
+                    .length()];
+
+            for (int i = 0; i < editText.getText().toString()
+                    .length(); i++) {
+                x = editText.getText().toString().charAt(i);
+                int z = (int) x;
+                t[i] = z;
+
+                if ((z > 64 && z < 91)
+                        || (z > 96 && z < 123) || (z >= 48 && z <= 57)) {
+
+                } else {
+
+                    editText.setText(editText
+                            .getText()
+                            .toString()
+                            .substring(
+                                    0,
+                                    (editText.getText()
+                                            .toString().length()) - 1));
+                    editText.setSelection(editText
+                            .getText().length());
+                }
+
+            }
+        }
+
     }
 
     public static void OnlyCharacter(MaterialEditText editText) {

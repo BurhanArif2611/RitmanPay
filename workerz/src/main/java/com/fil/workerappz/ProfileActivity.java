@@ -417,6 +417,15 @@ public class ProfileActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mIntent);
+        finish();
+    }
+
     @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture,R.id.changeLanguageTextViewProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {

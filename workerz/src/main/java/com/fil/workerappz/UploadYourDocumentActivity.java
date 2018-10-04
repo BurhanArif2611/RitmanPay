@@ -410,11 +410,14 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getParent());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getAbsolutePath());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getPath());
+
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(new File(file.getPath()).getAbsolutePath(), options);
                 int imageHeight = options.outHeight;
                 int imageWidth = options.outWidth;
+
+
 //                try {
 //                    compressedImage = new Compressor(this)
 //                            .setMaxWidth(640)
@@ -438,7 +441,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                     Intent i = new Intent(getApplicationContext(), CropActivity.class);
                     i.putExtra("fileUri", pictureUri.toString());
                     i.putExtra("width", String.valueOf(imageWidth));
-                    i.putExtra("height",  String.valueOf(imageHeight));
+                    i.putExtra("height", String.valueOf(imageHeight));
                     i.putExtra("imgStrPath", file.getPath());
                     i.putExtra("fileName", imgName1);
                     startActivityForResult(i, 525);
@@ -496,7 +499,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                     Intent i = new Intent(getApplicationContext(), CropActivity.class);
                     i.putExtra("fileUri", pictureUri.toString());
                     i.putExtra("width", String.valueOf(imageWidth));
-                    i.putExtra("height",  String.valueOf(imageHeight));
+                    i.putExtra("height", String.valueOf(imageHeight));
                     i.putExtra("imgStrPath", file.getPath());
 //                    i.putExtra("fileName", imgStorepath);
                     startActivityForResult(i, 525);
@@ -509,12 +512,9 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 //                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
 //                }
             } else if (requestCode == 525) {
-
                 Log.e("!_!525 Data Crop ?>>", data.getStringExtra("myFileName") + "");
-
                 try {
                     imgFile = new File(data.getStringExtra("myFileName"));
-
                     myUri = Uri.parse(data.getStringExtra("myFileName"));
 
                     if (imgFile.exists()) {
@@ -526,7 +526,8 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Image is not cropped", Toast.LENGTH_SHORT).show();
-                        uploadKYCDoc();
+//                        compressedImage = new File(String.valueOf(myUri));
+//                        uploadKYCDoc();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

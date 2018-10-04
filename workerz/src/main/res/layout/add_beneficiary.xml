@@ -306,7 +306,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:hint="@string/id_number"
-                        android:inputType="number"
+                        android:inputType=""
                         android:maxLength="15"
                         android:paddingLeft="@dimen/_5sdp"
                         android:text=""

@@ -135,7 +135,19 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                     }
                 }
                 Constants.uploaddocument=counter;
-                if (counter >=3) {
+                if (holder.textviewupload.getText().equals("Reupload")) {
+                    uploadDocForPosition = holder.getAdapterPosition();
+
+                    if (kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase("") || kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getUserkycStatus().equalsIgnoreCase(datumLable_languages.getApproved())) {
+                        Constants.Updateflag = false;
+                    } else {
+                        Constants.Updateflag = true;
+                    }
+                    MediaChooseFragmentForKYC mediaChooseFragmentForKYC = new MediaChooseFragmentForKYC();
+                    mediaChooseFragmentForKYC.show(((UploadYourDocumentActivity) mContext).getSupportFragmentManager(), "BottomSheet Fragment");
+                }
+               else if (counter >=3) {
+
                     Constants.showMessage(mainUploadYourDocumentLinearLayout, mContext, "You can Upload maximum Three documents");
                 } else {
                     uploadDocForPosition = holder.getAdapterPosition();

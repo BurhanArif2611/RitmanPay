@@ -51,25 +51,27 @@
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:text="Cancel"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            style="@style/CustomButtonStyle"/>
 
         <ImageView
             android:id="@+id/btnRotate"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.2"
-            android:background="@drawable/ic_rotate_right_black_24dp"
-           />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_rotate_right_black_24dp" />
         <!--android:background="@drawable/crop_rotate_wht"-->
 
         <Button
             android:id="@+id/btnDone"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.4"
+            android:layout_weight="0.5"
             android:text="Crop"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            style="@style/CustomButtonStyle"/>
     </LinearLayout>
 </LinearLayout>
