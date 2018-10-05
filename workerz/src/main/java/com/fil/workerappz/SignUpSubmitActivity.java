@@ -670,6 +670,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         sessionManager.setuserflagimage(countryFlagImage);
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
                         sessionManager.setLogin(true);
+                        sessionManager.setVerify(false);
+                        sessionManager.setLogoutVerify(false);
 
 
                         final Handler handler = new Handler();

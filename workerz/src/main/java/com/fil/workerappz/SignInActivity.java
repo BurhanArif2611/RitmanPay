@@ -399,6 +399,7 @@ public class SignInActivity extends ActionBarActivity {
                             Constants.closeProgress();
                             sessionManager.setLogin(true);
                             sessionManager.setVerify(true);
+                            sessionManager.setLogoutVerify(true);
 
 
                             mIntent = new Intent(SignInActivity.this, HomeActivity.class);

@@ -637,7 +637,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, idnumbermsg);
             checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 10) {
+        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
             checkFlag = false;
         }

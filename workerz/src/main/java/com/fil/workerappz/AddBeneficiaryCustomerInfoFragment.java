@@ -414,7 +414,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idnumbermsg);
-        } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < 10) {
+        } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < 7) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
         } else if (dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),dateofbirthmsg);

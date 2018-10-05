@@ -161,11 +161,11 @@ public class MainLanguageActivity extends AppCompatActivity {
 
                         sessionManager.setAppLanguageMessage(messageListdataPojos.get(0));
 
-                        if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == true) {
+                        if (sessionManager.getRememberMe() == true && sessionManager.getLogoutVerify() == true) {
                             mIntent = new Intent(MainLanguageActivity.this, HomeActivity.class);
 //                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
                             startActivity(mIntent);
-                        } else if (sessionManager.getRememberMe() == true && sessionManager.getVerify() == false) {
+                        } else if (sessionManager.getRememberMe() == true && sessionManager.getLogoutVerify() == false) {
                             mIntent = new Intent(MainLanguageActivity.this, SignInActivity.class);
 //                    mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
                             startActivity(mIntent);

@@ -306,7 +306,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this,accountnumbermsg );
                 }
-                else if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() < 12) {
+                else if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this,minimumaccountmsg);
                 }else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this,banknamemsg);

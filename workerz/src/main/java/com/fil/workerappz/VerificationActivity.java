@@ -164,6 +164,7 @@ public class VerificationActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos.get(0).getStatus() == true) {
                         sessionManager.setVerify(true);
+                        sessionManager.setLogoutVerify(true);
                         mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         mIntent.putExtra("come_from", "Registration");
@@ -207,6 +208,7 @@ public class VerificationActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos.get(0).getStatus() == true) {
                         sessionManager.setVerify(true);
+                        sessionManager.setLogoutVerify(true);
                         sessionManager.setWalletBalance((float) 0.0);
                         Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                         final Handler handler = new Handler();
@@ -263,6 +265,7 @@ public class VerificationActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos.get(0).getStatus() == true) {
                         sessionManager.setVerify(true);
+                        sessionManager.setLogoutVerify(true);
                         mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         mIntent.putExtra("come_from", "Registration");

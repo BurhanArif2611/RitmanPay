@@ -364,7 +364,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                     if (response.body().get(0).getStatus() == true) {
                         Constants.closeProgress();
                         if (sessionManager.getRememberMe() == true) {
-                            sessionManager.setVerify(false);
+                            sessionManager.setLogoutVerify(false);
                         } else {
                             sessionManager.clearUser();
                         }
