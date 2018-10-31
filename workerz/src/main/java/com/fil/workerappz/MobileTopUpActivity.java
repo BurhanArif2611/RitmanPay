@@ -159,6 +159,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 chargetextview.setText(getResources().getString(R.string.charge));
                 submitTextview.setText(getResources().getString(R.string.proceed_to_pay));
                 nointernetmsg = getResources().getString(R.string.no_internet);
+                nodatafound = getResources().getString(R.string.no_record_found);
 
             }
         } catch (Exception e) {
@@ -197,7 +198,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                     } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
+                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
                     } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
@@ -236,6 +237,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                         final ArrayAdapter<String> adapterCountryName = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, countryList);
                         adapterCountryName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         countrySpinnerMobileTopUpSpinner.setAdapter(adapterCountryName);
+
+
                         countrySpinnerMobileTopUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -250,7 +253,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                                         countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
                                         countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
                                     } else {
-                                        textcontrycode.setText(" ");
+                                        textcontrycode.setText(datumLable_languages.getCountry());
+
 //                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
                                     }
                                 }

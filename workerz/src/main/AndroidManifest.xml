@@ -48,6 +48,9 @@
             android:name=".VerificationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".BeneficiaryPinVerificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SignUpSubmitActivity"
             android:screenOrientation="portrait" />
         <activity

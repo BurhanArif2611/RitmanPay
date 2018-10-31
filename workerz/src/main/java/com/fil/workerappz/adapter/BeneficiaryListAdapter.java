@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.BeneficiaryPinVerificationActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryViewActivity;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
@@ -58,17 +59,17 @@ public class BeneficiaryListAdapter extends RecyclerView.Adapter<BeneficiaryList
             @Override
             public void onClick(View v) {
                 if (comeFrom.equalsIgnoreCase("CASH")) {
-                    mIntent = new Intent(context, SelectBeneficiaryViewActivity.class);
+                    mIntent = new Intent(context, BeneficiaryPinVerificationActivity.class);
                     mIntent.putExtra("come_from", comeFrom);
                     mIntent.putExtra("beneficiary_object", beneficiaryListPojoList.get(0).getData().get(holder.getAdapterPosition()));
                     context.startActivity(mIntent);
                 } else if (comeFrom.equalsIgnoreCase("BANK")) {
-                    mIntent = new Intent(context, SelectBeneficiaryViewActivity.class);
+                    mIntent = new Intent(context, BeneficiaryPinVerificationActivity.class);
                     mIntent.putExtra("come_from", comeFrom);
                     mIntent.putExtra("beneficiary_object", beneficiaryListPojoList.get(0).getData().get(holder.getAdapterPosition()));
                     context.startActivity(mIntent);
                 } else if (comeFrom.equalsIgnoreCase("")) {
-                    mIntent = new Intent(context, SelectBeneficiaryViewActivity.class);
+                    mIntent = new Intent(context, BeneficiaryPinVerificationActivity.class);
                     if (beneficiaryListPojoList.get(0).getData().get(holder.getAdapterPosition()).getBenificaryPaymentMode().equalsIgnoreCase("BANK")) {
                         mIntent.putExtra("come_from", "BANK");
                     } else if (beneficiaryListPojoList.get(0).getData().get(holder.getAdapterPosition()).getBenificaryPaymentMode().equalsIgnoreCase("CASH")) {

@@ -125,7 +125,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
-                        android:maxLength="25"
+                        android:maxLength="50"
                         android:paddingLeft="@dimen/_5sdp"
                         android:text=""
                         android:textColor="@color/colorBlack"
@@ -307,7 +307,6 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:hint="@string/id_number"
                         android:inputType=""
-                        android:maxLength="15"
                         android:paddingLeft="@dimen/_5sdp"
                         android:text=""
                         android:textColor="@color/colorBlack"
@@ -317,6 +316,8 @@
                         app:met_floatingLabelTextSize="@dimen/_10ssp"
                         app:met_primaryColor="@color/colorGreen"
                         app:met_singleLineEllipsis="false" />
+                    <!--android:maxLength="15"-->
+
 
                     <TextView
                         android:id="@+id/nextAddBeneficiaryTextView"

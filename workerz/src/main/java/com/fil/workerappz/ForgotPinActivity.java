@@ -146,7 +146,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                 boolean inputTypevalidation = false;
                 inputTypevalidation = emailMobileNoEditTextForgotPinActivity.getText().toString().trim().matches("^[0-9]+$");
                 if (inputTypevalidation == true) {
-                    emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
+                    emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
                 } else {
                     emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                 }
@@ -260,7 +260,7 @@ public class ForgotPinActivity extends ActionBarActivity {
         if (emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() == 0) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, emailmobilemsg);
             checkFlag = false;
-        } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() < 10) {
+        } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() < 7) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validemailormobile);
             checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailMobileNoEditTextForgotPinActivity.getText().toString().trim()) == false) {

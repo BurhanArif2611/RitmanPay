@@ -8,6 +8,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -127,6 +129,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     private String dateofbirth;
     private String nationality;
     private String idType;
+    private int idtypemaxlength=7;
+    private int idtypeminlength=15;
     private String countryFullName;
     private BeneficiaryListPojo.Data bankbenefiardata;
     private QuickPayDataPojo quickPayData = new QuickPayDataPojo();
@@ -718,10 +722,20 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idnumbermsg);
             checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
+        }
+        else if (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "ID Number should be"+" "+idtypeminlength+" "+"digits");
+            checkFlag = false;
+        }
+        else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength)
+        {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
             checkFlag = false;
         }
+//        else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
+//            checkFlag = false;
+//        }
         return checkFlag;
     }
 
@@ -921,12 +935,13 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         JSONObject jsonObject = new JSONObject();
         Constants.showProgress(SelectBeneficiaryViewActivity.this);
         try {
-            jsonObject.put("countryCode", countryFullName);
+            jsonObject.put("countryCode",countryshortcode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String json = "[" + jsonObject + "]";
+        CustomLog.d("System out", json);
 //        Constants.showProgress(ProfileActivity.this);
         Call<List<IdTypeListJsonPojo>> call = RestClient.get().getIdTypeJsonCall(json);
 
@@ -936,6 +951,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             public void onResponse(Call<List<IdTypeListJsonPojo>> call, Response<List<IdTypeListJsonPojo>> response) {
                 Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
+                    idTypePojos.clear();
                     idTypePojos.addAll(response.body());
                     if (idTypePojos.get(0).getStatus() == true) {
                         ArrayList<String> countryList = new ArrayList<>();
@@ -948,7 +964,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                         idTypeSpinnerAddBeneficiary.setAdapter(adapter);
 
                         for (int i = 0; i < idTypePojos.get(0).getData().size(); i++) {
-                            if (idType.equalsIgnoreCase(idTypePojos.get(0).getData().get(i).getIDType_ID())) {
+                            if (idType.equalsIgnoreCase(idTypePojos.get(0).getData().get(i).getIDTypeID())) {
 //                                countryId = getUserData().getCountryID();
 //                                countryCode = getUserData().getUserCountryCode();
                                 idTypeSpinnerAddBeneficiary.setSelection(i + 1);
@@ -960,9 +976,27 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
-                                    idtypeId = idTypePojos.get(0).getData().get(position).getIDType_ID();
+                                    idtypeId = idTypePojos.get(0).getData().get(position).getIDTypeID();
                                     IDtype_Description = idTypePojos.get(0).getData().get(position).getIDType();
 //                                    countryId = idTypePojos.get(0).getData().get(position).getCountryID();
+
+                                    idtypemaxlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMaxLength());
+                                    idtypeminlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMinLength());
+                                    if (idTypePojos.get(0).getData().get(position).getIsNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("false"))
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    }
+                                    else if (idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsNumeric().equals("false"))
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    }
+                                    else
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    }
+                                    InputFilter[] FilterArray = new InputFilter[1];
+                                    FilterArray[0] = new InputFilter.LengthFilter(idtypemaxlength);
+                                    idNumberEditTextAddBeneficiary.setFilters(FilterArray);
                                 }
                             }
 

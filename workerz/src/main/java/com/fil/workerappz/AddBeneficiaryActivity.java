@@ -9,6 +9,8 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -123,6 +125,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String countryCode;
     private String countryShortCode, countryCurrency;
     private String countryFlagImage;
+    private int idtypemaxlength=15;
+    private int idtypeminlength=7;
     private int countryId;
     private String idType;
     private String idTypeDescription;
@@ -326,7 +330,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             }
         });
 
-               idNumberEditTextAddBeneficiary.addTextChangedListener(new TextWatcher() {
+        idNumberEditTextAddBeneficiary.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -347,6 +351,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
 
     }
+
     public static void OnlyCharacter1(MaterialEditText editText) {
 //        if (editText.getText().toString().length() > 0) {
 //
@@ -637,7 +642,17 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, idnumbermsg);
             checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
+        }
+//        else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
+//            checkFlag = false;
+//        }
+        else if (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "ID Number should be"+" "+idtypeminlength+" "+"digits");
+            checkFlag = false;
+        }
+        else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength)
+        {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
             checkFlag = false;
         }
@@ -876,8 +891,25 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
-                                    idType = idTypePojos.get(0).getData().get(position).getIDType_ID();
+                                    idType = idTypePojos.get(0).getData().get(position).getIDTypeID();
                                     idTypeDescription = idTypePojos.get(0).getData().get(position).getIDType();
+                                    idtypemaxlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMaxLength());
+                                    idtypeminlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMinLength());
+                                    if (idTypePojos.get(0).getData().get(position).getIsNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("false"))
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    }
+                                    else if (idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsNumeric().equals("false"))
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    }
+                                    else
+                                    {
+                                        idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    }
+                                    InputFilter[] FilterArray = new InputFilter[1];
+                                    FilterArray[0] = new InputFilter.LengthFilter(idtypemaxlength);
+                                    idNumberEditTextAddBeneficiary.setFilters(FilterArray);
 //                                    countryId = idTypePojos.get(0).getData().get(position).getCountryID();
                                 }
                             }

@@ -540,8 +540,10 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                                 handler.removeCallbacks(this);
                                 finish();
                                 Intent mIntent;
-                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
-                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
+//                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(mIntent);
+                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionHistoryActivity.class);
                                 startActivity(mIntent);
 //                                onRestart();
                             }

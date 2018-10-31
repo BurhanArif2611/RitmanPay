@@ -117,7 +117,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:maxLength="25"
+            android:maxLength="50"
             android:paddingLeft="@dimen/_5sdp"
             android:text=""
             android:textColor="@color/colorBlack"

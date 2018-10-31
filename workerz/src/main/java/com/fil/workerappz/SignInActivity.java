@@ -234,7 +234,7 @@ public class SignInActivity extends ActionBarActivity {
                 boolean inputTypevalidation = false;
                 inputTypevalidation = emailMobileNoEditTextSignInActivity.getText().toString().trim().matches("^[0-9]+$");
                 if (inputTypevalidation == true) {
-                    emailMobileNoEditTextSignInActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
+                    emailMobileNoEditTextSignInActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
                 } else {
                     emailMobileNoEditTextSignInActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                 }
@@ -306,7 +306,7 @@ public class SignInActivity extends ActionBarActivity {
 
 //            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, emailmobilemsg);
             checkFlag = false;
-        } else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().trim().length() < 10) {
+        } else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().trim().length() < 7) {
             emailMobileNoEditTextSignInActivity.setError(validmobilenumber);
 
 //            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
