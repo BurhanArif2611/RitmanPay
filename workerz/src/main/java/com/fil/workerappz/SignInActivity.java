@@ -482,9 +482,9 @@ public class SignInActivity extends ActionBarActivity {
         });
     }
 
-    public void updateCountrySelection(int position) {
-        countryCode = countryListPojos.get(position).getCountryDialCode();
-        countryCodeTextView.setText(countryListPojos.get(position).getCountryDialCode());
-        Picasso.with(SignInActivity.this).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(countryCodeImageView);
+    public void updateCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+        countryCodeTextView.setText(countryListPojosupdated.get(position).getCountryDialCode());
+        Picasso.with(SignInActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageView);
     }
 }

@@ -3,6 +3,7 @@ package com.fil.workerappz;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -193,10 +194,10 @@ public class ForgotPinActivity extends ActionBarActivity {
         }
     }
 
-    public void updateCountrySelection(int position) {
-        countryCodeTextViewForgot.setText(countryListPojos.get(position).getCountryDialCode());
-        countryCode = countryListPojos.get(position).getCountryDialCode();
-        Picasso.with(ForgotPinActivity.this).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(countryCodeImageViewForgot);
+    public void updateCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryCodeTextViewForgot.setText(countryListPojosupdated.get(position).getCountryDialCode());
+        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+        Picasso.with(ForgotPinActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageViewForgot);
     }
 
     private void getForgotPIN() {

@@ -5,13 +5,19 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by HS on 21-Mar-18.
@@ -42,6 +49,16 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     RecyclerView countrySelectionRecyclerView;
     @BindView(R.id.closeCountrySelectionImageView)
     ImageView closeCountrySelectionImageView;
+    @BindView(R.id.labelselectcountryTextView)
+    TextView labelselectcountryTextView;
+    @BindView(R.id.inputSearch)
+    EditText inputSearch;
+    Unbinder unbinder;
+    @BindView(R.id.rootBottomSheet1)
+    LinearLayout rootBottomSheet1;
+    @BindView(R.id.rootBottomSheet2)
+    LinearLayout rootBottomSheet2;
+
 
     private List<CountryData> countryListPojos = new ArrayList<>();
     private Activity activity;
@@ -80,7 +97,8 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
+        final BottomSheetBehavior behavior = BottomSheetBehavior.from(rootBottomSheet2);
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         closeCountrySelectionImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,20 +108,27 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
         countrySelectionRecyclerView.setLayoutManager(layoutManager);
-
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
-    public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.ViewHolder> {
+
+    public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.ViewHolder> implements Filterable {
 
         private final Activity mContext;
-        private final List<CountryData> countryListPojos;
+        private List<CountryData> countryListPojos;
         private Currency currency;
+        private List<CountryData> countryList;
+//        private List<CountryData> countryListFiltered;
 
         CountryListAdapter(Activity mContext, List<CountryData> countryListPojos) {
             this.mContext = mContext;
             this.countryListPojos = countryListPojos;
+            this.countryList = countryListPojos;
         }
 
         @Override
@@ -122,20 +147,55 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
                 public void onClick(View v) {
                     if (getActivity() instanceof SignInActivity) {
                         SignInActivity signInActivity = (SignInActivity) getActivity();
-                        signInActivity.updateCountrySelection(holder.getAdapterPosition());
+                        signInActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     } else if (getActivity() instanceof SignUpSubmitActivity) {
                         SignUpSubmitActivity signUpSubmitActivity = (SignUpSubmitActivity) getActivity();
-                        signUpSubmitActivity.updateCountrySelection(holder.getAdapterPosition());
+                        signUpSubmitActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     } else if (getActivity() instanceof ForgotPinActivity) {
                         ForgotPinActivity forgotPinActivity = (ForgotPinActivity) getActivity();
-                        forgotPinActivity.updateCountrySelection(holder.getAdapterPosition());
+                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     }
                 }
             });
 
+        }
+
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    String charString = charSequence.toString();
+                    if (charString.isEmpty()) {
+                        countryListPojos = countryList;
+                    } else {
+                        List<CountryData> filteredList = new ArrayList<>();
+                        for (CountryData row : countryList) {
+
+                            // name match condition. this might differ depending on your requirement
+                            // here we are looking for name or phone number match
+                            if ((new String(Base64.decode(row.getCountryName().trim().getBytes(), Base64.DEFAULT))).toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
+                        }
+
+                        countryListPojos = filteredList;
+                    }
+
+                    FilterResults filterResults = new FilterResults();
+                    filterResults.values = countryListPojos;
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    countryListPojos = (ArrayList<CountryData>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
 
         @Override
@@ -179,6 +239,28 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         if (countryListPojos.size() > 0) {
             countryListAdapter = new CountryListAdapter(getActivity(), countryListPojos);
             countrySelectionRecyclerView.setAdapter(countryListAdapter);
+
+            inputSearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    if (cs.length() > 0) {
+                        countryListAdapter.getFilter().filter(cs);
+                    }
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+
+                }
+            });
         }
 //                }
 //            }

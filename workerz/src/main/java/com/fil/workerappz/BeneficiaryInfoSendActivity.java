@@ -94,6 +94,11 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
     TextView totalpayabletextview;
     @BindView(R.id.converttextview)
     TextView converttextview;
+
+    @BindView(R.id.accountBalanceTextViewSendMoney)
+    TextView accountBalanceTextViewSendMoney;
+    @BindView(R.id.textviewbalnceSendMoney)
+    TextView textviewbalnceSendMoney;
     private ArrayList<SendReceiveMoneyJsonPojo> sendReceiveMoneyJsonPojos = new ArrayList<>();
     private ArrayList<SendMoneyBeneficiaryJsonPojo> sendReceiveMoneyBeneficiaryJsonPojos = new ArrayList<>();
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
@@ -151,6 +156,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         titleTextViewViewHeader2.setText("Transfer Details");
+        accountBalanceTextViewSendMoney.setText(String.valueOf(getWalletBalance()));
 
         if (datumLable_languages_msg != null) {
 
@@ -181,8 +187,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
         beneficiaryInfoListPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiary_data");
         textReceiverCountryName.setText(beneficiaryInfoListPojo.getPayoutcurrency());
-
-
+        textviewbalnceSendMoney.setText("Current Available Balance"+":");
 
 
         EdittextSendMoney.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -259,39 +264,39 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         });
     }
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.send_now_textview, R.id.appImageViewHeader2,R.id.converttextview})
+    @OnClick({R.id.menuImageViewHeader2, R.id.send_now_textview, R.id.appImageViewHeader2, R.id.converttextview})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
                 finish();
                 break;
-                case R.id.converttextview:
-                    if (IsNetworkConnection.checkNetworkConnection(BeneficiaryInfoSendActivity.this)) {
-                        if (CheckFlag) {
-                            Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
-                            if (EdittextReceiveMoney.getText().toString().length() == 0) {
+            case R.id.converttextview:
+                if (IsNetworkConnection.checkNetworkConnection(BeneficiaryInfoSendActivity.this)) {
+                    if (CheckFlag) {
+                        Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
+                        if (EdittextReceiveMoney.getText().toString().length() == 0) {
 
-                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            } else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
-                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            } else {
-                                sendReceiveMoneyJsonCall(EdittextReceiveMoney.getText().toString(), beneficiaryInfoListPojo.getPayoutcurrency());
-                            }
-
+                            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                        } else if (EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextReceiveMoney.getText().toString().startsWith(".") || EdittextReceiveMoney.getText().toString().startsWith("0")) {
+                            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
                         } else {
-                            Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
-                            if (EdittextSendMoney.getText().toString().length() == 0) {
-                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            } else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
-                                Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
-                            } else {
-                                sendReceiveMoneyJsonCall(EdittextSendMoney.getText().toString(), getUserData().getCountryCurrencySymbol());
-                            }
-
+                            sendReceiveMoneyJsonCall(EdittextReceiveMoney.getText().toString(), beneficiaryInfoListPojo.getPayoutcurrency());
                         }
+
                     } else {
-                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, nointernetmsg);
+                        Constants.hideKeyboard(BeneficiaryInfoSendActivity.this);
+                        if (EdittextSendMoney.getText().toString().length() == 0) {
+                            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                        } else if (EdittextSendMoney.getText().toString().trim().equalsIgnoreCase(".") || EdittextReceiveMoney.getText().toString().trim().equalsIgnoreCase("0") || EdittextSendMoney.getText().toString().startsWith(".")) {
+                            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, vaildamountmsg);
+                        } else {
+                            sendReceiveMoneyJsonCall(EdittextSendMoney.getText().toString(), getUserData().getCountryCurrencySymbol());
+                        }
+
                     }
+                } else {
+                    Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, nointernetmsg);
+                }
                 break;
             case R.id.appImageViewHeader2:
                 Intent mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
@@ -530,7 +535,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 //                        startActivity(mIntent);
 //                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, datumLable_languages_msg.getRequestSuccessful()+sendReceiveMoneyBeneficiaryJsonPojos.get(0).getBalance());
 
-                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, TextviewTotalPayble.getText().toString()+" "+"deducted from your account and receiver will get"+" "+TextviewReceivingAmount.getText().toString());
+                        Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, TextviewTotalPayble.getText().toString() + " " + "deducted from your account and receiver will get" + " " + TextviewReceivingAmount.getText().toString());
 
 
                         final Handler handler = new Handler();
@@ -540,11 +545,10 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                                 handler.removeCallbacks(this);
                                 finish();
                                 Intent mIntent;
-//                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
-//                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                startActivity(mIntent);
-                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionHistoryActivity.class);
+                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
+                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mIntent);
+
 //                                onRestart();
                             }
                         }, 3000);
