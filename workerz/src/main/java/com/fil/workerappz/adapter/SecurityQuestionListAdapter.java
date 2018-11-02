@@ -65,6 +65,7 @@ public class SecurityQuestionListAdapter extends RecyclerView.Adapter<SecurityQu
             public void onClick(View view) {
                 Constants.answerId = "";
                 Constants.answer ="";
+                holder.answerEdittext.setText("");
                 selectedradiobutton = holder.getAdapterPosition();
                 holder.answerEdittext.setVisibility(View.VISIBLE);
                 notifyDataSetChanged();

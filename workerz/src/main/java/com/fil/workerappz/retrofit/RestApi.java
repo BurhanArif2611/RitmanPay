@@ -273,7 +273,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-providers")
-    Call<List<GetProvidersList>> getProvidersJsonCall(@Field("json") String json);
+    Call<List<GetProvidersList>>getProvidersJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-regions")

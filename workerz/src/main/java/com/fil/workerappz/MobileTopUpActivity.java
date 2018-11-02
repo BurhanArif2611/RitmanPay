@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -41,6 +41,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,6 +101,12 @@ public class MobileTopUpActivity extends ActionBarActivity {
     @BindView(R.id.serviceProviderEditTextMobileTopUp)
     EditText serviceProviderEditTextMobileTopUp;
 
+    @BindView(R.id.walletBalance)
+    TextView walletBalance;
+    @BindView(R.id.serviceProviderSpinnerMobileTopup)
+    MaterialSpinner serviceProviderSpinnerMobileTopup;
+
+
     //        @BindView(R.id.imagecountrycode)
 //    ImageView imagecountrycode;
     private String countryIso = "";
@@ -114,6 +121,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     private String selectcountry, selectplanmsg, nointernetmsg, nodatafound;
     private String mobilenumber;
     private String validmobilenumber;
+    private int selctedProviderposition = -1;
 
 
     @Override
@@ -185,38 +193,70 @@ public class MobileTopUpActivity extends ActionBarActivity {
         } else {
             Constants.showMessage(mainMobileTopUpLinearLayout, this, nointernetmsg);
         }
-        mobileNumberEditTextRecharge.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Constants.hideKeyboard(MobileTopUpActivity.this);
-                    serviceProviderEditTextMobileTopUp.setText("");
-                    mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
-//                    linearbrowserplans.setVisibility(View.GONE);
-                    BrowserPlansEditTextMobileTopUp.setText("");
-                    if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                    } else {
-                        if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
-                            serviceProviderJsonCall();
-                        } else {
-                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
-                        }
-                    }
+        walletBalance.setText(datumLable_languages.getBALANCE() + ": " + getWalletBalance());
 
-                    return true;
+        mobileNumberEditTextRecharge.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                /* When focus is lost check that the text field
+                 * has valid values.
+                 */
+                if (!hasFocus) {
+
                 }
-                return false;
             }
         });
 
+        mobileNumberEditTextRecharge.addTextChangedListener(new TextWatcher() {
+
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                if (c.length() >= 7) {
+                    serviceProviderJsonCall();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+                // this one too
+            }
+        });
     }
+//        mobileNumberEditTextRecharge.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    Constants.hideKeyboard(MobileTopUpActivity.this);
+//                    serviceProviderEditTextMobileTopUp.setText("");
+//                    mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
+////                    linearbrowserplans.setVisibility(View.GONE);
+//                    BrowserPlansEditTextMobileTopUp.setText("");
+//                    if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                    } else {
+//                        if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
+//                            serviceProviderJsonCall();
+//                        } else {
+//                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
+//                        }
+//                    }
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
 
     private void dingCountryListJsonCall() {
         Constants.showProgress(MobileTopUpActivity.this);
@@ -252,6 +292,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                                         textcontrycode.setText("+" + dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix());
                                         countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
                                         countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
+                                        serviceProviderJsonCall();
                                     } else {
                                         textcontrycode.setText(datumLable_languages.getCountry());
 
@@ -277,7 +318,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
 
     private void serviceProviderJsonCall() {
         JSONObject jsonObject = new JSONObject();
-        Constants.showProgress(MobileTopUpActivity.this);
+//        Constants.showProgress(MobileTopUpActivity.this);
         try {
             jsonObject.put("countryIsos", countryIso);
             jsonObject.put("regionCodes", "");
@@ -297,16 +338,51 @@ public class MobileTopUpActivity extends ActionBarActivity {
 
             @Override
             public void onResponse(Call<List<GetProvidersList>> call, Response<List<GetProvidersList>> response) {
-                Constants.closeProgress();
-                serviceProviderJsonPojos.clear();
+//                Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
+                    ArrayList<String> cityList = new ArrayList<>();
+                    cityList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, cityList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    serviceProviderSpinnerMobileTopup.setAdapter(adapter);
+                    serviceProviderJsonPojos.clear();
                     serviceProviderJsonPojos.addAll(response.body());
                     if (serviceProviderJsonPojos.get(0).getStatus() == true) {
                         if (serviceProviderJsonPojos.get(0).getData().size() != 0) {
-                            serviceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
+//                            serviceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
+                            for (int i = 0; i < serviceProviderJsonPojos.get(0).getData().size(); i++) {
+                                cityList.add(serviceProviderJsonPojos.get(0).getData().get(i).getName());
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(cityListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = cityListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                            }
+                            adapter = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, cityList);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            serviceProviderSpinnerMobileTopup.setAdapter(adapter);
+
+                            serviceProviderSpinnerMobileTopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position != -1) {
+                                        selctedProviderposition = position;
+
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
                         } else {
-                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
+//                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
                         }
+
+
                     } else {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages_msg.getMessage(serviceProviderJsonPojos.get(0).getInfo().toString()));
                     }
@@ -319,6 +395,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 t.printStackTrace();
             }
         });
+
+
     }
 
     @OnClick({R.id.menuImageViewHeader2, R.id.serviceProviderEditTextMobileTopUp, R.id.browserPlansEditTextMobileTopUp, R.id.submit_textview, R.id.appImageViewHeader2, R.id.linearspinner})
@@ -335,6 +413,28 @@ public class MobileTopUpActivity extends ActionBarActivity {
             case R.id.linearspinner:
                 countrySpinnerMobileTopUpSpinner.performClick();
                 break;
+//            case R.id.linearspinnerServiceProvider:
+//                serviceProviderEditTextMobileTopUp.setText("");
+//                mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
+////                    linearbrowserplans.setVisibility(View.GONE);
+//                BrowserPlansEditTextMobileTopUp.setText("");
+//                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                } else {
+//                    if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
+//                        serviceProviderJsonCall();
+//                    } else {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
+//                    }
+//                }
+//
+//                break;
 //            case R.id.imagecountrycode:
 //                countrySpinnerMobileTopUpSpinner.performClick();
 //                break;
@@ -346,20 +446,20 @@ public class MobileTopUpActivity extends ActionBarActivity {
             case R.id.browserPlansEditTextMobileTopUp:
                 Constants.hideKeyboard(MobileTopUpActivity.this
                 );
-                if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
+                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                }else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+                } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                } else if (serviceProviderEditTextMobileTopUp.getText().toString().length() == 0) {
+                } else if (selctedProviderposition == -1) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
                 } else {
 
                     mIntent = new Intent(MobileTopUpActivity.this, BrowsePlansActivity.class);
-                    mIntent.putExtra("provider", serviceProviderJsonPojos.get(0).getData().get(0));
+                    mIntent.putExtra("provider", serviceProviderJsonPojos.get(0).getData().get(selctedProviderposition));
                     mIntent.putExtra("mobile_no", countryPrefix + mobileNumberEditTextRecharge.getText().toString().trim());
                     mIntent.putExtra("country_iso", countryIso);
                     startActivity(mIntent);
@@ -367,7 +467,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.submit_textview:
-                if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
+                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
@@ -480,4 +580,6 @@ public class MobileTopUpActivity extends ActionBarActivity {
             }
         });
     }
+
+
 }
