@@ -23,11 +23,30 @@
             android:orientation="vertical">
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/bankAccountNumberEditTextAddBeneficiaryNext"
+            android:id="@+id/bankAccountNumberEditTextAddBeneficiaryNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/bank_account_number"
+            android:inputType="numberPassword"
+            android:maxLength="20"
+            android:paddingLeft="@dimen/_5sdp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_11ssp"
+            app:met_baseColor="@color/colorBlack"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelPadding="@dimen/_5sdp"
+            app:met_floatingLabelTextSize="@dimen/_10ssp"
+            app:met_primaryColor="@color/colorGreen"
+            app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/bankReAccountNumberEditTextAddBeneficiaryNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:hint="@string/bank_account_number"
+                android:hint="@string/re_enter_bank_account_number"
                 android:inputType="number"
                 android:maxLength="20"
                 android:paddingLeft="@dimen/_5sdp"
@@ -40,7 +59,42 @@
                 app:met_floatingLabelTextSize="@dimen/_10ssp"
                 app:met_primaryColor="@color/colorGreen"
                 app:met_singleLineEllipsis="false" />
-
+            <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/accountHolderNameEditTextAddBeneficiaryNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:hint="@string/account_holder_name"
+            android:inputType="text"
+            android:maxLength="30"
+            android:paddingLeft="@dimen/_5sdp"
+            android:text=""
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_11ssp"
+            app:met_baseColor="@color/colorBlack"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelPadding="@dimen/_5sdp"
+            app:met_floatingLabelTextSize="@dimen/_10ssp"
+            app:met_primaryColor="@color/colorGreen"
+            app:met_singleLineEllipsis="false" />
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/ifscCodeEditTextAddBeneficiaryNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/ifsc_code"
+                android:inputType="text"
+                android:maxLength="30"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_11ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="@dimen/_5sdp"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

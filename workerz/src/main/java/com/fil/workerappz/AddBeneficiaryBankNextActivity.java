@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fil.workerappz.adapter.BankListAdapter;
 import com.fil.workerappz.pojo.BankNetworkListJsonPojo;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
@@ -34,7 +33,6 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +52,16 @@ import retrofit2.Response;
 public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 
 
+    @BindView(R.id.bankReAccountNumberEditTextAddBeneficiaryNext)
+    MaterialEditText bankReAccountNumberEditTextAddBeneficiaryNext;
+    @BindView(R.id.accountHolderNameEditTextAddBeneficiaryNext)
+    MaterialEditText accountHolderNameEditTextAddBeneficiaryNext;
+    @BindView(R.id.ifscCodeEditTextAddBeneficiaryNext)
+    MaterialEditText ifscCodeEditTextAddBeneficiaryNext;
     private String Countrycode;
     private String purposecode;
     private String Countryshortcode;
-    private String bankbranchname,BankBranchCode,BankBranchNamevalidation;
+    private String bankbranchname, BankBranchCode, BankBranchNamevalidation;
     private BeneficiaryInfoListPojo beneficiaryinfoPojo;
     private BeneficiaryListPojo.Data bankbenefiardata;
     @BindView(R.id.menuImageViewHeader2)
@@ -95,12 +99,12 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
     private final ArrayList<CreateBeneficiaryJsonPojo> createBeneficiaryJsonPojos = new ArrayList<>();
     private final ArrayList<EditBeneficiaryJsonPojo> editBeneficiaryJsonPojos = new ArrayList<>();
     private String Beneficiarnumber;
-    private String str="";
+    private String str = "";
     private QuickPayDataPojo quickPayData = new QuickPayDataPojo();
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String accountnumbermsg,minimumaccountmsg,banknamemsg,branchcodemsg,branchaddmsg,validbankmsg,mobilenumber,validmobilenumber,purposetransfermsg;
+    private String accountnumbermsg, minimumaccountmsg, banknamemsg, branchcodemsg, branchaddmsg, validbankmsg, mobilenumber, validmobilenumber, purposetransfermsg;
     private String nointernetmsg;
     ArrayList<String> stringArrayList = new ArrayList<>();
 
@@ -118,18 +122,16 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             bankAccountNumberEditTextAddBeneficiaryNext.setText(quickPayData.getBenificaryAccountNumber());
             bankNameEditTextAddBeneficiary.setText(quickPayData.getBenificaryBankName());
             bankCodeEditTextAddBeneficiary.setText(quickPayData.getBenificaryBankCode());
-            BankBranchCode=quickPayData.getBenificaryBankCode();
+            BankBranchCode = quickPayData.getBenificaryBankCode();
             bankAddressEditTextAddBeneficiary.setText(quickPayData.getBenificaryBranchNameAndAddress());
             phoneNumberEditTextAddBeneficiary.setText(quickPayData.getBenificaryTelephone());
             purposecode = quickPayData.getBenificaryPurposeCode();
-        }
-        else
-        {
+        } else {
             bankbenefiardata = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiaryapidata");
             bankAccountNumberEditTextAddBeneficiaryNext.setText(bankbenefiardata.getBenificaryAccountNumber());
             bankNameEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBankName());
             bankCodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBankCode());
-            BankBranchCode=bankbenefiardata.getBenificaryBankCode();
+            BankBranchCode = bankbenefiardata.getBenificaryBankCode();
             bankAddressEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBranchNameAndAddress());
             phoneNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());
             purposecode = bankbenefiardata.getBenificaryPurposeCode();
@@ -146,7 +148,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
 
         try {
-            sessionManager=new SessionManager(AddBeneficiaryBankNextActivity.this);
+            sessionManager = new SessionManager(AddBeneficiaryBankNextActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
@@ -164,12 +166,10 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                 purposeOfTransferSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getPurposeOfTransfer());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
 
-            }
-            else
-            {
+            } else {
                 titleTextViewViewHeader2.setText("Beneficiary Info");
 
                 bankAccountNumberEditTextAddBeneficiaryNext.setHint(getResources().getString(R.string.bank_account_number));
@@ -179,37 +179,35 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                 addTextViewAddBeneficiary.setHint(getResources().getString(R.string.add));
                 phoneNumberEditTextAddBeneficiary.setHint(getResources().getString(R.string.phone_number));
                 purposeOfTransferSpinnerAddBeneficiary.setHint(getResources().getString(R.string.purpose_of_transfer));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (datumLable_languages_msg != null) {
-            accountnumbermsg=datumLable_languages_msg.getEnterAccountNo();
-            minimumaccountmsg=datumLable_languages_msg.getEnterMinimum12DigitAccountNumber();
-            banknamemsg=datumLable_languages_msg.getEnterBankName();
-            branchcodemsg=datumLable_languages_msg.getEnterBranchCode();
-            branchaddmsg=datumLable_languages_msg.getEnterBranchAddress();
-            validbankmsg=datumLable_languages_msg.getEnterValidBankDetails();
-            mobilenumber=datumLable_languages_msg.getEnterMobileNumber();
-            validmobilenumber=datumLable_languages_msg.getMobileNumberShouldBeAtLeast9Digits();
-            purposetransfermsg=datumLable_languages_msg.getSelectPurposeOfTransfer();
+            accountnumbermsg = datumLable_languages_msg.getEnterAccountNo();
+            minimumaccountmsg = datumLable_languages_msg.getEnterMinimum12DigitAccountNumber();
+            banknamemsg = datumLable_languages_msg.getEnterBankName();
+            branchcodemsg = datumLable_languages_msg.getEnterBranchCode();
+            branchaddmsg = datumLable_languages_msg.getEnterBranchAddress();
+            validbankmsg = datumLable_languages_msg.getEnterValidBankDetails();
+            mobilenumber = datumLable_languages_msg.getEnterMobileNumber();
+            validmobilenumber = datumLable_languages_msg.getMobileNumberShouldBeAtLeast9Digits();
+            purposetransfermsg = datumLable_languages_msg.getSelectPurposeOfTransfer();
         } else {
 
-            accountnumbermsg=getResources().getString(R.string.Please_Enter_account_number);
-            minimumaccountmsg=getResources().getString(R.string.Please_Enter_minimum_account_number);
-            banknamemsg=getResources().getString(R.string.Please_Enter_bank_name);
-            branchcodemsg=getResources().getString(R.string.Please_Enter_branch_code);
-            branchaddmsg=getResources().getString(R.string.Please_Enter_branch_address);
-            validbankmsg=getResources().getString(R.string.Please_Enter_valid_bank_details);
-            mobilenumber=getResources().getString(R.string.Please_Enter_Mobile_number);
-            validmobilenumber=getResources().getString(R.string.Mobile_number_9_digits);
-            purposetransfermsg=getResources().getString(R.string.Please_select_purpose_transfer);
+            accountnumbermsg = getResources().getString(R.string.Please_Enter_account_number);
+            minimumaccountmsg = getResources().getString(R.string.Please_Enter_minimum_account_number);
+            banknamemsg = getResources().getString(R.string.Please_Enter_bank_name);
+            branchcodemsg = getResources().getString(R.string.Please_Enter_branch_code);
+            branchaddmsg = getResources().getString(R.string.Please_Enter_branch_address);
+            validbankmsg = getResources().getString(R.string.Please_Enter_valid_bank_details);
+            mobilenumber = getResources().getString(R.string.Please_Enter_Mobile_number);
+            validmobilenumber = getResources().getString(R.string.Mobile_number_9_digits);
+            purposetransfermsg = getResources().getString(R.string.Please_select_purpose_transfer);
 
 
         }
@@ -219,8 +217,64 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         if (IsNetworkConnection.checkNetworkConnection(this)) {
             purposeOfTransferJsonCall();
         } else {
-            Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, this,nointernetmsg);
+            Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, this, nointernetmsg);
         }
+
+        bankReAccountNumberEditTextAddBeneficiaryNext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//                CustomLog.d("System out", "substring " + bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().substring(0, editable.length()));
+                CustomLog.d("System out", "editable " + editable);
+
+                int main_length = bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length();
+
+                if (main_length > editable.length()) {
+                    if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().substring(0, editable.length()).equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
+                        bankReAccountNumberEditTextAddBeneficiaryNext.setError("Account number not match");
+                        accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
+                        ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
+                    }
+                }
+                else if (main_length == editable.length())
+                {
+                    if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().substring(0, editable.length()).equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
+                        bankReAccountNumberEditTextAddBeneficiaryNext.setError("Account number not match");
+                        accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
+                        ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
+                    }
+                    else {
+                        accountHolderNameEditTextAddBeneficiaryNext.setEnabled(true);
+                        ifscCodeEditTextAddBeneficiaryNext.setEnabled(true);
+                    }
+                }else {
+                    bankReAccountNumberEditTextAddBeneficiaryNext.setError("Account number not match");
+                    accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
+                    ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
+                }
+            }
+        });
+
+//        bankReAccountNumberEditTextAddBeneficiaryNext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
+//                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, "Account number not match");
+//                    }
+//                }
+//            }
+//        });
+
 //        bankNameEditTextAddBeneficiary.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -248,7 +302,9 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 //            }
 //        });
 
-        bankNameEditTextAddBeneficiary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bankNameEditTextAddBeneficiary.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (bankNameEditTextAddBeneficiary.isPerformingCompletion()) {
@@ -256,7 +312,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     return;
                 }
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                Log.d("System out",selectedItem);
+                Log.d("System out", selectedItem);
 
                 int index = stringArrayList.indexOf(bankNameEditTextAddBeneficiary.getText().toString());
                 Log.d("System out", String.valueOf(index));
@@ -351,27 +407,25 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             case R.id.addTextViewAddBeneficiary:
                 if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,accountnumbermsg );
-                }
-                else if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
+                            , accountnumbermsg);
+                } else if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,minimumaccountmsg);
-                }else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
+                            , minimumaccountmsg);
+                } else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,banknamemsg);
+                            , banknamemsg);
 
                 } else if (bankCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,branchcodemsg );
+                            , branchcodemsg);
 
                 } else if (bankAddressEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,branchaddmsg);
+                            , branchaddmsg);
 
-                }
-                else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {
+                } else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,validbankmsg);
+                            , validbankmsg);
                 }
 //                else if (!bankAddressEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankbranchAddress)) {
 //                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
@@ -379,7 +433,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 //                }
                 else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,mobilenumber);
+                            , mobilenumber);
 
                 } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
@@ -387,7 +441,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 
                 } else if (purposeOfTransferSpinnerAddBeneficiary == null && purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            ,purposetransfermsg );
+                            , purposetransfermsg);
                 } else if (purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , purposetransfermsg);
@@ -396,7 +450,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
                         editBeneficiaryJsonCall();
                     } else {
-                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, this,nointernetmsg);
+                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, this, nointernetmsg);
                     }
 //                    Intent intent=new Intent(AddBeneficiaryBankNextActivity.this,VerifiedPinActivity.class);
 //                    startActivity(intent);
@@ -428,11 +482,9 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("ZipCode", beneficiaryinfoPojo.getZipCode());
             jsonObject.put("EmailID", beneficiaryinfoPojo.getEmailID());
             if (beneficiaryinfoPojo.getDateOfBirth() == null) {
-                if (getIntent().getExtras().getString("quick_pay") != null)
-                {
+                if (getIntent().getExtras().getString("quick_pay") != null) {
                     jsonObject.put("DateOfBirth", quickPayData.getBenificaryDateOfBirth());
-                }
-                else {
+                } else {
                     jsonObject.put("DateOfBirth", bankbenefiardata.getBenificaryDateOfBirth());
                 }
 
@@ -476,12 +528,10 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     editBeneficiaryJsonPojos.clear();
                     editBeneficiaryJsonPojos.addAll(response.body());
                     if (editBeneficiaryJsonPojos.get(0).getStatus() == true) {
-                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString())!=null) {
+                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()) != null) {
                             Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
-                        }
-                        else
-                        {
-                            Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this,response.body().get(0).getInfo().toString());
+                        } else {
+                            Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, response.body().get(0).getInfo().toString());
                         }
                         Constants.closeProgress();
                         beneficiaryinfoPojo.setBeneficiarynumber(editBeneficiaryJsonPojos.get(0).getData().get(0).getBeneficiaryNo());
@@ -494,10 +544,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                         startActivity(intent);
 
 
-                    }
-                    else
-                    {
-                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this,response.body().get(0).getInfo().toString());
+                    } else {
+                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, response.body().get(0).getInfo().toString());
                     }
                 }
             }
@@ -516,7 +564,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         try {
             jsonObject.put("countryCode", Countryshortcode);
             jsonObject.put("bankName", "");
-            jsonObject.put("bankIFSC", "");
+            jsonObject.put("bankIFSC", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("branchName", beneficiaryinfoPojo.getLandMark());
         } catch (JSONException e) {
             e.printStackTrace();
