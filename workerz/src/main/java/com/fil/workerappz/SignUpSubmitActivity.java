@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -29,10 +31,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fil.workerappz.adapter.SecurityQuestionListAdapter;
 import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.CityListPojo;
 import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.CountryListPojo;
+import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
 import com.fil.workerappz.pojo.StateListPojo;
@@ -134,6 +138,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     MaterialEditText zipcodeEditTextSignUp;
     @BindView(R.id.streetEditTextSignUp)
     MaterialEditText streetEditTextSignUp;
+    @BindView(R.id.securityQuestionsRecyclerView)
+    RecyclerView securityQuestionsRecyclerView;
+    @BindView(R.id.securityLinearLayout)
+    LinearLayout securityLinearLayout;
     private Intent mIntent;
     private String gender = "Male";
     private final String signUpWith = "Email";
@@ -145,16 +153,20 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
     private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
     private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
+    private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
     private final ArrayList<UserListPojo> userListPojos = new ArrayList<>();
     private String fbId = "";
     private String googleId = "";
     private String locale = "IND";
     private boolean inputType = false;
     private String CountryCodegoogle = "";
+    private String CountryName = "";
     private String countryIdNationality = "";
+    private LinearLayoutManager layoutManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String firstname, lastname, mobilenumber, validmobilenumber, email, validemail, address, gendermsg, selectcountry, passportmsg, passportvalidationmsg, emiratesvalidationmsg, emiratesidmsg, registrationdonemsg, nointernetmessage;
+    private SecurityQuestionListAdapter securityQuestionListAdapter;
 
 
     private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
@@ -297,11 +309,11 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                 ArrayList<String> countryList = new ArrayList<>();
                 for (int i = 0; i < countryListPojos.size(); i++) {
                     countryList.add(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-                    if(locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+                    if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
                         countryCode = countryListPojos.get(i).getCountryDialCode();
                         countryId = countryListPojos.get(i).getCountryID();
                         countryIdNationality = String.valueOf(countryListPojos.get(i).getCountryID());
-                        countryOfResidenceSpinnerSignUpSubmit.setSelection(i+1);
+                        countryOfResidenceSpinnerSignUpSubmit.setSelection(i + 1);
                         break;
                     }
                 }
@@ -336,10 +348,12 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, this, nointernetmessage);
         }
-
+        layoutManager = new LinearLayoutManager(SignUpSubmitActivity.this);
+        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
         customTextView(tvCreateAccountSignUp);
         stateListJsonCall();
         cityListJsonCall();
+        questionListJsonCall();
 
         maleFemaleRadioGroupSignUpSubmit.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -624,8 +638,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (addressEditTextSignUp.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, address);
             checkFlag = false;
-        }
-        else if (streetEditTextSignUp.getText().toString().length() == 0) {
+        } else if (streetEditTextSignUp.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please enter street");
             checkFlag = false;
         } else if (landmarkEditTextSignUp.getText().toString().length() == 0) {
@@ -651,6 +664,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
+            checkFlag = false;
+        }
+        else if (Constants.answerId.equals("")) {
+            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
 
@@ -685,6 +702,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             jsonObject.put("userSignupWith", signUpWith);
             jsonObject.put("userFBID", "");
             jsonObject.put("userGPlusID", "");
+            jsonObject.put("secID", Constants.answerId);
+            jsonObject.put("userSecurityAnswer", Constants.answer);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -798,14 +817,13 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         ArrayList<String> countryList = new ArrayList<>();
                         for (int i = 0; i < countryListPojos.size(); i++) {
                             countryList.add(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+                            if ((new String(Base64.decode(CountryName.trim().getBytes(), Base64.DEFAULT))).equalsIgnoreCase(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
                                 countryCode = countryListPojos.get(i).getCountryDialCode();
                                 countryId = countryListPojos.get(i).getCountryID();
                                 countryIdNationality = String.valueOf(countryListPojos.get(i).getCountryID());
-                                countryOfResidenceSpinnerSignUpSubmit.setSelection(i+1);
+                                countryOfResidenceSpinnerSignUpSubmit.setSelection(i + 1);
                                 break;
                             }
-
 
 
                         }
@@ -943,6 +961,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         countryId = countryListPojosupdated.get(position).getCountryID();
         stateId = 0;
         cityId = 0;
+        CountryName= countryListPojosupdated.get(position).getCountryName();
         countryListJsonCall();
     }
 
@@ -1024,7 +1043,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         JSONObject jsonObject = new JSONObject();
         try {
 
-            if (stateId == 0 && countryId==(0)) {
+            if (stateId == 0 && countryId == (0)) {
                 jsonObject.put("languageID", Constants.language_id);
             } else if (stateId == 0) {
                 jsonObject.put("languageID", Constants.language_id);
@@ -1095,6 +1114,48 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<List<CityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
+
+    private void questionListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+
+//                jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("userMobile", "0");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(SignUpSubmitActivity.this);
+        CustomLog.d("System out", "question list json " + json);
+        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+
+        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    SequrityQuestionListPojos.clear();
+                    if (response.body().get(0).getStatus() == true) {
+                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+                        securityLinearLayout.setVisibility(View.VISIBLE);
+                        securityQuestionListAdapter = new SecurityQuestionListAdapter(SignUpSubmitActivity.this, SequrityQuestionListPojos);
+                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+                    } else {
+                        securityLinearLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
                 Constants.closeProgress();
             }
         });

@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -73,6 +74,9 @@ public class Constants {
     public static GetProductsList.Data productListData = null;
     public static boolean Updateflag=false;
     public static int beneficiarcount=0;
+    public static String answerId="";
+    public static String answer="";
+    public static ArrayList<String>answerevalidation;
 
     public static void showProgress(Activity activity) {
         try {
