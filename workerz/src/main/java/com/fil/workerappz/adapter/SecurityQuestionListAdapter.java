@@ -9,12 +9,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.fil.workerappz.R;
-import com.fil.workerappz.SignUpSubmitActivity;
 import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.utils.Constants;
 
@@ -28,11 +26,13 @@ public class SecurityQuestionListAdapter extends RecyclerView.Adapter<SecurityQu
     private Intent mIntent;
     private final Activity mContext;
     private int selectedradiobutton = -1;
+    private boolean enabled = false;
     private List<GetSecurityListPojo.DataSecurityList> getSecurityListPojo;
 
-    public SecurityQuestionListAdapter(Activity SignUpSubmitActivity, ArrayList<GetSecurityListPojo.DataSecurityList> sequrityQuestionListPojos) {
+    public SecurityQuestionListAdapter(Activity SignUpSubmitActivity, ArrayList<GetSecurityListPojo.DataSecurityList> sequrityQuestionListPojos, boolean b) {
         this.getSecurityListPojo = sequrityQuestionListPojos;
         this.mContext = SignUpSubmitActivity;
+        this.enabled = b;
 
     }
 
@@ -47,6 +47,16 @@ public class SecurityQuestionListAdapter extends RecyclerView.Adapter<SecurityQu
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
+        if (enabled)
+        {
+            holder.RadioButtonSignUpSubmit.setEnabled(enabled);
+            holder.answerEdittext.setEnabled(enabled);
+        }
+        else
+        {
+            holder.RadioButtonSignUpSubmit.setEnabled(enabled);
+            holder.answerEdittext.setEnabled(enabled);
+        }
         holder.RadioButtonSignUpSubmit.setText(getSecurityListPojo.get(listPosition).getSecQuestion().trim());
         holder.RadioButtonSignUpSubmit.setTag(listPosition + 1);
 

@@ -411,7 +411,17 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                 } else if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , minimumaccountmsg);
-                } else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
+                }
+              else if (bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
+                            , "Please Enter bankReAccountNumber");
+                }
+               else if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString()))
+                {
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
+                            , "Account number and Reaccount number does not match");
+                }
+                else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , banknamemsg);
 

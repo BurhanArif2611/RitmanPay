@@ -368,6 +368,7 @@ public class SignInActivity extends ActionBarActivity {
 
                         SessionManager sessionManager = new SessionManager(SignInActivity.this);
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
+                        sessionManager.setWalletBalance((float) 0.0);
                         sessionManager.setlanguageselection(Constants.language_id_label_msg);
 
                         if (rememberMeCheckBox.isChecked() == true) {

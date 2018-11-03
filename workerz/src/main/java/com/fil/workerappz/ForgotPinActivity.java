@@ -240,7 +240,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                     if (response.body().get(0).getStatus() == true) {
                         SequrityQuestionListPojos.addAll(response.body().get(0).getData());
                         securityLinearLayout.setVisibility(View.VISIBLE);
-                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ForgotPinActivity.this, SequrityQuestionListPojos);
+                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ForgotPinActivity.this, SequrityQuestionListPojos, true);
                         securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
                     } else {
                         securityLinearLayout.setVisibility(View.GONE);
@@ -285,6 +285,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos != null) {
                         if (jsonListPojos.get(0).getStatus() == true) {
+                            Constants.answerId="";
                             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo()));
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -325,7 +326,7 @@ public class ForgotPinActivity extends ActionBarActivity {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validmobilenumber);
             checkFlag = false;
         }
-        else if (Constants.answerId.equals("")) {
+        else if (Constants.answer.equals("")) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -364,7 +365,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                     verifyListPojo.addAll(response.body());
                     if (verifyListPojo != null) {
                         if (verifyListPojo.get(0).getStatus() == true) {
-
+                            Constants.answer="";
                             getForgotPIN();
                         } else {
                             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, datumLable_languages_msg.getMessage(verifyListPojo.get(0).getInfo()));

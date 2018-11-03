@@ -3,7 +3,9 @@ package com.fil.workerappz.adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -205,13 +207,30 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                         Constants.closeProgress();
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserID(String.valueOf(userId));
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycImage(response.body().get(0).getInfo().get(0).getUserkycImage());
-                        Constants.showMessage(mainUploadYourDocumentLinearLayout, mContext, datumLable_languages_msg.getFileUploadedSuccessfully());
+
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycStatus(response.body().get(0).getInfo().get(0).getUserkycStatus());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycStatusReason(response.body().get(0).getInfo().get(0).getUserkycStatusReason());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycStatusDate(response.body().get(0).getInfo().get(0).getUserkycStatusDate());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycCreatedDate(response.body().get(0).getInfo().get(0).getUserkycCreatedDate());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setKycstatushistory(response.body().get(0).getInfo().get(0).getKycstatushistory());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycID(response.body().get(0).getInfo().get(0).getUserkycID());
+                        int counter1=0;
+                        for (int i = 0; i < kycUploadedDocumentListJsonPojos.size(); i++) {
+                            if (kycUploadedDocumentListJsonPojos.get(i).getUserkycImage().equals("")) {
+
+                            } else {
+                                counter1++;
+                            }
+                        }
+                        if (counter1 >=3) {
+
+                            Constants.showMessage(mainUploadYourDocumentLinearLayout, mContext, "Sufficient documents uploaded");
+                        }
+                        else
+                        {
+                            Constants.showMessage(mainUploadYourDocumentLinearLayout, mContext, datumLable_languages_msg.getFileUploadedSuccessfully());
+
+                        }
 
                         notifyDataSetChanged();
                         if (datumLable_languages.getSave() != null) {

@@ -314,6 +314,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                         if (documentListCountryWiseJsonPojos.size() > 0) {
                             layoutManager = new LinearLayoutManager(UploadYourDocumentActivity.this);
                             uploadDocumentRecyclerView.setLayoutManager(layoutManager);
+
                             uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2, datumLable_languages, datumLable_languages_msg, mainUploadYourDocumentLinearLayout);
                             uploadDocumentRecyclerView.setAdapter(uploadDocumentListAdapter);
                             uploadDocumentListAdapter.notifyDataSetChanged();

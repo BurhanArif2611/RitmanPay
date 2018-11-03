@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
+import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.JsonListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
@@ -20,7 +21,9 @@ import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
 import com.fil.workerappz.utils.SessionManager;
 import com.fil.workerappz.utils.SlideHolder;
+import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,8 +70,11 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
     private String verifiedpinmsg;
     private String nointernetmsg;
     private String activitytype;
+    private String searchType;
     private BeneficiaryListPojo.Data bankbenefiardata;
     private QuickPayDataPojo quickPayData = new QuickPayDataPojo();
+    private BeneficiaryInfoListPojo beneficiaryinfoPojo;
+    private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
 
         activitytype = getIntent().getExtras().getString("come_from");
+        searchType = getIntent().getExtras().getString("search");
 
         if (activitytype.equalsIgnoreCase("bank")) {
             bankbenefiardata = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiary_object");
@@ -164,21 +171,62 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
                     Constants.closeProgress();
                     if (response.body().get(0).getStatus() == true) {
 //                        Constants.showMessage(mainPinVerificationLinearLayout, BeneficiaryPinVerificationActivity.this, response.body().get(0).getInfo());
-                        if (activitytype.equalsIgnoreCase("cash")) {
-                            mIntent = new Intent(BeneficiaryPinVerificationActivity.this, SelectBeneficiaryViewActivity.class);
-                            mIntent.putExtra("come_from", activitytype);
-                            mIntent.putExtra("beneficiary_object",bankbenefiardata);
-                         startActivity(mIntent);
-                         finish();
-                        } else if (activitytype.equalsIgnoreCase("bank")) {
-                            mIntent = new Intent(BeneficiaryPinVerificationActivity.this, SelectBeneficiaryViewActivity.class);
-                            mIntent.putExtra("come_from", activitytype);
-                            mIntent.putExtra("beneficiary_object", bankbenefiardata);
+                        if (searchType.equalsIgnoreCase("")) {
+                            if (activitytype.equalsIgnoreCase("cash")) {
+                                mIntent = new Intent(BeneficiaryPinVerificationActivity.this, SelectBeneficiaryViewActivity.class);
+                                mIntent.putExtra("come_from", activitytype);
+                                mIntent.putExtra("beneficiary_object", bankbenefiardata);
+                                startActivity(mIntent);
+                                finish();
+                            } else if (activitytype.equalsIgnoreCase("bank")) {
+                                mIntent = new Intent(BeneficiaryPinVerificationActivity.this, SelectBeneficiaryViewActivity.class);
+                                mIntent.putExtra("come_from", activitytype);
+                                mIntent.putExtra("beneficiary_object", bankbenefiardata);
+                                startActivity(mIntent);
+                                finish();
+                            }
+                        } else {
+
+                            String flagimage = "";
+                            if (SugarRecord.count(CountryData.class) > 0) {
+                                countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
+                                for (int i = 0; i < countryListPojos.size(); i++) {
+                                    if (bankbenefiardata.getBenificaryNationality().equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+                                        flagimage=countryListPojos.get(i).getCountryFlagImage();
+                                        break;
+                                    }
+
+                                }
+                            }
+                            BeneficiaryInfoListPojo beneficiaryInfoListPojo = new BeneficiaryInfoListPojo();
+                            beneficiaryInfoListPojo.setFirstName(bankbenefiardata.getBenificaryFirstName());
+                            beneficiaryInfoListPojo.setMiddleName(bankbenefiardata.getBenificaryMiddleName());
+                            beneficiaryInfoListPojo.setLastName(bankbenefiardata.getBenificaryLastName());
+                            beneficiaryInfoListPojo.setNickName(bankbenefiardata.getBenificaryNickName());
+                            beneficiaryInfoListPojo.setAddress(bankbenefiardata.getBenificaryAddress());
+                            beneficiaryInfoListPojo.setLandMark(bankbenefiardata.getBenificaryLandMark());
+                            beneficiaryInfoListPojo.setZipCode(bankbenefiardata.getBenificaryZipCode());
+                            beneficiaryInfoListPojo.setEmailID(bankbenefiardata.getBenificaryEmailID());
+                            beneficiaryInfoListPojo.setDateOfBirth(bankbenefiardata.getBenificaryDateOfBirth());
+                            beneficiaryInfoListPojo.setCountryFlagImage(flagimage);
+                            beneficiaryInfoListPojo.setTelephone(bankbenefiardata.getBenificaryTelephone());
+                            beneficiaryInfoListPojo.setIDType(bankbenefiardata.getBenificaryIDType());
+                            beneficiaryInfoListPojo.setIDNumber(bankbenefiardata.getBenificaryIDNumber());
+                            beneficiaryInfoListPojo.setIDtype_Description(bankbenefiardata.getBenificaryIDtype_Description());
+//                    beneficiaryInfoListPojo.setNationality(nationalitySpinnerAddBeneficiary.getSelectedItem().toString());
+                            beneficiaryInfoListPojo.setNationality(bankbenefiardata.getBenificaryNationality());
+                            beneficiaryInfoListPojo.setPayoutcurrency(bankbenefiardata.getBenificaryPayOutCurrency());
+                            beneficiaryInfoListPojo.setPayoutcountry(bankbenefiardata.getBenificaryPayoutCountryCode());
+                            beneficiaryInfoListPojo.setBeneficiarynumber(bankbenefiardata.getBenificaryBeneficiaryNo());
+                            beneficiaryInfoListPojo.setPayoutbranchcode(bankbenefiardata.getBenificaryPayOutBranchCode());
+
+                            mIntent = new Intent(BeneficiaryPinVerificationActivity.this, BeneficiaryInfoSendActivity.class);
+                            mIntent.putExtra("flagimage", flagimage);
+                            mIntent.putExtra("countryshortcode", getUserData().getCountryShortCode());
+                            mIntent.putExtra("beneficiary_data", beneficiaryInfoListPojo);
                             startActivity(mIntent);
-                            finish();
                         }
-                    }
-                    else {
+                    } else {
                         Constants.showMessage(mainPinVerificationLinearLayout, BeneficiaryPinVerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                     }
                 }

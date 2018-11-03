@@ -666,7 +666,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
         }
-        else if (Constants.answerId.equals("")) {
+        else if (Constants.answer.equals("")) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -729,6 +729,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         sessionManager.setLogin(true);
                         sessionManager.setVerify(false);
                         sessionManager.setLogoutVerify(false);
+                        Constants.answerId="";
+                        Constants.answer="";
 
 
                         final Handler handler = new Handler();
@@ -1146,7 +1148,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                     if (response.body().get(0).getStatus() == true) {
                         SequrityQuestionListPojos.addAll(response.body().get(0).getData());
                         securityLinearLayout.setVisibility(View.VISIBLE);
-                        securityQuestionListAdapter = new SecurityQuestionListAdapter(SignUpSubmitActivity.this, SequrityQuestionListPojos);
+                        securityQuestionListAdapter = new SecurityQuestionListAdapter(SignUpSubmitActivity.this, SequrityQuestionListPojos, true);
                         securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
                     } else {
                         securityLinearLayout.setVisibility(View.GONE);

@@ -179,6 +179,12 @@ public class UserListPojo implements Serializable {
         @SerializedName("userFirstName")
         private String userFirstName;
         @Expose
+        @SerializedName("userSecurityAnswer")
+        private String userSecurityAnswer;
+        @Expose
+        @SerializedName("secID")
+        private String secID;
+        @Expose
         @SerializedName("userID")
         private int userID;
 
@@ -521,9 +527,21 @@ public class UserListPojo implements Serializable {
         public String getUserFirstName() {
             return userFirstName;
         }
+        public String getUserSecurityAnswer() {
+            return userSecurityAnswer;
+        }
+        public String getSecID() {
+            return secID;
+        }
 
         public void setUserFirstName(String userFirstName) {
             this.userFirstName = userFirstName;
+        }
+        public void setSecID(String secID) {
+            this.secID = secID;
+        }
+        public void setUserSecurityAnswer(String userSecurityAnswer) {
+            this.userSecurityAnswer = userSecurityAnswer;
         }
 
         public int getUserID() {

@@ -97,8 +97,9 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
+
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(rootBottomSheet2);
-        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         closeCountrySelectionImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +111,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         countrySelectionRecyclerView.setLayoutManager(layoutManager);
         return rootView;
     }
+
 
     @Override
     public void onDestroyView() {

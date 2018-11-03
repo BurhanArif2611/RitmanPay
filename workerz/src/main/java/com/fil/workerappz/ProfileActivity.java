@@ -16,6 +16,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -30,9 +32,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fil.workerappz.adapter.SecurityQuestionListAdapter;
 import com.fil.workerappz.fragments.MediaChooseFragmentForProfile;
 import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.CountryListPojo;
+import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.ImageListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
@@ -89,6 +93,12 @@ public class ProfileActivity extends ActionBarActivity {
     private static final int SELECT_PICTURE = 2;
     @BindView(R.id.textviewgendeprofile)
     TextView textviewgendeprofile;
+    @BindView(R.id.securityQuestionsRecyclerView)
+    RecyclerView securityQuestionsRecyclerView;
+    @BindView(R.id.securityLinearLayout)
+    LinearLayout securityLinearLayout;
+    @BindView(R.id.changeLanguageTextViewProfile)
+    TextView changeLanguageTextViewProfile;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)
@@ -150,7 +160,10 @@ public class ProfileActivity extends ActionBarActivity {
 
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname,lastname,address,selectcountry,passportmsg,emiratesidmsg,nointernetmsg;
+    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg, nointernetmsg;
+    private SecurityQuestionListAdapter securityQuestionListAdapter;
+    private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -196,7 +209,7 @@ public class ProfileActivity extends ActionBarActivity {
                 femaleRadioButtonProfile.setText(datumLable_languages.getFemale());
                 changePinTextViewProfile.setText(datumLable_languages.getChangePIN());
                 skipTextViewViewHeader.setText(datumLable_languages.getEdit());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
                 titleTextViewViewHeader.setText(getResources().getString(R.string.profile));
@@ -215,31 +228,34 @@ public class ProfileActivity extends ActionBarActivity {
                 femaleRadioButtonProfile.setText(getResources().getString(R.string.female));
                 skipTextViewViewHeader.setText(getResources().getString(R.string.edit));
                 changePinTextViewProfile.setText(getResources().getString(R.string.change_pin));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            firstname=datumLable_languages_msg.getEnterFirstName();
-            lastname=datumLable_languages_msg.getEnterLastName();
-            selectcountry=datumLable_languages_msg.getSelectCountryOfResidence();
-            passportmsg=datumLable_languages_msg.getEnterPassportNo();
-            emiratesidmsg=datumLable_languages_msg.getEnterEmiratesId();
-            address=datumLable_languages_msg.getEnterAddress();
+            firstname = datumLable_languages_msg.getEnterFirstName();
+            lastname = datumLable_languages_msg.getEnterLastName();
+            selectcountry = datumLable_languages_msg.getSelectCountryOfResidence();
+            passportmsg = datumLable_languages_msg.getEnterPassportNo();
+            emiratesidmsg = datumLable_languages_msg.getEnterEmiratesId();
+            address = datumLable_languages_msg.getEnterAddress();
 
         } else {
 
-            firstname=getResources().getString(R.string.Please_Enter_First_Name);
-            lastname=getResources().getString(R.string.Please_Enter_LAST_Name);
-            selectcountry=getResources().getString(R.string.Please_Select_countryof_residence);
-            passportmsg=getResources().getString(R.string.Please_enter_passport_no);
-            emiratesidmsg=getResources().getString(R.string.Please_enter_emirates_id);
-            address=getResources().getString(R.string.Please_Enter_address);
+            firstname = getResources().getString(R.string.Please_Enter_First_Name);
+            lastname = getResources().getString(R.string.Please_Enter_LAST_Name);
+            selectcountry = getResources().getString(R.string.Please_Select_countryof_residence);
+            passportmsg = getResources().getString(R.string.Please_enter_passport_no);
+            emiratesidmsg = getResources().getString(R.string.Please_enter_emirates_id);
+            address = getResources().getString(R.string.Please_Enter_address);
 
 
         }
+        layoutManager = new LinearLayoutManager(ProfileActivity.this);
+        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
         setProfileInformation();
+        questionListJsonCall();
         if (SugarRecord.count(CountryData.class) > 0) {
             countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
 
@@ -325,6 +341,47 @@ public class ProfileActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    private void questionListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+
+//                jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("userMobile", "0");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "question list json " + json);
+        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+
+        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    SequrityQuestionListPojos.clear();
+                    if (response.body().get(0).getStatus() == true) {
+                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+                        securityLinearLayout.setVisibility(View.VISIBLE);
+                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
+                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+                    } else {
+                        securityLinearLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
     }
 
     public static void OnlyCharacter(MaterialEditText editText) {
@@ -426,7 +483,7 @@ public class ProfileActivity extends ActionBarActivity {
         finish();
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture,R.id.changeLanguageTextViewProfile})
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -474,7 +531,7 @@ public class ProfileActivity extends ActionBarActivity {
                             profileUpdateJsonCall();
                         }
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                 }
                 break;
@@ -523,6 +580,10 @@ public class ProfileActivity extends ActionBarActivity {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
             checkFlag = false;
         }
+        else if (Constants.answer.equals("")) {
+            Constants.showMessage(mainProfileActivityLinearLayout,  ProfileActivity.this, "Please select any one sequrity answer");
+            checkFlag = false;
+        }
 
 //        if (emailEditTextSignUpSubmit.getText().toString().length() != 0) {
 //            signUpWith = "Email";
@@ -567,6 +628,8 @@ public class ProfileActivity extends ActionBarActivity {
             addressEditTextProfile.setEnabled(false);
 //            countryOfResidenceEditTextProfile.setEnabled(true);
             countryOfResidenceEditTextProfile.setEnabled(false);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,true);
+            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         } else {
             mainProfileActivityLinearLayout.setFocusable(true);
             skipTextViewViewHeader.setFocusable(true);
@@ -582,6 +645,10 @@ public class ProfileActivity extends ActionBarActivity {
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
             countryOfResidenceEditTextProfile.setEnabled(false);
+            securityQuestionsRecyclerView.setClickable(false);
+            securityQuestionsRecyclerView.setEnabled(false);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
+            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         }
     }
 
@@ -644,7 +711,7 @@ public class ProfileActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
                         uploadProfilePicture();
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                     break;
                 case SELECT_PICTURE:
@@ -693,7 +760,7 @@ public class ProfileActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
                         uploadProfilePicture();
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                     break;
                 case REQUEST_CODE_AUTOCOMPLETE:
@@ -797,7 +864,7 @@ public class ProfileActivity extends ActionBarActivity {
                             setProfileInformation();
                             profileUpdateJsonCall();
                         } else {
-                            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                         }
 
                     } else {
@@ -846,6 +913,8 @@ public class ProfileActivity extends ActionBarActivity {
             jsonObject.put("userID", getMyUserId());
             jsonObject.put("userProfilePicture", userListPojo.getUserProfilePicture());
             jsonObject.put("userGender", gender);
+            jsonObject.put("secID", Constants.answerId);
+            jsonObject.put("userSecurityAnswer", Constants.answer);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -874,6 +943,8 @@ public class ProfileActivity extends ActionBarActivity {
                         sessionManager.setuserflagimage(countryFlagImage);
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
+                        Constants.answerId="";
+                        Constants.answer="";
                     } else {
                         Constants.closeProgress();
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));

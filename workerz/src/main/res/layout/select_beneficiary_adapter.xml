@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical">
-
-<android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp">
+    android:orientation="vertical">
 
-  <LinearLayout
-      android:id="@+id/mainBeneficiaryAdapterLinearLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:orientation="vertical"
-      android:padding="@dimen/_5sdp">
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="@dimen/_5sdp">
 
-      <LinearLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/nameTextViewSelectBeneficiary"
+        <LinearLayout
+            android:id="@+id/mainBeneficiaryAdapterLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp" />
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp">
 
-        <TextView
-            android:id="@+id/bankNameBeneficiaryTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/bankBranchNameBeneficiary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp"
-            android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-      </LinearLayout>
+                    <TextView
+                        android:id="@+id/nameTextViewSelectBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp" />
 
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="right|center"
-          android:padding="@dimen/_5sdp"
-          android:src="@drawable/arrow_menu"
-          android:contentDescription="TODO" />
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/bankNameBeneficiaryTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp" />
 
-  </LinearLayout>
-</android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/bankBranchNameBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit"
+                    android:id="@+id/editbeneficiary"
+                    android:visibility="visible"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_edit_black_24dp"
+                    android:layout_gravity="right|center"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:contentDescription="TODO"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="visible"
+                    android:src="@drawable/arrow_menu" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

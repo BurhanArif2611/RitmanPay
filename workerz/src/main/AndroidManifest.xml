@@ -24,8 +24,7 @@
         android:protectionLevel="signature"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:icon">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
