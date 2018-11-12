@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
             android:contentDescription="TODO"
-            android:src="@drawable/login_logo1" />
+            android:src="@drawable/login_logo2" />
 
         <TextView
             android:layout_width="wrap_content"
