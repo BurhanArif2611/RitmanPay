@@ -1,5 +1,6 @@
 package com.fil.workerappz;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -327,8 +328,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth, mDay);
-
-        DatePickerDialog dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(getContext(),AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

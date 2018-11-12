@@ -230,19 +230,16 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                         accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
                         ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
                     }
-                }
-                else if (main_length == editable.length())
-                {
+                } else if (main_length == editable.length()) {
                     if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().substring(0, editable.length()).equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
                         bankReAccountNumberEditTextAddBeneficiaryNext.setError("Account number not match");
                         accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
                         ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
-                    }
-                    else {
+                    } else {
                         accountHolderNameEditTextAddBeneficiaryNext.setEnabled(true);
                         ifscCodeEditTextAddBeneficiaryNext.setEnabled(true);
                     }
-                }else {
+                } else {
                     bankReAccountNumberEditTextAddBeneficiaryNext.setError("Account number not match");
                     accountHolderNameEditTextAddBeneficiaryNext.setEnabled(false);
                     ifscCodeEditTextAddBeneficiaryNext.setEnabled(false);
@@ -487,6 +484,10 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
     }
 
     private void bankListJsonCall(String str) {
+        String foo = ifscCodeEditTextAddBeneficiaryNext.getText().toString();
+        if (foo.length() > 0) { //just checks that there is something. You may want to check that length is greater than or equal to 3
+            String bar = foo.substring(0, 2);
+        }
         JSONObject jsonObject = new JSONObject();
         Constants.showProgress(AddBeneficiaryNextActivity.this);
         try {

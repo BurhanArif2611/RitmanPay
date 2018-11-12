@@ -2,6 +2,7 @@ package com.fil.workerappz;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.location.Address;
@@ -543,8 +544,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth, mDay);
-
-        DatePickerDialog dpd = new DatePickerDialog(SelectBeneficiaryViewActivity.this, new DatePickerDialog.OnDateSetListener() {
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(SelectBeneficiaryViewActivity.this, AlertDialog.THEME_HOLO_LIGHT,new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
