@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -144,20 +143,27 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     MaterialEditText zipcodeEditTextSignUp;
     @BindView(R.id.streetEditTextSignUp)
     MaterialEditText streetEditTextSignUp;
-    @BindView(R.id.securityQuestionsRecyclerView)
-    RecyclerView securityQuestionsRecyclerView;
+//    @BindView(R.id.securityQuestionsRecyclerView)
+//    RecyclerView securityQuestionsRecyclerView;
+
     @BindView(R.id.securityLinearLayout)
     LinearLayout securityLinearLayout;
     @BindView(R.id.dateOfBirthEditTextSignUpSubmit)
     MaterialEditText dateOfBirthEditTextSignUpSubmit;
     @BindView(R.id.dateOfBirthTextViewSignUpSubmit)
     TextView dateOfBirthTextViewSignUpSubmit;
+    @BindView(R.id.securityQuestionsSpinnerSignUpSubmit)
+    MaterialSpinner securityQuestionsSpinnerSignUpSubmit;
+    @BindView(R.id.securityQuestionsEditTextSignUpSubmit)
+    MaterialEditText securityQuestionsEditTextSignUpSubmit;
     private Intent mIntent;
     private String gender = "Male";
     private final String signUpWith = "Email";
     private int countryId = 0;
     private String countryName = "";
     private int stateId = 0;
+    private String answerId = "";
+    private String answer = "";
     private int cityId = 0;
     private String countryCode = "0", countryFlagImage = "";
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
@@ -175,7 +181,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     private LinearLayoutManager layoutManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname, lastname, mobilenumber, validmobilenumber, email, validemail, address, gendermsg, selectcountry, passportmsg, passportvalidationmsg, emiratesvalidationmsg, emiratesidmsg, dateofbirthmsg,registrationdonemsg, nointernetmessage;
+    private String firstname, lastname, mobilenumber, validmobilenumber, email, validemail, address, gendermsg, selectcountry, passportmsg, passportvalidationmsg, emiratesvalidationmsg, emiratesidmsg, dateofbirthmsg, registrationdonemsg, nointernetmessage;
     private SecurityQuestionListAdapter securityQuestionListAdapter;
     private Calendar myCalendar1 = Calendar.getInstance();
     private String dateOfBirth;
@@ -236,7 +242,6 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                 nointernetmessage = datumLable_languages.getNoInternetConnectionAvailable();
                 dateOfBirthEditTextSignUpSubmit.setHint(datumLable_languages.getDateOfBirth());
                 dateOfBirthEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getDateOfBirth());
-
 
 
             } else {
@@ -364,13 +369,38 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, this, nointernetmessage);
         }
-        layoutManager = new LinearLayoutManager(SignUpSubmitActivity.this);
-        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+//        layoutManager = new LinearLayoutManager(SignUpSubmitActivity.this);
+//        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+
         customTextView(tvCreateAccountSignUp);
         stateListJsonCall();
         cityListJsonCall();
         questionListJsonCall();
 
+
+        securityQuestionsEditTextSignUpSubmit.addTextChangedListener(new TextWatcher() {
+
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+
+                int main_length = securityQuestionsEditTextSignUpSubmit.getText().toString().length();
+
+                if (main_length>0)
+                {
+
+                   answer = String.valueOf(c);
+                }
+
+            }
+        });
         maleFemaleRadioGroupSignUpSubmit.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -443,6 +473,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
 
     }
+
     private void DataPickerDialog1() {
         final Calendar myCalendar = Calendar.getInstance();
         int mYear = myCalendar.get(Calendar.YEAR) - 18;
@@ -476,6 +507,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         dpd.show();
 
     }
+
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -485,6 +517,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
 
     }
+
     @OnClick({R.id.backImageViewHeader, R.id.addressTextViewSignUpSubmit, R.id.submitTextViewSignUpSubmit, R.id.countrySpinnerSignUp, R.id.dateOfBirthEditTextSignUpSubmit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -688,12 +721,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (emailEditTextSignUpSubmit.getText().toString().length() > 0 && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        }
-        else if (dateOfBirthEditTextSignUpSubmit.getText().toString().length() == 0) {
+        } else if (dateOfBirthEditTextSignUpSubmit.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, dateofbirthmsg);
             checkFlag = false;
-        }
-        else if (countryName.length() == 0) {
+        } else if (countryName.length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, selectcountry);
             checkFlag = false;
         } else if (stateId == 0) {
@@ -734,7 +765,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        } else if (Constants.answer.equals("")) {
+        } else if (answer.equals("")) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -770,8 +801,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             jsonObject.put("userSignupWith", signUpWith);
             jsonObject.put("userFBID", "");
             jsonObject.put("userGPlusID", "");
-            jsonObject.put("secID", Constants.answerId);
-            jsonObject.put("userSecurityAnswer", Constants.answer);
+            jsonObject.put("secID", answerId);
+            jsonObject.put("userSecurityAnswer", answer);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -797,8 +828,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         sessionManager.setLogin(true);
                         sessionManager.setVerify(false);
                         sessionManager.setLogoutVerify(false);
-                        Constants.answerId = "";
-                        Constants.answer = "";
+
 
 
                         final Handler handler = new Handler();
@@ -1216,9 +1246,38 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                     if (response.body().get(0).getStatus() == true) {
                         SequrityQuestionListPojos.addAll(response.body().get(0).getData());
                         securityLinearLayout.setVisibility(View.VISIBLE);
-                        securityQuestionListAdapter = new SecurityQuestionListAdapter(SignUpSubmitActivity.this, SequrityQuestionListPojos, true);
-                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
-                    } else {
+
+
+                        ArrayList<String> questionList = new ArrayList<>();
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            questionList.add(SequrityQuestionListPojos.get(i).getSecQuestion().trim());
+                        }
+
+//
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignUpSubmitActivity.this, android.R.layout.simple_spinner_item, questionList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        securityQuestionsSpinnerSignUpSubmit.setAdapter(adapter);
+
+                        securityQuestionsSpinnerSignUpSubmit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    securityQuestionsEditTextSignUpSubmit.setVisibility(View.VISIBLE);
+                                    securityQuestionsEditTextSignUpSubmit.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTextSignUpSubmit.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    answerId = SequrityQuestionListPojos.get(position).getSecID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else
+
+                    {
                         securityLinearLayout.setVisibility(View.GONE);
                     }
                 }
@@ -1230,5 +1289,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             }
         });
     }
+
+
 }
 

@@ -231,6 +231,7 @@
     <string name="todo">TODO</string>
     <string name="_0">₹ 0</string>
     <string name="security_code_cvv">Security Code (CVV)</string>
+    <string name="security_questions">Security Questions</string>
     <string name="remember_me">Remember Me</string>
     <string name="id_description">Id Description</string>
     <string name="receive_money">Receive Money</string>

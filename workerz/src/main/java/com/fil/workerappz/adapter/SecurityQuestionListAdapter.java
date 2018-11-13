@@ -73,8 +73,7 @@ public class SecurityQuestionListAdapter extends RecyclerView.Adapter<SecurityQu
         holder.RadioButtonSignUpSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Constants.answerId = "";
-                Constants.answer ="";
+
                 holder.answerEdittext.setText("");
                 selectedradiobutton = holder.getAdapterPosition();
                 holder.answerEdittext.setVisibility(View.VISIBLE);
@@ -86,8 +85,7 @@ public class SecurityQuestionListAdapter extends RecyclerView.Adapter<SecurityQu
 
             // the user's changes are saved here
             public void onTextChanged(CharSequence c, int start, int before, int count) {
-                Constants.answerId = getSecurityListPojo.get(listPosition).getSecID();
-                Constants.answer = String.valueOf(c);
+
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {

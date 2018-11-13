@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -34,12 +33,14 @@ import android.widget.Toast;
 
 import com.fil.workerappz.adapter.SecurityQuestionListAdapter;
 import com.fil.workerappz.fragments.MediaChooseFragmentForProfile;
+import com.fil.workerappz.pojo.CityListPojo;
 import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.CountryListPojo;
 import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.ImageListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.pojo.UserListPojo;
 import com.fil.workerappz.retrofit.RestApi;
 import com.fil.workerappz.retrofit.RestClient;
@@ -93,12 +94,30 @@ public class ProfileActivity extends ActionBarActivity {
     private static final int SELECT_PICTURE = 2;
     @BindView(R.id.textviewgendeprofile)
     TextView textviewgendeprofile;
-    @BindView(R.id.securityQuestionsRecyclerView)
-    RecyclerView securityQuestionsRecyclerView;
+    //    @BindView(R.id.securityQuestionsRecyclerView)
+//    RecyclerView securityQuestionsRecyclerView;
     @BindView(R.id.securityLinearLayout)
     LinearLayout securityLinearLayout;
     @BindView(R.id.changeLanguageTextViewProfile)
     TextView changeLanguageTextViewProfile;
+    @BindView(R.id.securityQuestionsSpinneProfile)
+    MaterialSpinner securityQuestionsSpinneProfile;
+    @BindView(R.id.securityQuestionsEditTexProfile)
+    MaterialEditText securityQuestionsEditTexProfile;
+    @BindView(R.id.dateOfBirthEditTextProfile)
+    MaterialEditText dateOfBirthEditTextProfile;
+    @BindView(R.id.dateOfBirthTextViewProfile)
+    TextView dateOfBirthTextViewProfile;
+    @BindView(R.id.stateSpinnerSignUpProfile)
+    MaterialSpinner stateSpinnerSignUpProfile;
+    @BindView(R.id.citySpinnerSignUpProfile)
+    MaterialSpinner citySpinnerSignUpProfile;
+    @BindView(R.id.streetEditTextProfile)
+    MaterialEditText streetEditTextProfile;
+    @BindView(R.id.landmarkEditTextProfile)
+    MaterialEditText landmarkEditTextProfile;
+    @BindView(R.id.zipcodeEditTextProfile)
+    MaterialEditText zipcodeEditTextProfile;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)
@@ -141,7 +160,8 @@ public class ProfileActivity extends ActionBarActivity {
     TextView addressTextViewProfile;
     @BindView(R.id.updateProfileTextView)
     TextView updateProfileTextView;
-
+    private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
+    private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
     private Intent mIntent;
     private boolean editable = false;
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
@@ -156,7 +176,10 @@ public class ProfileActivity extends ActionBarActivity {
     private String countryFlagImage = "";
     private String CountryCodegoogle = "";
     private File compressedImage;
+    private int stateId = 0;
+    private int cityId = 0;
     private static final int REQUEST_CODE_WRITE_PERMISSIONS = 003;
+
 
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
@@ -164,6 +187,8 @@ public class ProfileActivity extends ActionBarActivity {
     private SecurityQuestionListAdapter securityQuestionListAdapter;
     private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
     private LinearLayoutManager layoutManager;
+    private String answerId = "";
+    private String answer = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -252,8 +277,9 @@ public class ProfileActivity extends ActionBarActivity {
 
 
         }
-        layoutManager = new LinearLayoutManager(ProfileActivity.this);
-        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+//        layoutManager = new LinearLayoutManager(ProfileActivity.this);
+//        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+
         setProfileInformation();
         questionListJsonCall();
         if (SugarRecord.count(CountryData.class) > 0) {
@@ -308,6 +334,8 @@ public class ProfileActivity extends ActionBarActivity {
                 Constants.showMessage(mainProfileActivityLinearLayout, this, nointernetmsg);
             }
         }
+        stateListJsonCall();
+
         firstNameEditTextProfile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -343,6 +371,48 @@ public class ProfileActivity extends ActionBarActivity {
 
     }
 
+//    private void questionListJsonCall() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//
+//
+////                jsonObject.put("languageID", Constants.language_id);
+//            jsonObject.put("userMobile", "0");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String json = "[" + jsonObject + "]";
+//        Constants.showProgress(ProfileActivity.this);
+//        CustomLog.d("System out", "question list json " + json);
+//        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+//
+//        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+//            @Override
+//            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+//                Constants.closeProgress();
+//                if (response.body() != null && response.body() instanceof ArrayList) {
+//                    SequrityQuestionListPojos.clear();
+//                    if (response.body().get(0).getStatus() == true) {
+//                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+//                        securityLinearLayout.setVisibility(View.VISIBLE);
+//                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
+//                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+//                    } else {
+//                        securityLinearLayout.setVisibility(View.GONE);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
+//                Constants.closeProgress();
+//            }
+//        });
+//    }
+
+
     private void questionListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -369,9 +439,38 @@ public class ProfileActivity extends ActionBarActivity {
                     if (response.body().get(0).getStatus() == true) {
                         SequrityQuestionListPojos.addAll(response.body().get(0).getData());
                         securityLinearLayout.setVisibility(View.VISIBLE);
-                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
-                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
-                    } else {
+
+
+                        ArrayList<String> questionList = new ArrayList<>();
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            questionList.add(SequrityQuestionListPojos.get(i).getSecQuestion().trim());
+                        }
+
+//
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, questionList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        securityQuestionsSpinneProfile.setAdapter(adapter);
+
+                        securityQuestionsSpinneProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
+                                    securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    answerId = SequrityQuestionListPojos.get(position).getSecID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else
+
+                    {
                         securityLinearLayout.setVisibility(View.GONE);
                     }
                 }
@@ -444,7 +543,28 @@ public class ProfileActivity extends ActionBarActivity {
 
         Constants.latitude = userListPojo.getUserLattitude();
         Constants.longitude = userListPojo.getUserLongitutde();
+        securityQuestionsEditTexProfile.addTextChangedListener(new TextWatcher() {
 
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+
+                int main_length = securityQuestionsEditTexProfile.getText().toString().length();
+
+                if (main_length > 0) {
+
+                    answer = String.valueOf(c);
+                }
+
+            }
+        });
         maleFemaleRadioGroupProfile.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -579,9 +699,8 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
             checkFlag = false;
-        }
-        else if (Constants.answer.equals("")) {
-            Constants.showMessage(mainProfileActivityLinearLayout,  ProfileActivity.this, "Please select any one sequrity answer");
+        } else if (answer.equals("")) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
 
@@ -626,10 +745,20 @@ public class ProfileActivity extends ActionBarActivity {
             emiratesIdEditTextProfile.setEnabled(false);
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setEnabled(true);
+            securityQuestionsEditTexProfile.setEnabled(true);
 //            countryOfResidenceEditTextProfile.setEnabled(true);
             countryOfResidenceEditTextProfile.setEnabled(false);
-            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,true);
-            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+            securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
+            dateOfBirthTextViewProfile.setEnabled(false);
+            dateOfBirthEditTextProfile.setEnabled(false);
+            stateSpinnerSignUpProfile.setEnabled(false);
+            citySpinnerSignUpProfile.setEnabled(false);
+            streetEditTextProfile.setEnabled(false);
+            landmarkEditTextProfile.setEnabled(false);
+            zipcodeEditTextProfile.setEnabled(false);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos, true);
+//            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         } else {
             mainProfileActivityLinearLayout.setFocusable(true);
             skipTextViewViewHeader.setFocusable(true);
@@ -637,18 +766,28 @@ public class ProfileActivity extends ActionBarActivity {
             addressTextViewProfile.setEnabled(false);
             firstNameEditTextProfile.setEnabled(false);
             lastNameEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setEnabled(false);
+            securityQuestionsEditTexProfile.setEnabled(false);
             maleRadioButtonProfile.setEnabled(false);
             femaleRadioButtonProfile.setEnabled(false);
             emiratesIdEditTextProfile.setEnabled(false);
             mobileNumberEditTextProfile.setEnabled(false);
             emailEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setVisibility(View.GONE);
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
+            dateOfBirthTextViewProfile.setEnabled(false);
+            dateOfBirthEditTextProfile.setEnabled(false);
             countryOfResidenceEditTextProfile.setEnabled(false);
-            securityQuestionsRecyclerView.setClickable(false);
-            securityQuestionsRecyclerView.setEnabled(false);
-            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
-            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+            stateSpinnerSignUpProfile.setEnabled(false);
+            citySpinnerSignUpProfile.setEnabled(false);
+            streetEditTextProfile.setEnabled(false);
+            landmarkEditTextProfile.setEnabled(false);
+            zipcodeEditTextProfile.setEnabled(false);
+//            securityQuestionsRecyclerView.setClickable(false);
+//            securityQuestionsRecyclerView.setEnabled(false);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos, false);
+//            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         }
     }
 
@@ -913,8 +1052,8 @@ public class ProfileActivity extends ActionBarActivity {
             jsonObject.put("userID", getMyUserId());
             jsonObject.put("userProfilePicture", userListPojo.getUserProfilePicture());
             jsonObject.put("userGender", gender);
-            jsonObject.put("secID", Constants.answerId);
-            jsonObject.put("userSecurityAnswer", Constants.answer);
+            jsonObject.put("secID", answerId);
+            jsonObject.put("userSecurityAnswer", answer);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -943,8 +1082,8 @@ public class ProfileActivity extends ActionBarActivity {
                         sessionManager.setuserflagimage(countryFlagImage);
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
-                        Constants.answerId="";
-                        Constants.answer="";
+                        answerId = "";
+                        answer = "";
                     } else {
                         Constants.closeProgress();
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
@@ -1020,4 +1159,159 @@ public class ProfileActivity extends ActionBarActivity {
             }
         });
     }
+
+    private void stateListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("countryID", countryId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "state json " + json);
+        Call<List<StateListPojo>> call = RestClient.get().stateListJsonCall(json);
+
+        call.enqueue(new Callback<List<StateListPojo>>() {
+            @Override
+            public void onResponse(Call<List<StateListPojo>> call, Response<List<StateListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    stateListPojos.clear();
+                    ArrayList<String> stateList = new ArrayList<>();
+                    stateList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    stateSpinnerSignUpProfile.setAdapter(adapter);
+                    if (response.body().get(0).getStatus() == true) {
+                        stateListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < stateListPojos.size(); i++) {
+                            stateList.add(new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)));
+                            if (getUserData().getStateID()==(stateListPojos.get(i).getStateID())) {
+                               stateSpinnerSignUpProfile.setSelection(i + 1);
+                                stateId = stateListPojos.get(i).getStateID();
+                                cityId = 0;
+                                cityListJsonCall();
+                                break;
+                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        stateSpinnerSignUpProfile.setAdapter(adapter);
+
+                        stateSpinnerSignUpProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StateListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+    private void cityListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+            if (stateId == 0 && countryId == (0)) {
+                jsonObject.put("languageID", Constants.language_id);
+            } else if (stateId == 0) {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+            } else {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+                jsonObject.put("stateID", stateId);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "city json " + json);
+        Call<List<CityListPojo>> call = RestClient.get().cityListJsonCall(json);
+
+        call.enqueue(new Callback<List<CityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<CityListPojo>> call, Response<List<CityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    cityListPojos.clear();
+                    ArrayList<String> cityList = new ArrayList<>();
+                    cityList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, cityList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    citySpinnerSignUpProfile.setAdapter(adapter);
+
+                    if (response.body().get(0).getStatus() == true) {
+                        cityListPojos.addAll(response.body().get(0).getData());
+
+                        for (int i = 0; i < cityListPojos.size(); i++) {
+                            cityList.add(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)));
+                            if (getUserData().getCityID()==(cityListPojos.get(i).getCityID())) {
+                                cityId = cityListPojos.get(i).getCityID();
+                                citySpinnerSignUpProfile.setSelection(i + 1);
+                                break;
+                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, cityList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        citySpinnerSignUpProfile.setAdapter(adapter);
+
+                        citySpinnerSignUpProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    cityId = cityListPojos.get(position).getCityID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
 }

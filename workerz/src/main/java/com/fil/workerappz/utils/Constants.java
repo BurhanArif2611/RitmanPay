@@ -74,8 +74,7 @@ public class Constants {
     public static GetProductsList.Data productListData = null;
     public static boolean Updateflag=false;
     public static int beneficiarcount=0;
-    public static String answerId="";
-    public static String answer="";
+
     public static ArrayList<String>answerevalidation;
 
     public static void showProgress(Activity activity) {

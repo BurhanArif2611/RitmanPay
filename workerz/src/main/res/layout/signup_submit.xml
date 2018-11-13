@@ -459,23 +459,62 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/_5sdp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fill Any One Security Details"
-                    android:textColor="@color/colorSpinnerText"
-                    android:textSize="@dimen/_11ssp"
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Fill Any One Security Details"-->
+                    <!--android:textColor="@color/colorSpinnerText"-->
+                    <!--android:textSize="@dimen/_11ssp"-->
 
-                    android:layout_marginTop="@dimen/_10ssp"/>
+                    <!--android:layout_marginTop="@dimen/_10ssp"/>-->
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/securityQuestionsRecyclerView"
+                <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:id="@+id/securityQuestionsRecyclerView"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_marginTop="@dimen/_3sdp">-->
+
+                <!--</android.support.v7.widget.RecyclerView>-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/securityQuestionsSpinnerSignUpSubmit"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/_3sdp">
-
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    app:ms_alignLabels="true"
+                    app:ms_arrowColor="@color/colorGreen"
+                    app:ms_arrowSize="@dimen/_12sdp"
+                    app:ms_baseColor="@color/colorSpinner"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="false"
+                    app:ms_floatingLabelColor="@color/colorSpinnerText"
+                    app:ms_floatingLabelText="@string/security_questions"
+                    app:ms_highlightColor="@color/colorGreen"
+                    app:ms_hint="@string/security_questions"
+                    app:ms_hintColor="@color/colorSpinnerText"
+                    app:ms_hintTextSize="@dimen/_10ssp"
+                    app:ms_multiline="false"
+                    app:ms_thickness="0.5dp" />
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/securityQuestionsEditTextSignUpSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="@string/security_questions"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text=""
+                    android:visibility="gone"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_11ssp"
+                    app:met_baseColor="@color/colorBlack"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelTextSize="@dimen/_10ssp"
+                    app:met_primaryColor="@color/colorGreen"
+                    app:met_singleLineEllipsis="false" />
             </LinearLayout>
 
 
