@@ -106,7 +106,8 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
 
-                titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
+//                titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
+                titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setHint(datumLable_languages.getEnterPin());
                 pinEditTextVerifiedPinActivity.setFloatingLabelText(datumLable_languages.getEnterPin());
                 submitTextViewVerifiedPin.setText(datumLable_languages.getSubmit());
@@ -114,7 +115,8 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
 
             } else {
 
-                titleTextViewViewHeader2.setText(getResources().getString(R.string.verified_pin));
+//                titleTextViewViewHeader2.setText(getResources().getString(R.string.verified_pin));
+                titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setHint(getResources().getString(R.string.enter_pin));
                 submitTextViewVerifiedPin.setText(getResources().getString(R.string.submit));
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
@@ -133,7 +135,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
         }
 
 
-        titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
+//        titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
 
     }
 

@@ -190,17 +190,71 @@
                     </FrameLayout>
 
 
+                    <!--<FrameLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
+
+                        <!--<com.rengwuxian.materialedittext.MaterialEditText-->
+                            <!--android:id="@+id/addressEditTextAddBeneficiary"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginTop="@dimen/_10sdp"-->
+                            <!--android:hint="@string/address"-->
+                            <!--android:inputType="textPostalAddress"-->
+                            <!--android:paddingLeft="@dimen/_5sdp"-->
+                            <!--android:text=""-->
+                            <!--android:textColor="@color/colorBlack"-->
+                            <!--android:textSize="@dimen/_11ssp"-->
+                            <!--app:met_baseColor="@color/colorBlack"-->
+                            <!--app:met_floatingLabel="highlight"-->
+                            <!--app:met_floatingLabelTextSize="@dimen/_10ssp"-->
+                            <!--app:met_primaryColor="@color/colorGreen"-->
+                            <!--app:met_singleLineEllipsis="false" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/addressTextViewAddBeneficiary"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginTop="@dimen/_20sdp"-->
+                            <!--android:padding="@dimen/_5sdp"-->
+                            <!--android:paddingLeft="@dimen/_5sdp" />-->
+                    <!--</FrameLayout>-->
+
+                    <!--<fr.ganfra.materialspinner.MaterialSpinner-->
+                    <!--android:id="@+id/nationalitySpinnerAddBeneficiary"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/_20sdp"-->
+                    <!--android:textColor="@color/colorBlack"-->
+                    <!--android:textSize="@dimen/_10ssp"-->
+                    <!--app:ms_alignLabels="true"-->
+                    <!--app:ms_arrowColor="@color/colorGreen"-->
+                    <!--app:ms_arrowSize="@dimen/_12sdp"-->
+                    <!--app:ms_baseColor="@color/colorSpinner"-->
+                    <!--app:ms_enableErrorLabel="false"-->
+                    <!--app:ms_enableFloatingLabel="false"-->
+                    <!--app:ms_floatingLabelColor="@color/colorSpinnerText"-->
+                    <!--app:ms_floatingLabelText="@string/nationality"-->
+                    <!--app:ms_highlightColor="@color/colorGreen"-->
+                    <!--app:ms_hint="@string/nationality"-->
+                    <!--app:ms_hintColor="@color/colorSpinnerText"-->
+                    <!--app:ms_hintTextSize="@dimen/_10ssp"-->
+                    <!--app:ms_multiline="false"-->
+                    <!--app:ms_thickness="0.5dp" />-->
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.rengwuxian.materialedittext.MaterialEditText
-                            android:id="@+id/addressEditTextAddBeneficiary"
+                            android:id="@+id/countryEditTextAddBeneficiary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:hint="@string/address"
-                            android:inputType="textPostalAddress"
+                            android:drawableRight="@drawable/dropdown_arrow"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:inputType="none"
                             android:paddingLeft="@dimen/_5sdp"
                             android:text=""
                             android:textColor="@color/colorBlack"
@@ -212,7 +266,7 @@
                             app:met_singleLineEllipsis="false" />
 
                         <TextView
-                            android:id="@+id/addressTextViewAddBeneficiary"
+                            android:id="@+id/countryTextViewAddBeneficiary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp"
@@ -220,6 +274,66 @@
                             android:paddingLeft="@dimen/_5sdp" />
                     </FrameLayout>
 
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/stateSpinnerAddBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorGreen"
+                        app:ms_arrowSize="@dimen/_12sdp"
+                        app:ms_baseColor="@color/colorSpinner"
+                        app:ms_enableErrorLabel="false"
+                        app:ms_enableFloatingLabel="false"
+                        app:ms_floatingLabelColor="@color/colorSpinnerText"
+                        app:ms_floatingLabelText="@string/state"
+                        app:ms_highlightColor="@color/colorGreen"
+                        app:ms_hint="@string/state"
+                        app:ms_hintColor="@color/colorSpinnerText"
+                        app:ms_hintTextSize="@dimen/_10ssp"
+                        app:ms_multiline="false"
+                        app:ms_thickness="0.5dp" />
+
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/citySpinnerAddBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorGreen"
+                        app:ms_arrowSize="@dimen/_12sdp"
+                        app:ms_baseColor="@color/colorSpinner"
+                        app:ms_enableErrorLabel="false"
+                        app:ms_enableFloatingLabel="false"
+                        app:ms_floatingLabelColor="@color/colorSpinnerText"
+                        app:ms_floatingLabelText="@string/city"
+                        app:ms_highlightColor="@color/colorGreen"
+                        app:ms_hint="@string/city"
+                        app:ms_hintColor="@color/colorSpinnerText"
+                        app:ms_hintTextSize="@dimen/_10ssp"
+                        app:ms_multiline="false"
+                        app:ms_thickness="0.5dp" />
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/addressEditTextAddBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:hint="@string/address"
+                        android:inputType="textPostalAddress"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_11ssp"
+                        app:met_baseColor="@color/colorBlack"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelTextSize="@dimen/_10ssp"
+                        app:met_primaryColor="@color/colorGreen"
+                        app:met_singleLineEllipsis="false" />
                     <com.rengwuxian.materialedittext.MaterialEditText
                         android:id="@+id/landmarkEditTextAddBeneficiary"
                         android:layout_width="match_parent"
@@ -256,27 +370,27 @@
                         app:met_primaryColor="@color/colorGreen"
                         app:met_singleLineEllipsis="false" />
 
-                    <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/nationalitySpinnerAddBeneficiary"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_10ssp"
-                        app:ms_alignLabels="true"
-                        app:ms_arrowColor="@color/colorGreen"
-                        app:ms_arrowSize="@dimen/_12sdp"
-                        app:ms_baseColor="@color/colorSpinner"
-                        app:ms_enableErrorLabel="false"
-                        app:ms_enableFloatingLabel="false"
-                        app:ms_floatingLabelColor="@color/colorSpinnerText"
-                        app:ms_floatingLabelText="@string/nationality"
-                        app:ms_highlightColor="@color/colorGreen"
-                        app:ms_hint="@string/nationality"
-                        app:ms_hintColor="@color/colorSpinnerText"
-                        app:ms_hintTextSize="@dimen/_10ssp"
-                        app:ms_multiline="false"
-                        app:ms_thickness="0.5dp" />
+                    <!--<fr.ganfra.materialspinner.MaterialSpinner-->
+                        <!--android:id="@+id/nationalitySpinnerAddBeneficiary"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="@dimen/_20sdp"-->
+                        <!--android:textColor="@color/colorBlack"-->
+                        <!--android:textSize="@dimen/_10ssp"-->
+                        <!--app:ms_alignLabels="true"-->
+                        <!--app:ms_arrowColor="@color/colorGreen"-->
+                        <!--app:ms_arrowSize="@dimen/_12sdp"-->
+                        <!--app:ms_baseColor="@color/colorSpinner"-->
+                        <!--app:ms_enableErrorLabel="false"-->
+                        <!--app:ms_enableFloatingLabel="false"-->
+                        <!--app:ms_floatingLabelColor="@color/colorSpinnerText"-->
+                        <!--app:ms_floatingLabelText="@string/nationality"-->
+                        <!--app:ms_highlightColor="@color/colorGreen"-->
+                        <!--app:ms_hint="@string/nationality"-->
+                        <!--app:ms_hintColor="@color/colorSpinnerText"-->
+                        <!--app:ms_hintTextSize="@dimen/_10ssp"-->
+                        <!--app:ms_multiline="false"-->
+                        <!--app:ms_thickness="0.5dp" />-->
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/idTypeSpinnerAddBeneficiary"

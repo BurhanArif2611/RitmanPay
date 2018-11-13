@@ -22,8 +22,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.AddBeneficiaryActivity;
 import com.fil.workerappz.ForgotPinActivity;
 import com.fil.workerappz.R;
+import com.fil.workerappz.SelectBeneficiaryViewActivity;
 import com.fil.workerappz.SignInActivity;
 import com.fil.workerappz.SignUpSubmitActivity;
 import com.fil.workerappz.pojo.CountryData;
@@ -141,13 +143,20 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-            Picasso.with(getActivity()).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(holder.imageViewCountrySelectionAdapter);
-
+            if (getActivity() instanceof AddBeneficiaryActivity|| getActivity() instanceof SelectBeneficiaryViewActivity)
+            {
+                holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
+                holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+            }
+            else {
+                holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
+                holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+                Picasso.with(getActivity()).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(holder.imageViewCountrySelectionAdapter);
+            }
             holder.mainCountrySelectionAdapterLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (getActivity() instanceof SignInActivity) {
+                    if (getActivity() instanceof SignInActivity ) {
                         SignInActivity signInActivity = (SignInActivity) getActivity();
                         signInActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
@@ -157,6 +166,16 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
                         dismiss();
                     } else if (getActivity() instanceof ForgotPinActivity) {
                         ForgotPinActivity forgotPinActivity = (ForgotPinActivity) getActivity();
+                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
+                        dismiss();
+                    }
+                    else if (getActivity() instanceof AddBeneficiaryActivity) {
+                        AddBeneficiaryActivity forgotPinActivity = (AddBeneficiaryActivity) getActivity();
+                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
+                        dismiss();
+                    }
+                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
+                        SelectBeneficiaryViewActivity forgotPinActivity = (SelectBeneficiaryViewActivity) getActivity();
                         forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     }

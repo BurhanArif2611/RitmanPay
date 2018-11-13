@@ -89,15 +89,17 @@ public class PinVerificationActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
 
-                titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
+//                titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
                 pinEditTextVerifiedPinActivity.setHint(datumLable_languages.getEnterPin());
+                titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setFloatingLabelText(datumLable_languages.getEnterPin());
                 submitTextViewVerifiedPin.setText(datumLable_languages.getSubmit());
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
 
-                titleTextViewViewHeader2.setText(getResources().getString(R.string.verified_pin));
+//                titleTextViewViewHeader2.setText(getResources().getString(R.string.verified_pin));
+                titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setHint(getResources().getString(R.string.enter_pin));
                 submitTextViewVerifiedPin.setText(getResources().getString(R.string.submit));
                 nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();

@@ -1,6 +1,8 @@
 package com.fil.workerappz;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -62,7 +65,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -142,6 +148,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     RecyclerView securityQuestionsRecyclerView;
     @BindView(R.id.securityLinearLayout)
     LinearLayout securityLinearLayout;
+    @BindView(R.id.dateOfBirthEditTextSignUpSubmit)
+    MaterialEditText dateOfBirthEditTextSignUpSubmit;
+    @BindView(R.id.dateOfBirthTextViewSignUpSubmit)
+    TextView dateOfBirthTextViewSignUpSubmit;
     private Intent mIntent;
     private String gender = "Male";
     private final String signUpWith = "Email";
@@ -165,9 +175,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
     private LinearLayoutManager layoutManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname, lastname, mobilenumber, validmobilenumber, email, validemail, address, gendermsg, selectcountry, passportmsg, passportvalidationmsg, emiratesvalidationmsg, emiratesidmsg, registrationdonemsg, nointernetmessage;
+    private String firstname, lastname, mobilenumber, validmobilenumber, email, validemail, address, gendermsg, selectcountry, passportmsg, passportvalidationmsg, emiratesvalidationmsg, emiratesidmsg, dateofbirthmsg,registrationdonemsg, nointernetmessage;
     private SecurityQuestionListAdapter securityQuestionListAdapter;
-
+    private Calendar myCalendar1 = Calendar.getInstance();
+    private String dateOfBirth;
 
     private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
                                               CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
@@ -223,6 +234,9 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                 submitTextViewSignUpSubmit.setText(datumLable_languages.getNext());
                 titleTextViewViewHeader.setText(datumLable_languages.getSignUp());
                 nointernetmessage = datumLable_languages.getNoInternetConnectionAvailable();
+                dateOfBirthEditTextSignUpSubmit.setHint(datumLable_languages.getDateOfBirth());
+                dateOfBirthEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getDateOfBirth());
+
 
 
             } else {
@@ -240,6 +254,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                 femaleRadioButtonSignUpSubmit.setText(getResources().getString(R.string.female));
                 submitTextViewSignUpSubmit.setText(getResources().getString(R.string.next));
                 titleTextViewViewHeader.setText(getResources().getString(R.string.sign_up));
+                dateOfBirthEditTextSignUpSubmit.setHint(getResources().getString(R.string.date_of_birth));
                 nointernetmessage = getResources().getString(R.string.no_internet);
 
 
@@ -263,6 +278,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             registrationdonemsg = datumLable_languages_msg.getYourRegistrationIsDone();
             passportvalidationmsg = datumLable_languages_msg.getPassportNoNumberShouldBe10Digits();
             emiratesvalidationmsg = datumLable_languages_msg.getEmiratesIdShouldBe10Digits();
+            dateofbirthmsg = datumLable_languages_msg.getSelectDateOfBirth();
 
 
         } else {
@@ -280,7 +296,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             registrationdonemsg = getResources().getString(R.string.registration_done_msg);
             passportvalidationmsg = getResources().getString(R.string.passport_validation_msg);
             emiratesvalidationmsg = getResources().getString(R.string.emirates_validation_msg);
-
+            dateofbirthmsg = getResources().getString(R.string.Please_select_Dob);
         }
 
         if (gender.equalsIgnoreCase(datumLable_languages.getFemale())) {
@@ -427,8 +443,49 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
 
     }
+    private void DataPickerDialog1() {
+        final Calendar myCalendar = Calendar.getInstance();
+        int mYear = myCalendar.get(Calendar.YEAR) - 18;
+        int mMonth = myCalendar.get(Calendar.MONTH);
+        int mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
 
-    @OnClick({R.id.backImageViewHeader, R.id.addressTextViewSignUpSubmit, R.id.submitTextViewSignUpSubmit, R.id.countrySpinnerSignUp})
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth, mDay);
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(SignUpSubmitActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                Calendar minAdultAge = new GregorianCalendar();
+                minAdultAge.add(Calendar.YEAR, -18);
+                if (minAdultAge.before(myCalendar)) {
+                    Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please Enter Valid Date");
+                } else {
+                    myCalendar1 = myCalendar;
+                    updateLabel();
+                }
+            }
+        }, mYear, mMonth, mDay);
+
+        dpd.getDatePicker().setMaxDate(mincalendar.getTimeInMillis());
+        dpd.show();
+
+    }
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        dateOfBirthEditTextSignUpSubmit.setText(sdf.format(myCalendar1.getTime()));
+
+        dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+
+    }
+    @OnClick({R.id.backImageViewHeader, R.id.addressTextViewSignUpSubmit, R.id.submitTextViewSignUpSubmit, R.id.countrySpinnerSignUp, R.id.dateOfBirthEditTextSignUpSubmit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -446,6 +503,11 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
                     }
                 }
+                break;
+            case R.id.dateOfBirthEditTextSignUpSubmit:
+                Constants.hideKeyboard(SignUpSubmitActivity.this);
+//                dateOfBirthDialog();
+                DataPickerDialog1();
                 break;
             case R.id.countrySpinnerSignUp:
                 CountrySelectionBottomSheet countrySelectionBottomSheet = new CountrySelectionBottomSheet();
@@ -626,7 +688,12 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (emailEditTextSignUpSubmit.getText().toString().length() > 0 && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        } else if (countryName.length() == 0) {
+        }
+        else if (dateOfBirthEditTextSignUpSubmit.getText().toString().length() == 0) {
+            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, dateofbirthmsg);
+            checkFlag = false;
+        }
+        else if (countryName.length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, selectcountry);
             checkFlag = false;
         } else if (stateId == 0) {
@@ -644,10 +711,12 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (landmarkEditTextSignUp.getText().toString().length() == 0) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please enter landmark");
             checkFlag = false;
-        } else if (zipcodeEditTextSignUp.getText().toString().length() == 0) {
-            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please enter zipcode");
-            checkFlag = false;
-        } else if (maleFemaleRadioGroupSignUpSubmit.getCheckedRadioButtonId() == -1) {
+        }
+//        else if (zipcodeEditTextSignUp.getText().toString().length() == 0) {
+//            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please enter zipcode");
+//            checkFlag = false;
+//        }
+        else if (maleFemaleRadioGroupSignUpSubmit.getCheckedRadioButtonId() == -1) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, gendermsg);
             checkFlag = false;
         } else if (passportNoEditTextSignUpSubmit.getText().toString().length() == 0) {
@@ -665,8 +734,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        }
-        else if (Constants.answer.equals("")) {
+        } else if (Constants.answer.equals("")) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -729,8 +797,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         sessionManager.setLogin(true);
                         sessionManager.setVerify(false);
                         sessionManager.setLogoutVerify(false);
-                        Constants.answerId="";
-                        Constants.answer="";
+                        Constants.answerId = "";
+                        Constants.answer = "";
 
 
                         final Handler handler = new Handler();
@@ -963,7 +1031,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         countryId = countryListPojosupdated.get(position).getCountryID();
         stateId = 0;
         cityId = 0;
-        CountryName= countryListPojosupdated.get(position).getCountryName();
+        CountryName = countryListPojosupdated.get(position).getCountryName();
         countryListJsonCall();
     }
 

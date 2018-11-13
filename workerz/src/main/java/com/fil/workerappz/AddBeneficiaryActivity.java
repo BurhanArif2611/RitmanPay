@@ -1,6 +1,5 @@
 package com.fil.workerappz;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -22,27 +21,29 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
+import com.fil.workerappz.pojo.CityListPojo;
+import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.CountryListPojo;
 import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
 import com.fil.workerappz.utils.SessionManager;
 import com.fil.workerappz.utils.SlideHolder;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,9 +73,12 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
     private final Calendar calendar = Calendar.getInstance();
-    private final ArrayList<CountryListPojo> countryListPojos = new ArrayList<>();
+    //    private final ArrayList<CountryListPojo> countryListPojos = new ArrayList<>();
     private final ArrayList<IdTypeListJsonPojo> idTypePojos = new ArrayList<>();
-
+    private final ArrayList<CountryData> countryFieldListPojos = new ArrayList<>();
+    private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
+    private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
+    private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
     @BindView(R.id.appImageViewHeader2)
     ImageView appImageViewHeader2;
     @BindView(R.id.titleTextViewViewHeader2)
@@ -99,8 +103,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     MaterialEditText landmarkEditTextAddBeneficiary;
     @BindView(R.id.zipcodeEditTextAddBeneficiary)
     MaterialEditText zipcodeEditTextAddBeneficiary;
-    @BindView(R.id.nationalitySpinnerAddBeneficiary)
-    MaterialSpinner nationalitySpinnerAddBeneficiary;
+
     @BindView(R.id.idTypeSpinnerAddBeneficiary)
     MaterialSpinner idTypeSpinnerAddBeneficiary;
     @BindView(R.id.idNumberEditTextAddBeneficiary)
@@ -109,10 +112,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     LinearLayout addBeneficiaryActivityLinearLayout;
     @BindView(R.id.nextAddBeneficiaryTextView)
     TextView nextAddBeneficiaryTextView;
-    @BindView(R.id.addressEditTextAddBeneficiary)
-    MaterialEditText addressEditTextAddBeneficiary;
-    @BindView(R.id.addressTextViewAddBeneficiary)
-    TextView addressTextViewAddBeneficiary;
+
     @BindView(R.id.dateOfBirthEditTextAddBeneficiary)
     MaterialEditText dateOfBirthEditTextAddBeneficiary;
     @BindView(R.id.dateOfBirthTextViewAddBeneficiary)
@@ -123,17 +123,32 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     TextView skipTextViewViewHeader2;
     @BindView(R.id.slideHolderAddBeneficiary)
     SlideHolder slideHolderAddBeneficiary;
+    @BindView(R.id.addressEditTextAddBeneficiary)
+    MaterialEditText addressEditTextAddBeneficiary;
+    @BindView(R.id.stateSpinnerAddBeneficiary)
+    MaterialSpinner stateSpinnerAddBeneficiary;
+    @BindView(R.id.citySpinnerAddBeneficiary)
+    MaterialSpinner citySpinnerAddBeneficiary;
+    @BindView(R.id.countryEditTextAddBeneficiary)
+    MaterialEditText countryEditTextAddBeneficiary;
+    @BindView(R.id.countryTextViewAddBeneficiary)
+    TextView countryTextViewAddBeneficiary;
     private String countryCode;
+    private String CountryName;
+    private String countryCodeField, countryIdNationalityFiled;
     private String countryShortCode, countryCurrency;
     private String countryFlagImage;
-    private int idtypemaxlength=15;
-    private int idtypeminlength=7;
+    private int idtypemaxlength = 15;
+    private int idtypeminlength = 7;
     private int countryId;
     private String idType;
     private String idTypeDescription;
     private String comeFrom, Customerno;
     private String dateOfBirth, type;
     private Intent mIntent;
+    private int stateId = 0;
+    private int cityId = 0;
+    private int countryIdField = 0;
     private String countryflagimagesender = "";
     private Calendar myCalendar1 = Calendar.getInstance();
     private SessionManager sessionManager;
@@ -142,6 +157,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String firstname, lastname, mobilenumber, validmobilenumber, nationalitymsg, idtypemsg, email, validemail, address, dateofbirthmsg, idnumbermsg, valididnumbermsg;
     private String nickname;
     private String nointernetmsg;
+    private String countryName = "";
+    private String locale = "IND";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +211,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber());
                 idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber());
                 nextAddBeneficiaryTextView.setText(datumLable_languages.getNext());
-                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.getNationality());
+//                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.getNationality());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 //                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.get());
@@ -213,11 +230,11 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 addressEditTextAddBeneficiary.setHint(getResources().getString(R.string.address));
                 landmarkEditTextAddBeneficiary.setHint(getResources().getString(R.string.landmark));
                 zipcodeEditTextAddBeneficiary.setHint(getResources().getString(R.string.zipcode));
-                nationalitySpinnerAddBeneficiary.setHint(getResources().getString(R.string.nationality));
+//                nationalitySpinnerAddBeneficiary.setHint(getResources().getString(R.string.nationality));
                 idTypeSpinnerAddBeneficiary.setHint(getResources().getString(R.string.id_type));
                 idNumberEditTextAddBeneficiary.setHint(getResources().getString(R.string.id_number));
                 nextAddBeneficiaryTextView.setText(getResources().getString(R.string.next));
-                nationalitySpinnerAddBeneficiary.setHint(getResources().getString(R.string.nationality));
+//                nationalitySpinnerAddBeneficiary.setHint(getResources().getString(R.string.nationality));
                 nointernetmsg = getResources().getString(R.string.no_internet);
 
 
@@ -260,10 +277,46 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
 
         }
+        locale = getResources().getConfiguration().locale.getISO3Country();
         if (IsNetworkConnection.checkNetworkConnection(this)) {
-            countryListJsonCall();
+//            countryFieldListJsonCall();
+
+            if (SugarRecord.count(CountryData.class) > 0) {
+                countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
+                for (int i = 0; i < countryListPojos.size(); i++) {
+                    if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+                        countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+                        break;
+                    }
+
+                }
+
+                ArrayList<String> countryList = new ArrayList<>();
+                for (int i = 0; i < countryListPojos.size(); i++) {
+                    countryList.add(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+                    if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+                        countryCode = countryListPojos.get(i).getCountryDialCode();
+                        countryId = countryListPojos.get(i).getCountryID();
+                        countryFlagImage = countryListPojos.get(i).getCountryFlagImage();
+                        countryCurrency = countryListPojos.get(i).getCountryCurrencySymbol();
+                        countryShortCode = countryListPojos.get(i).getCountryShortCode();
+
+
+                        break;
+                    }
+                }
+                for (int i = 0; i < countryListPojos.size(); i++) {
+                    if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(i).getCountryCurrencySymbol())) {
+                        countryflagimagesender = countryListPojos.get(i).getCountryFlagImage();
+                        break;
+                    }
+                }
+
+
+            }
+
         } else {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, this, nointernetmsg);
+            countryListJsonCall();
         }
 
         firstNameEditTextAddBeneficiary.addTextChangedListener(new TextWatcher() {
@@ -482,7 +535,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.addressTextViewAddBeneficiary, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2})
+    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -502,9 +555,14 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 //                dateOfBirthDialog();
                 DataPickerDialog1();
                 break;
-            case R.id.addressTextViewAddBeneficiary:
-                openAutocompleteActivity();
+            case R.id.countryEditTextAddBeneficiary:
+                CountrySelectionBottomSheet countrySelectionBottomSheet = new CountrySelectionBottomSheet();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("country_list", countryListPojos);
+                countrySelectionBottomSheet.setArguments(bundle);
+                countrySelectionBottomSheet.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
+
             case R.id.nextAddBeneficiaryTextView:
                 Constants.hideKeyboard(AddBeneficiaryActivity.this);
                 if (checkValidation() == true) {
@@ -569,7 +627,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth, mDay);
         int themeResId = 2;
-        DatePickerDialog dpd = new DatePickerDialog(AddBeneficiaryActivity.this,AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dpd = new DatePickerDialog(AddBeneficiaryActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -627,13 +685,19 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (addressEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, address);
             checkFlag = false;
-        } else if (nationalitySpinnerAddBeneficiary == null && nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
+        }
+        else if (CountryName.equalsIgnoreCase("")) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Country");
             checkFlag = false;
-        } else if (nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
-            checkFlag = false;
-        } else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+        }
+//        else if (nationalitySpinnerAddBeneficiary == null && nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
+//            checkFlag = false;
+//        } else if (nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
+//            checkFlag = false;
+//        }
+        else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, idtypemsg);
             checkFlag = false;
         } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
@@ -649,38 +713,36 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 //            checkFlag = false;
 //        }
         else if (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "ID Number should be"+" "+idtypeminlength+" "+"digits");
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "ID Number should be" + " " + idtypeminlength + " " + "digits");
             checkFlag = false;
-        }
-        else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength)
-        {
+        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
             checkFlag = false;
         }
         return checkFlag;
     }
 
-    private void openAutocompleteActivity() {
-        try {
-            // The autocomplete activity requires Google Play Services to be available. The intent
-            // builder checks this and throws an exception if it is not the case.
-            @SuppressLint("RestrictedApi") Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).zzit(addressEditTextAddBeneficiary.getText().toString()).build(this);
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // Indicates that Google Play Services is either not installed or not up to date. Prompt
-            // the user to correct the issue.
-            GoogleApiAvailability.getInstance().getErrorDialog(this, e.getConnectionStatusCode(),
-                    0 /* requestCode */).show();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // Indicates that Google Play Services is not available and the problem is not easily
-            // resolvable.
-            String message = "Google Play Services is not available: " +
-                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
-
-            CustomLog.e("System out", message);
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void openAutocompleteActivity() {
+//        try {
+//            // The autocomplete activity requires Google Play Services to be available. The intent
+//            // builder checks this and throws an exception if it is not the case.
+//            @SuppressLint("RestrictedApi") Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).zzit(addressEditTextAddBeneficiary.getText().toString()).build(this);
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            // Indicates that Google Play Services is either not installed or not up to date. Prompt
+//            // the user to correct the issue.
+//            GoogleApiAvailability.getInstance().getErrorDialog(this, e.getConnectionStatusCode(),
+//                    0 /* requestCode */).show();
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            // Indicates that Google Play Services is not available and the problem is not easily
+//            // resolvable.
+//            String message = "Google Play Services is not available: " +
+//                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
+//
+//            CustomLog.e("System out", message);
+//            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     /**
      * Called after the autocomplete activity has finished to return its result.
@@ -706,7 +768,6 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                     // Display attributions if required.
 //                CharSequence attributions = place.getAttributions();
                     if (place != null) {
-                        addressEditTextAddBeneficiary.setText(place.getName());
                         LatLng mLatLng = place.getLatLng();
                         Constants.latitude = String.valueOf(mLatLng.latitude);
                         Constants.longitude = String.valueOf(mLatLng.longitude);
@@ -743,7 +804,6 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                             }
                         }
                     } else {
-                        addressEditTextAddBeneficiary.setText("");
                     }
                     break;
                 case PlaceAutocomplete.RESULT_ERROR:
@@ -776,66 +836,64 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             @Override
             public void onResponse(Call<List<CountryListPojo>> call, Response<List<CountryListPojo>> response) {
 //                Constants.closeProgress();
+                countryListPojos.clear();
                 if (response.body() != null && response.body() instanceof ArrayList) {
-                    countryListPojos.addAll(response.body());
-                    if (countryListPojos.get(0).getStatus() == true) {
+                    if (response.body().get(0).getStatus() == true) {
                         ArrayList<String> countryList = new ArrayList<>();
-                        for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
-                            Constants.closeProgress();
-                            countryList.add(new String(Base64.decode(countryListPojos.get(0).getData().get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-//                            countryList.add(countryListPojos.get(0).getData().get(i).getCountryShortCode().trim());
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, countryList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        nationalitySpinnerAddBeneficiary.setAdapter(adapter);
+                        countryListPojos.addAll(response.body().get(0).getData());
+//                        for (int i = 0; i < countryListPojos.size(); i++) {
+//                            Constants.closeProgress();
+//                            countryList.add(new String(Base64.decode(countryListPojos.get(0).getData().get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+////                            countryList.add(countryListPojos.get(0).getData().get(i).getCountryShortCode().trim());
+//                        }
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, countryList);
+//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        nationalitySpinnerAddBeneficiary.setAdapter(adapter);
+//
+//                        for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
+//                            if (getUserData().getCountryID() == countryListPojos.get(0).getData().get(i).getCountryID()) {
+//                                countryId = getUserData().getCountryID();
+//                                countryCode = getUserData().getUserCountryCode();
+//                                countryShortCode = getUserData().getCountryShortCode();
+//                                countryCurrency = getUserData().getCountryCurrencySymbol();
+//                                nationalitySpinnerAddBeneficiary.setSelection(i + 1);
+//
+//                            } else if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(0).getData().get(i).getCountryCurrencySymbol())) {
+//                                countryflagimagesender = countryListPojos.get(0).getData().get(i).getCountryFlagImage();
+//                            }
+//                        }
+//
+//                        nationalitySpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                            @Override
+//                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                if (position != -1) {
+//                                    countryCode = countryListPojos.get(0).getData().get(position).getCountryDialCode();
+//                                    countryId = countryListPojos.get(0).getData().get(position).getCountryID();
+//                                    countryFlagImage = countryListPojos.get(0).getData().get(position).getCountryFlagImage();
+//                                    countryCurrency = countryListPojos.get(0).getData().get(position).getCountryCurrencySymbol();
+//                                    countryShortCode = countryListPojos.get(0).getData().get(position).getCountryShortCode();
+//
+//                                    for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
+//                                        if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(0).getData().get(i).getCountryCurrencySymbol())) {
+//                                            countryflagimagesender = countryListPojos.get(0).getData().get(i).getCountryFlagImage();
+//                                            break;
+//                                        }
+//                                    }
+//                                    if (nationalitySpinnerAddBeneficiary.getSelectedItem().toString() != null) {
+//                                        if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryActivity.this)) {
+//                                            stateId = 0;
+//                                            cityId = 0;
+//                                            stateListJsonCall();
+//                                            idTypeJsonCall();
+//                                        } else {
+//                                            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nointernetmsg);
+//                                        }
+//                                    } else {
+//                                        Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
+//
+//                                    }
 
-                        for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
-                            if (getUserData().getCountryID() == countryListPojos.get(0).getData().get(i).getCountryID()) {
-                                countryId = getUserData().getCountryID();
-                                countryCode = getUserData().getUserCountryCode();
-                                countryShortCode = getUserData().getCountryShortCode();
-                                countryCurrency = getUserData().getCountryCurrencySymbol();
-                                nationalitySpinnerAddBeneficiary.setSelection(i + 1);
 
-                            } else if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(0).getData().get(i).getCountryCurrencySymbol())) {
-                                countryflagimagesender = countryListPojos.get(0).getData().get(i).getCountryFlagImage();
-                            }
-                        }
-
-                        nationalitySpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-                                    countryCode = countryListPojos.get(0).getData().get(position).getCountryDialCode();
-                                    countryId = countryListPojos.get(0).getData().get(position).getCountryID();
-                                    countryFlagImage = countryListPojos.get(0).getData().get(position).getCountryFlagImage();
-                                    countryCurrency = countryListPojos.get(0).getData().get(position).getCountryCurrencySymbol();
-                                    countryShortCode = countryListPojos.get(0).getData().get(position).getCountryShortCode();
-
-                                    for (int i = 0; i < countryListPojos.get(0).getData().size(); i++) {
-                                        if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(0).getData().get(i).getCountryCurrencySymbol())) {
-                                            countryflagimagesender = countryListPojos.get(0).getData().get(i).getCountryFlagImage();
-                                            break;
-                                        }
-                                    }
-                                    if (nationalitySpinnerAddBeneficiary.getSelectedItem().toString() != null) {
-                                        if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryActivity.this)) {
-                                            idTypeJsonCall();
-                                        } else {
-                                            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nointernetmsg);
-                                        }
-                                    } else {
-                                        Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nationalitymsg);
-
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
                     }
                 }
             }
@@ -896,16 +954,11 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                                     idTypeDescription = idTypePojos.get(0).getData().get(position).getIDType();
                                     idtypemaxlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMaxLength());
                                     idtypeminlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMinLength());
-                                    if (idTypePojos.get(0).getData().get(position).getIsNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("false"))
-                                    {
+                                    if (idTypePojos.get(0).getData().get(position).getIsNumeric().equals("true") && idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("false")) {
                                         idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                    }
-                                    else if (idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("true")&&idTypePojos.get(0).getData().get(position).getIsNumeric().equals("false"))
-                                    {
+                                    } else if (idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("true") && idTypePojos.get(0).getData().get(position).getIsNumeric().equals("false")) {
                                         idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         idNumberEditTextAddBeneficiary.setInputType(InputType.TYPE_CLASS_TEXT);
                                     }
                                     InputFilter[] FilterArray = new InputFilter[1];
@@ -932,5 +985,250 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         });
     }
 
+//    private void countryFieldListJsonCall() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("languageID", Constants.language_id);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String json = "[" + jsonObject + "]";
+//        Constants.showProgress(AddBeneficiaryActivity.this);
+//        Call<List<CountryListPojo>> call = RestClient.get().countryListJsonCall(json);
+//
+//        call.enqueue(new Callback<List<CountryListPojo>>() {
+//            @Override
+//            public void onResponse(Call<List<CountryListPojo>> call, Response<List<CountryListPojo>> response) {
+//                Constants.closeProgress();
+//                if (response.body() != null && response.body() instanceof ArrayList) {
+//                    if (response.body().get(0).getStatus() == true) {
+//                        countryFieldListPojos.addAll(response.body().get(0).getData());
+//                        ArrayList<String> countryList = new ArrayList<>();
+//                        for (int i = 0; i < countryFieldListPojos.size(); i++) {
+//                            countryList.add(new String(Base64.decode(countryFieldListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+////                            if ((new String(Base64.decode(CountryName.trim().getBytes(), Base64.DEFAULT))).equalsIgnoreCase(new String(Base64.decode(countryFieldListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+////                                countryCode = countryFieldListPojos.get(i).getCountryDialCode();
+////                                countryId = countryFieldListPojos.get(i).getCountryID();
+////                                countryIdNationality = String.valueOf(countryFieldListPojos.get(i).getCountryID());
+////                                countryOfResidenceSpinnerSignUpSubmit.setSelection(i + 1);
+////                                break;
+////                            }
+//
+//
+//                        }
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, countryList);
+//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        countryOfResidenceSpinnerAddBeneficiary.setAdapter(adapter);
+//
+//                        countryOfResidenceSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                            @Override
+//                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                if (position != -1) {
+//                                    countryCodeField = countryFieldListPojos.get(position).getCountryDialCode();
+//                                    countryIdField = countryFieldListPojos.get(position).getCountryID();
+//                                    countryIdNationalityFiled = String.valueOf(countryFieldListPojos.get(position).getCountryID());
+//
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onNothingSelected(AdapterView<?> parent) {
+//
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<CountryListPojo>> call, Throwable t) {
+//                Constants.closeProgress();
+//            }
+//        });
+//    }
+
+    private void stateListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("countryID", countryId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(AddBeneficiaryActivity.this);
+        CustomLog.d("System out", "state json " + json);
+        Call<List<StateListPojo>> call = RestClient.get().stateListJsonCall(json);
+
+        call.enqueue(new Callback<List<StateListPojo>>() {
+            @Override
+            public void onResponse(Call<List<StateListPojo>> call, Response<List<StateListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    stateListPojos.clear();
+                    ArrayList<String> stateList = new ArrayList<>();
+                    stateList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, stateList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    stateSpinnerAddBeneficiary.setAdapter(adapter);
+                    if (response.body().get(0).getStatus() == true) {
+                        stateListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < stateListPojos.size(); i++) {
+                            stateList.add(new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)));
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(stateListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = stateListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, stateList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        stateSpinnerAddBeneficiary.setAdapter(adapter);
+
+                        stateSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    stateId = stateListPojos.get(position).getStateID();
+                                    cityId = 0;
+                                    cityListJsonCall();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+                        stateId = 0;
+                        cityListJsonCall();
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StateListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
+    private void cityListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+            if (stateId == 0 && countryId == (0)) {
+                jsonObject.put("languageID", Constants.language_id);
+            } else if (stateId == 0) {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+            } else {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+                jsonObject.put("stateID", stateId);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(AddBeneficiaryActivity.this);
+        CustomLog.d("System out", "city json " + json);
+        Call<List<CityListPojo>> call = RestClient.get().cityListJsonCall(json);
+
+        call.enqueue(new Callback<List<CityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<CityListPojo>> call, Response<List<CityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    cityListPojos.clear();
+                    ArrayList<String> cityList = new ArrayList<>();
+                    cityList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, cityList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    citySpinnerAddBeneficiary.setAdapter(adapter);
+
+                    if (response.body().get(0).getStatus() == true) {
+                        cityListPojos.addAll(response.body().get(0).getData());
+
+                        for (int i = 0; i < cityListPojos.size(); i++) {
+                            cityList.add(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)));
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(cityListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = cityListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, cityList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        citySpinnerAddBeneficiary.setAdapter(adapter);
+
+                        citySpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    cityId = cityListPojos.get(position).getCityID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
+    public void updateCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojosupdated.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+
+        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+        countryId = countryListPojosupdated.get(position).getCountryID();
+        countryFlagImage = countryListPojosupdated.get(position).getCountryFlagImage();
+        countryCurrency = countryListPojosupdated.get(position).getCountryCurrencySymbol();
+        countryShortCode = countryListPojosupdated.get(position).getCountryShortCode();
+        CountryName = countryListPojosupdated.get(position).getCountryName();
+        for (int i = 0; i < countryListPojosupdated.size(); i++) {
+            if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojosupdated.get(i).getCountryCurrencySymbol())) {
+                countryflagimagesender = countryListPojosupdated.get(i).getCountryFlagImage();
+                break;
+            }
+        }
+        if (CountryName != null) {
+            if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryActivity.this)) {
+                stateId = 0;
+                cityId = 0;
+                stateListJsonCall();
+                idTypeJsonCall();
+            } else {
+                Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nointernetmsg);
+            }
+
+        }
+    }
 
 }
