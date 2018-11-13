@@ -12,9 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
+import com.fil.workerappz.fragments.DingCountryBottomSheet;
 import com.fil.workerappz.pojo.DingTransferPayJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
@@ -84,14 +85,15 @@ public class MobileTopUpActivity extends ActionBarActivity {
     @BindView(R.id.mobileTopUpProductDetailLinearLayout)
     LinearLayout mobileTopUpProductDetailLinearLayout;
 
-    private final ArrayList<GetCountryList> dingCountryListJsonPojos = new ArrayList<>();
+    private final ArrayList<GetCountryList.Data> dingCountryListJsonPojos = new ArrayList<>();
     private final ArrayList<GetProvidersList> serviceProviderJsonPojos = new ArrayList<>();
-    @BindView(R.id.textcontrycode)
-    TextView textcontrycode;
-    @BindView(R.id.countrySpinnerMobileTopUpSpinner)
-    Spinner countrySpinnerMobileTopUpSpinner;
-    @BindView(R.id.linearspinner)
-    LinearLayout linearspinner;
+//    @BindView(R.id.textcontrycode)
+//    TextView textcontrycode;
+//    @BindView(R.id.countrySpinnerMobileTopUpSpinner)
+//    Spinner countrySpinnerMobileTopUpSpinner;
+//    @BindView(R.id.linearspinner)
+//    LinearLayout linearspinner;
+
     @BindView(R.id.validityTextview)
     TextView validityTextview;
     @BindView(R.id.chargetextview)
@@ -105,6 +107,10 @@ public class MobileTopUpActivity extends ActionBarActivity {
     TextView walletBalance;
     @BindView(R.id.serviceProviderSpinnerMobileTopup)
     MaterialSpinner serviceProviderSpinnerMobileTopup;
+    @BindView(R.id.countryCodeTextViewMobileTopUp)
+    TextView countryCodeTextViewMobileTopUp;
+    @BindView(R.id.countrySpinnerMobileTopUp)
+    LinearLayout countrySpinnerMobileTopUp;
 
 
     //        @BindView(R.id.imagecountrycode)
@@ -143,7 +149,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getMobileTopup());
-                textcontrycode.setText(datumLable_languages.getCountry());
+                countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry());
                 mobileNumberEditTextRecharge.setHint(datumLable_languages.getRechargePhoneNumber());
                 mobileNumberEditTextRecharge.setFloatingLabelText(datumLable_languages.getRechargePhoneNumber());
                 serviceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
@@ -158,7 +164,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
             } else {
 
                 titleTextViewViewHeader2.setText(getResources().getString(R.string.mobile_recharge));
-                textcontrycode.setText(getResources().getString(R.string.country));
+                countryCodeTextViewMobileTopUp.setText(getResources().getString(R.string.country));
                 mobileNumberEditTextRecharge.setHint(getResources().getString(R.string.recharge_phone_number));
                 serviceProviderEditTextMobileTopUp.setHint(getResources().getString(R.string.service_provider));
                 BrowserPlansEditTextMobileTopUp.setHint(getResources().getString(R.string.browse_plans));
@@ -267,44 +273,44 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     dingCountryListJsonPojos.clear();
-                    dingCountryListJsonPojos.addAll(response.body());
-                    if (dingCountryListJsonPojos.get(0).getStatus() == true) {
+                    dingCountryListJsonPojos.addAll(response.body().get(0).getData());
+                    if (response.body().get(0).getStatus() == true) {
                         final ArrayList<String> countryList = new ArrayList<>();
-                        for (int i = 0; i < dingCountryListJsonPojos.get(0).getData().size(); i++) {
+//                        for (int i = 0; i < dingCountryListJsonPojos.get(0).getData().size(); i++) {
+////                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
 //                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
-                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
-                        }
-                        final ArrayAdapter<String> adapterCountryName = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, countryList);
-                        adapterCountryName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        countrySpinnerMobileTopUpSpinner.setAdapter(adapterCountryName);
-
-
-                        countrySpinnerMobileTopUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-
-                                    parent.getChildAt(0).setVisibility(View.GONE);
-
-                                    textcontrycode.setVisibility(View.VISIBLE);
-//                                    imagecountrycode.setVisibility(View.VISIBLE);
-                                    if (dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().size() > 0) {
-                                        textcontrycode.setText("+" + dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix());
-                                        countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
-                                        countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
-                                        serviceProviderJsonCall();
-                                    } else {
-                                        textcontrycode.setText(datumLable_languages.getCountry());
-
-//                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-                            }
-                        });
+//                        }
+//                        final ArrayAdapter<String> adapterCountryName = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, countryList);
+//                        adapterCountryName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        countrySpinnerMobileTopUpSpinner.setAdapter(adapterCountryName);
+//
+//
+//                        countrySpinnerMobileTopUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                            @Override
+//                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                if (position != -1) {
+//
+//                                    parent.getChildAt(0).setVisibility(View.GONE);
+//
+//                                    textcontrycode.setVisibility(View.VISIBLE);
+////                                    imagecountrycode.setVisibility(View.VISIBLE);
+//                                    if (dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().size() > 0) {
+//                                        textcontrycode.setText("+" + dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix());
+//                                        countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
+//                                        countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
+//                                        serviceProviderJsonCall();
+//                                    } else {
+//                                        textcontrycode.setText(datumLable_languages.getCountry());
+//
+////                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onNothingSelected(AdapterView<?> parent) {
+//                            }
+//                        });
                     }
                 }
             }
@@ -314,6 +320,18 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 Constants.closeProgress();
             }
         });
+    }
+
+    public void updateCountrySelection(List<GetCountryList.Data> countryListPojosupdated, int position) {
+        if (countryListPojosupdated.get(position).getInternationalDialingInformation().size() > 0) {
+            countryCodeTextViewMobileTopUp.setText("+" + countryListPojosupdated.get(position).getInternationalDialingInformation().get(0).getPrefix());
+            countryPrefix = countryListPojosupdated.get(position).getInternationalDialingInformation().get(0).getPrefix();
+            countryIso = countryListPojosupdated.get(position).getCountryIso();
+            serviceProviderJsonCall();
+        } else {
+            countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry());
+//                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
+        }
     }
 
     private void serviceProviderJsonCall() {
@@ -399,7 +417,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.serviceProviderEditTextMobileTopUp, R.id.browserPlansEditTextMobileTopUp, R.id.submit_textview, R.id.appImageViewHeader2, R.id.linearspinner})
+    @OnClick({R.id.menuImageViewHeader2, R.id.serviceProviderEditTextMobileTopUp, R.id.browserPlansEditTextMobileTopUp, R.id.submit_textview, R.id.appImageViewHeader2,R.id.countrySpinnerMobileTopUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -407,12 +425,20 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 break;
             case R.id.serviceProviderEditTextMobileTopUp:
                 break;
+            case R.id.countrySpinnerMobileTopUp:
+                DingCountryBottomSheet countrySelectionBottomSheet = new DingCountryBottomSheet();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("country_list", dingCountryListJsonPojos);
+                countrySelectionBottomSheet.setArguments(bundle);
+                countrySelectionBottomSheet.show(getSupportFragmentManager(), "BottomSheet Fragment");
+                break;
 //            case R.id.textcontrycode:
 //                countrySpinnerMobileTopUpSpinner.performClick();
 //                break;
-            case R.id.linearspinner:
-                countrySpinnerMobileTopUpSpinner.performClick();
-                break;
+//            case R.id.linearspinner:
+//                countrySpinnerMobileTopUpSpinner.performClick();
+//                break;
+
 //            case R.id.linearspinnerServiceProvider:
 //                serviceProviderEditTextMobileTopUp.setText("");
 //                mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
@@ -446,7 +472,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
             case R.id.browserPlansEditTextMobileTopUp:
                 Constants.hideKeyboard(MobileTopUpActivity.this
                 );
-                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+                if (countryCodeTextViewMobileTopUp.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
@@ -467,7 +493,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.submit_textview:
-                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+                if (countryCodeTextViewMobileTopUp.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
