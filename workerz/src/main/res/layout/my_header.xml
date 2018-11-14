@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0.4"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:contentDescription="@string/todo"
         android:src="@drawable/logo_navigation_header" />
   <TextView
@@ -37,9 +37,9 @@
     <TextView
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_gravity="center|left"
-      android:layout_weight="0.3"
+      android:layout_weight="0.4"
       android:gravity="center"
+        android:layout_gravity="center"
         android:visibility="invisible"
       android:text="@string/sign_in"
       android:textColor="@color/colorBlack"

@@ -1254,8 +1254,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         }
 
 //
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignUpSubmitActivity.this, android.R.layout.simple_spinner_item, questionList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignUpSubmitActivity.this, android.R.layout.simple_spinner_item , questionList);
+                        adapter.setDropDownViewResource(R.layout.custom_questions_layout);
                         securityQuestionsSpinnerSignUpSubmit.setAdapter(adapter);
 
                         securityQuestionsSpinnerSignUpSubmit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

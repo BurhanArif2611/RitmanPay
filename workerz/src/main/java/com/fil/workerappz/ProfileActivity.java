@@ -450,7 +450,7 @@ public class ProfileActivity extends ActionBarActivity {
 
 //
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, questionList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter.setDropDownViewResource(R.layout.custom_questions_layout);
                         securityQuestionsSpinneProfile.setAdapter(adapter);
 
                         securityQuestionsSpinneProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

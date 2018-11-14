@@ -283,7 +283,7 @@ public class ForgotPinActivity extends ActionBarActivity {
 
 //
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(ForgotPinActivity.this, android.R.layout.simple_spinner_item, questionList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        adapter.setDropDownViewResource(R.layout.custom_questions_layout);
                         securityQuestionsSpinnerForgotPin.setAdapter(adapter);
 
                         securityQuestionsSpinnerForgotPin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

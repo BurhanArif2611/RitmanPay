@@ -507,6 +507,7 @@
                     android:maxLength="50"
                     android:paddingLeft="@dimen/_5sdp"
                     android:text=""
+                    android:maxLines="5"
                     android:visibility="gone"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_11ssp"
