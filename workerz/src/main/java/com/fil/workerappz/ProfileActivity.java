@@ -118,6 +118,8 @@ public class ProfileActivity extends ActionBarActivity {
     MaterialEditText landmarkEditTextProfile;
     @BindView(R.id.zipcodeEditTextProfile)
     MaterialEditText zipcodeEditTextProfile;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)
@@ -279,7 +281,7 @@ public class ProfileActivity extends ActionBarActivity {
         }
 //        layoutManager = new LinearLayoutManager(ProfileActivity.this);
 //        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
-
+        appImageViewHeader1.setVisibility(View.VISIBLE);
         setProfileInformation();
         questionListJsonCall();
         if (SugarRecord.count(CountryData.class) > 0) {
@@ -603,10 +605,16 @@ public class ProfileActivity extends ActionBarActivity {
         finish();
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile})
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile,R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
+                mIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
+                finish();
+                break;
+            case R.id.appImageViewHeader1:
                 mIntent = new Intent(ProfileActivity.this, HomeActivity.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
@@ -1189,8 +1197,8 @@ public class ProfileActivity extends ActionBarActivity {
                         stateListPojos.addAll(response.body().get(0).getData());
                         for (int i = 0; i < stateListPojos.size(); i++) {
                             stateList.add(new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)));
-                            if (getUserData().getStateID()==(stateListPojos.get(i).getStateID())) {
-                               stateSpinnerSignUpProfile.setSelection(i + 1);
+                            if (getUserData().getStateID() == (stateListPojos.get(i).getStateID())) {
+                                stateSpinnerSignUpProfile.setSelection(i + 1);
                                 stateId = stateListPojos.get(i).getStateID();
                                 cityId = 0;
                                 cityListJsonCall();
@@ -1222,7 +1230,6 @@ public class ProfileActivity extends ActionBarActivity {
                         adapter.notifyDataSetChanged();
 
 
-
                     }
                 }
             }
@@ -1233,6 +1240,7 @@ public class ProfileActivity extends ActionBarActivity {
             }
         });
     }
+
     private void cityListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -1273,7 +1281,7 @@ public class ProfileActivity extends ActionBarActivity {
 
                         for (int i = 0; i < cityListPojos.size(); i++) {
                             cityList.add(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)));
-                            if (getUserData().getCityID()==(cityListPojos.get(i).getCityID())) {
+                            if (getUserData().getCityID() == (cityListPojos.get(i).getCityID())) {
                                 cityId = cityListPojos.get(i).getCityID();
                                 citySpinnerSignUpProfile.setSelection(i + 1);
                                 break;

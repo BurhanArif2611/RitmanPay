@@ -245,16 +245,19 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
         if (v == walletLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, PinVerificationActivity.class);
             mIntent.putExtra("come_from", "wallet_summary");
+            mIntent.putExtra("come_from1", "");
             mContext.startActivity(mIntent);
         } else if (v == loyaltyProgramLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, LoyaltyProgramActivity.class);
-            mIntent.putExtra("come_from", "loyality");
+//            mIntent.putExtra("come_from", "loyality");
+            mIntent.putExtra("come_from", "");
             mContext.startActivity(mIntent);
         } else if (v == moneyTransferLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, SendMoneyActivity.class);
             mContext.startActivity(mIntent);
         } else if (v == mobileRechargeLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, MobileTopUpActivity.class);
+            mIntent.putExtra("come_from", "");
             mContext.startActivity(mIntent);
         } else if (v == notificationLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, NotificationActivity.class);
@@ -275,14 +278,16 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
 //            mIntent.putExtra("home_bean_selection", 0);
 //            mContext.startActivity(mIntent);
             mIntent = new Intent(mContext, BillPaymentActivity.class);
-            mIntent.putExtra("come_from", "bill");
+//            mIntent.putExtra("come_from", "bill");
+            mIntent.putExtra("come_from", "");
             mContext.startActivity(mIntent);
         } else if (v == profileLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, ProfileActivity.class);
             mContext.startActivity(mIntent);
         }else if (v == prepaiedcardLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, PrepaidCardActivity.class);
-            mIntent.putExtra("come_from", "prepaiedcard");
+//            mIntent.putExtra("come_from", "prepaiedcard");
+            mIntent.putExtra("come_from", "");
             mContext.startActivity(mIntent);
         } else if (v == helpNSupportTextView) {
             mIntent = new Intent(mContext, TermsAndPrivacyActivity.class);
@@ -300,6 +305,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
             mContext.startActivity(mIntent);
         } else if (v == legalDocumentLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, UploadYourDocumentActivity.class);
+            mIntent.putExtra("come_from", "upload");
             mContext.startActivity(mIntent);
         }
     }

@@ -67,7 +67,7 @@ public class MoreActivity extends ActionBarActivity {
 
 
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
-
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
         try {
             sessionManager = new SessionManager(MoreActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
@@ -100,7 +100,8 @@ public class MoreActivity extends ActionBarActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderMore.toggle();
+//                slideHolderMore.toggle();
+                finish();
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(MoreActivity.this, HomeActivity.class);

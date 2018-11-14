@@ -136,7 +136,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
 
 
 //        titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
-
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
     }
 
 
@@ -245,7 +245,8 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderPinVerification.toggle();
+//                slideHolderPinVerification.toggle();
+                finish();
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(BeneficiaryPinVerificationActivity.this, HomeActivity.class);

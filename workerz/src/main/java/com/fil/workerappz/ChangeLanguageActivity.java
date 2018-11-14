@@ -1,7 +1,5 @@
 package com.fil.workerappz;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +59,8 @@ public class ChangeLanguageActivity extends AppCompatActivity {
     TextView savelanguageTextView;
     @BindView(R.id.mainChangeLanguageLinearLayout)
     LinearLayout mainChangeLanguageLinearLayout;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
 
 
     private String languageid = "1";
@@ -75,6 +75,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         titleTextViewViewHeader.setText(getResources().getString(R.string.change_language));
         LanguageListJsonCall();
+        appImageViewHeader1.setVisibility(View.VISIBLE);
     }
 
     private void LanguageListJsonCall() {
@@ -153,7 +154,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
 //    }
 
 
-    @OnClick({R.id.backImageViewHeader, R.id.savelanguageTextView, R.id.linearlanguagechange})
+    @OnClick({R.id.backImageViewHeader, R.id.savelanguageTextView, R.id.linearlanguagechange,R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -161,6 +162,12 @@ public class ChangeLanguageActivity extends AppCompatActivity {
                 break;
             case R.id.linearlanguagechange:
 //                opendialog(stockArr);
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(ChangeLanguageActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
+                finish();
                 break;
             case R.id.savelanguageTextView:
                 Constants.hideKeyboard(ChangeLanguageActivity.this);

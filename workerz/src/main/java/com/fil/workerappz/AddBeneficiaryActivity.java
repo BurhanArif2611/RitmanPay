@@ -549,6 +549,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 mIntent = new Intent(AddBeneficiaryActivity.this, HomeActivity.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
+                finish();
                 break;
             case R.id.dateOfBirthEditTextAddBeneficiary:
                 Constants.hideKeyboard(AddBeneficiaryActivity.this);
@@ -1223,6 +1224,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 stateId = 0;
                 cityId = 0;
                 stateListJsonCall();
+                cityListJsonCall();
                 idTypeJsonCall();
             } else {
                 Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, nointernetmsg);

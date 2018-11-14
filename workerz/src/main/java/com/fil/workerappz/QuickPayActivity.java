@@ -148,6 +148,7 @@ public class QuickPayActivity extends ActionBarActivity {
         } else {
             Constants.showMessage(mainQuickPayLinearLayout, QuickPayActivity.this,nointernetmsg);
         }
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
     }
 
     private void getQuickPayJsonCall() {
@@ -231,7 +232,8 @@ public class QuickPayActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 break;
             case R.id.menuImageViewHeader2:
-                slideHolderQuickPay.toggle();
+//                slideHolderQuickPay.toggle();
+                finish();
                 break;
         }
     }

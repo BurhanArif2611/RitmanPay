@@ -402,7 +402,6 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                 mIntent = new Intent(AddBeneficiaryBankNextActivity.this, HomeActivity.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
-
                 break;
             case R.id.addTextViewAddBeneficiary:
                 if (bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
@@ -425,7 +424,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , banknamemsg);
 
-                } else if (bankCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
+                } else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , branchcodemsg);
 
@@ -433,10 +432,11 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , branchaddmsg);
 
-                } else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
-                            , validbankmsg);
                 }
+//                else if (!ifscCodeEditTextAddBeneficiaryNext.getText().toString().equalsIgnoreCase(BankBranchCode)) {
+//                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
+//                            , validbankmsg);
+//                }
 //                else if (!bankAddressEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankbranchAddress)) {
 //                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
 // , "Please Enter Valid Branch Address");
@@ -508,11 +508,13 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("IDtype_Description", beneficiaryinfoPojo.getIDtype_Description());
             jsonObject.put("PayOutCurrency", "INR");
             jsonObject.put("PaymentMode", "BANK");
-            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
+//            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("PayOutBranchCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("BankName", bankNameEditTextAddBeneficiary.getText().toString());
             jsonObject.put("BankCountry", Countryshortcode);
             jsonObject.put("BranchNameAndAddress", bankAddressEditTextAddBeneficiary.getText().toString());
-            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+//            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("BankCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("BankBranch", bankbranchname);
             jsonObject.put("AccountNumber", bankAccountNumberEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("PurposeCode", purposecode);
@@ -545,7 +547,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                         }
                         Constants.closeProgress();
                         beneficiaryinfoPojo.setBeneficiarynumber(editBeneficiaryJsonPojos.get(0).getData().get(0).getBeneficiaryNo());
-                        beneficiaryinfoPojo.setPayoutbranchcode(bankCodeEditTextAddBeneficiary.getText().toString());
+//                        beneficiaryinfoPojo.setPayoutbranchcode(bankCodeEditTextAddBeneficiary.getText().toString());
+                        beneficiaryinfoPojo.setPayoutbranchcode(ifscCodeEditTextAddBeneficiaryNext.getText().toString());
                         Intent intent = new Intent(AddBeneficiaryBankNextActivity.this, PinVerificationActivity.class);
                         intent.putExtra("come_from", "selectcashnext");
                         intent.putExtra("flagimage", beneficiaryinfoPojo.getCountryFlagImage());
@@ -555,7 +558,9 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 
 
                     } else {
-                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, response.body().get(0).getInfo().toString());
+                        if (response.body().get(0).getInfo()!=null) {
+                            Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, response.body().get(0).getInfo());
+                        }
                     }
                 }
             }
@@ -643,7 +648,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("BankName", bankNameEditTextAddBeneficiary.getText().toString());
             jsonObject.put("BankCountry", "IND");
             jsonObject.put("BranchNameAndAddress", bankAddressEditTextAddBeneficiary.getText().toString());
-            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+//            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("BankCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("BankBranch", bankbranchname);
             jsonObject.put("AccountNumber", bankAccountNumberEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("PurposeCode", purposecode);

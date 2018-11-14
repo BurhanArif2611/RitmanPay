@@ -66,7 +66,7 @@ public class PinVerificationActivity extends ActionBarActivity {
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
-    private MessagelistData datumLable_languages_msg=new MessagelistData();
+    private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String verifiedpinmsg;
     private String nointernetmsg;
 
@@ -94,7 +94,7 @@ public class PinVerificationActivity extends ActionBarActivity {
                 titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setFloatingLabelText(datumLable_languages.getEnterPin());
                 submitTextViewVerifiedPin.setText(datumLable_languages.getSubmit());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
 
@@ -102,18 +102,18 @@ public class PinVerificationActivity extends ActionBarActivity {
                 titleTextViewViewHeader2.setText("Verify Pin");
                 pinEditTextVerifiedPinActivity.setHint(getResources().getString(R.string.enter_pin));
                 submitTextViewVerifiedPin.setText(getResources().getString(R.string.submit));
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            verifiedpinmsg=datumLable_languages_msg.getEnter6DigitPIN();
+            verifiedpinmsg = datumLable_languages_msg.getEnter6DigitPIN();
 
         } else {
 
-            verifiedpinmsg=getResources().getString(R.string.Please_Enter_pin);
+            verifiedpinmsg = getResources().getString(R.string.Please_Enter_pin);
 
         }
 
@@ -128,11 +128,10 @@ public class PinVerificationActivity extends ActionBarActivity {
 
         } else if (comeFrom.equalsIgnoreCase("selectcashnext")) {
             titleTextViewViewHeader2.setText("Authenticate Benificiary");
-        }
-        else
-        {
+        } else {
             titleTextViewViewHeader2.setText(datumLable_languages.getVerifiedPIN());
         }
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
 
     }
 
@@ -173,6 +172,7 @@ public class PinVerificationActivity extends ActionBarActivity {
                             startActivity(mIntent);
                         } else if (comeFrom.equalsIgnoreCase("wallet_summary")) {
                             mIntent = new Intent(PinVerificationActivity.this, WalletSummaryActivity.class);
+                            mIntent.putExtra("come_from", (getIntent().getStringExtra("come_from1")));
                             startActivity(mIntent);
                         } else if (comeFrom.equalsIgnoreCase("history")) {
                             mIntent = new Intent(PinVerificationActivity.this, TransactionHistoryActivity.class);
@@ -185,7 +185,7 @@ public class PinVerificationActivity extends ActionBarActivity {
                             mIntent.putExtra("beneficiary_data", beneficiaryInfoListPojo);
                             startActivity(mIntent);
                         }
-                        finish();
+//                        finish();
                     } else {
                         Constants.showMessage(mainPinVerificationLinearLayout, PinVerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                     }
@@ -204,7 +204,8 @@ public class PinVerificationActivity extends ActionBarActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderPinVerification.toggle();
+//                slideHolderPinVerification.toggle();
+                finish();
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(PinVerificationActivity.this, HomeActivity.class);

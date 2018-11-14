@@ -170,6 +170,7 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
             titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryList());
             footerlinerselectbeneficiary.setVisibility(View.VISIBLE);
             inputSearch.setVisibility(View.GONE);
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
         }
 
         if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryActivity.this)) {
@@ -343,7 +344,8 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                 if (!comeFrom.equalsIgnoreCase("")) {
                     finish();
                 } else {
-                    slideHolderSelectBeneficiary.toggle();
+//                    slideHolderSelectBeneficiary.toggle();
+                    finish();
                 }
                 break;
             }

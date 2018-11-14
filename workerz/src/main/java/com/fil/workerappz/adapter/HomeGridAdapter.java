@@ -67,6 +67,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                     case 1:
                         mIntent = new Intent(mContext, PinVerificationActivity.class);
                         mIntent.putExtra("come_from", "wallet_summary");
+                        mIntent.putExtra("come_from1", "");
                         mContext.startActivity(mIntent);
                         break;
                     case 2:
@@ -76,6 +77,7 @@ public class HomeGridAdapter extends RecyclerView.Adapter<HomeGridAdapter.ViewHo
                         break;
                     case 3:
                         mIntent = new Intent(mContext, MobileTopUpActivity.class);
+                        mIntent.putExtra("come_from", "");
                         mContext.startActivity(mIntent);
                         break;
                     case 4:

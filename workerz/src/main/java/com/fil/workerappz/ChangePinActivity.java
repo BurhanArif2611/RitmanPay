@@ -3,7 +3,6 @@ package com.fil.workerappz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,6 +56,8 @@ public class ChangePinActivity extends ActionBarActivity {
     MaterialEditText repeatPinEditText;
     @BindView(R.id.savePinTextView)
     TextView savePinTextView;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
@@ -123,7 +124,7 @@ public class ChangePinActivity extends ActionBarActivity {
         newPinEditText.setFloatingLabelText("New PIN");
         repeatPinEditText.setHint("Repeat New PIN");
         repeatPinEditText.setFloatingLabelText("Repeat New PIN");
-
+        appImageViewHeader1.setVisibility(View.VISIBLE);
 
     }
 
@@ -154,10 +155,16 @@ public class ChangePinActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.savePinTextView})
+    @OnClick({R.id.backImageViewHeader, R.id.savePinTextView, R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
+                finish();
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(ChangePinActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
                 finish();
                 break;
             case R.id.savePinTextView:
@@ -210,7 +217,7 @@ public class ChangePinActivity extends ActionBarActivity {
                                 handler.removeCallbacks(this);
                                 finish();
 
-                        }
+                            }
                         }, 2000);
                     } else {
                         Constants.closeProgress();

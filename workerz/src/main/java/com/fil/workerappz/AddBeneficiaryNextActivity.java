@@ -359,15 +359,17 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, banknamemsg);
 
-                } else if (bankCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
+                }
+                else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, branchcodemsg);
 
                 } else if (bankAddressEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, branchaddmsg);
 
-                } else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, validbankmsg);
                 }
+//                else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {
+//                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, validbankmsg);
+//                }
 //                else if (!bankAddressEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankbranchAddress)) {
 //                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, "Please Enter Valid Branch Address");
 //                }
@@ -419,11 +421,13 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //            jsonObject.put("PayOutCurrency", "INR");
             jsonObject.put("PayOutCurrency", beneficiaryInfoListPojo.getPayoutcurrency());
             jsonObject.put("PaymentMode", "BANK");
-            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
+//            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("PayOutBranchCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("BankName", bankNameEditTextAddBeneficiary.getText().toString());
             jsonObject.put("BankCountry", "IND");
             jsonObject.put("BranchNameAndAddress", bankAddressEditTextAddBeneficiary.getText().toString());
-            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+//            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("BankCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("BankBranch", bankBranchName);
             jsonObject.put("AccountNumber", bankAccountNumberEditTextAddBeneficiaryNext.getText().toString());
             jsonObject.put("PurposeCode", purposeCode);
@@ -462,7 +466,8 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                             Constants.bankNextBenificaryCount++;
                             createBeneficiaryJsonPojosdata.addAll(response.body().get(0).getData());
                             beneficiaryInfoListPojo.setBeneficiarynumber(createBeneficiaryJsonPojosdata.get(0).getBeneficiaryNo());
-                            beneficiaryInfoListPojo.setPayoutbranchcode(bankCodeEditTextAddBeneficiary.getText().toString());
+//                            beneficiaryInfoListPojo.setPayoutbranchcode(bankCodeEditTextAddBeneficiary.getText().toString());
+                            beneficiaryInfoListPojo.setPayoutbranchcode(ifscCodeEditTextAddBeneficiaryNext.getText().toString());
                             mIntent = new Intent(AddBeneficiaryNextActivity.this, PinVerificationActivity.class);
                             mIntent.putExtra("flagimage", beneficiaryInfoListPojo.getCountryFlagImage());
                             mIntent.putExtra("countryshortcode", countryShortCode);

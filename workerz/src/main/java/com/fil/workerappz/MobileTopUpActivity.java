@@ -128,7 +128,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     private String mobilenumber;
     private String validmobilenumber;
     private int selctedProviderposition = -1;
-
+    private String comeFrom = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -213,6 +213,18 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 }
             }
         });
+        mIntent = getIntent();
+        if (mIntent != null) {
+            comeFrom = mIntent.getStringExtra("come_from");
+
+
+        }
+        if (comeFrom.equalsIgnoreCase("")) {
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+
+
+        } else {
+        }
 
         mobileNumberEditTextRecharge.addTextChangedListener(new TextWatcher() {
 
@@ -421,7 +433,11 @@ public class MobileTopUpActivity extends ActionBarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderMobileTopUp.toggle();
+                if (comeFrom.equalsIgnoreCase("")) {
+                    finish();
+                } else {
+                    slideHolderMobileTopUp.toggle();
+                }
                 break;
             case R.id.serviceProviderEditTextMobileTopUp:
                 break;

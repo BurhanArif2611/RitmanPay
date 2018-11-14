@@ -100,6 +100,7 @@ public class WalletSummaryActivity extends ActionBarActivity {
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
 
+    private String comeFrom1 = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,7 +128,7 @@ public class WalletSummaryActivity extends ActionBarActivity {
                 arrayList.add(datumLable_languages.getPaid());
                 arrayList.add(datumLable_languages.getReceived());
                 titleTextViewViewHeader2.setText(datumLable_languages.getWalletSummary());
-                textviewbalancewallet.setText(datumLable_languages.getBalance() + ":"+" ");
+                textviewbalancewallet.setText(datumLable_languages.getBalance() + ":" + " ");
                 textviewpointswallet.setText(datumLable_languages.getPoints() + ":");
                 homeTextViewFooter.setText(datumLable_languages.getHome());
                 quickPayTextViewFooter.setText(datumLable_languages.getQuickPay());
@@ -151,6 +152,16 @@ public class WalletSummaryActivity extends ActionBarActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (mIntent != null) {
+            comeFrom1 = mIntent.getStringExtra("come_from1");
+
+
+        }
+        if (comeFrom1.equalsIgnoreCase("")) {
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+
+        } else {
         }
 
 
@@ -193,7 +204,11 @@ public class WalletSummaryActivity extends ActionBarActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderTransaction.toggle();
+                if (comeFrom1.equalsIgnoreCase("")) {
+                    finish();
+                } else {
+                    slideHolderTransaction.toggle();
+                }
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(WalletSummaryActivity.this, HomeActivity.class);
@@ -203,7 +218,7 @@ public class WalletSummaryActivity extends ActionBarActivity {
                 break;
             case R.id.filterImageViewHeader2:
                 FilterBottomSheetFragment filterBottomSheetFragment = new FilterBottomSheetFragment();
-                filterBottomSheetFragment.setComeFrom("wallet", datumLable_languages,this);
+                filterBottomSheetFragment.setComeFrom("wallet", datumLable_languages, this);
                 filterBottomSheetFragment.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
         }

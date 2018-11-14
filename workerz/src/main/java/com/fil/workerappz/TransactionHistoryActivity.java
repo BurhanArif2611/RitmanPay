@@ -184,6 +184,8 @@ public class TransactionHistoryActivity extends ActionBarActivity {
             }
         });
         historySelection();
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+
     }
 
     private void historySelection() {
@@ -195,7 +197,8 @@ public class TransactionHistoryActivity extends ActionBarActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderTransaction.toggle();
+//                slideHolderTransaction.toggle();
+                finish();
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(TransactionHistoryActivity.this, HomeActivity.class);

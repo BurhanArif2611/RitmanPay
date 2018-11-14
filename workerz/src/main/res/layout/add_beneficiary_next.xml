@@ -121,6 +121,7 @@
                 android:inputType="text"
                 android:paddingLeft="@dimen/_5sdp"
                 android:text=""
+                android:visibility="gone"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_11ssp"
                 app:met_baseColor="@color/colorBlack"
