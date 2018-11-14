@@ -291,9 +291,9 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                         mContext.setDropDown();
 
                         if (datumLable_languages.getSave() != null) {
-                            skipTextViewViewHeader2.setText(datumLable_languages.getSave());
+                            skipTextViewViewHeader2.setText(datumLable_languages.getNext());
                         } else {
-                            skipTextViewViewHeader2.setText("Save");
+                            skipTextViewViewHeader2.setText("Next");
                         }
                     } else {
                         CustomLog.d("System out", "response false " + response.body().get(0).getInfo());
@@ -377,7 +377,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                             if (kycUploadedDocumentListJsonPojos.get(i).getUserkycImage().equalsIgnoreCase("")) {
                                 skipTextViewViewHeader2.setText(datumLable_languages.getSkip());
                             } else {
-                                skipTextViewViewHeader2.setText(datumLable_languages.getSave());
+                                skipTextViewViewHeader2.setText(datumLable_languages.getNext());
                             }
                         }
                         kycUploadedDocumentListJsonPojos.get(position).setIsVisible(false);
@@ -474,7 +474,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycID(String.valueOf(response.body().get(0).getInfo().get(uploadDocForPosition).getUserkycID()));
 
                         notifyDataSetChanged();
-                        skipTextViewViewHeader2.setText(datumLable_languages.getSave());
+                        skipTextViewViewHeader2.setText(datumLable_languages.getNext());
                     } else {
                         CustomLog.d("System out", "response false " + response.body().get(0).getInfo());
                     }

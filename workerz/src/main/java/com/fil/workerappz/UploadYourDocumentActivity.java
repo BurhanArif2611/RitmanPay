@@ -789,6 +789,8 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     public void setDropDown() {
         int poacounter = 0;
         int poicounter = 0;
+        boolean poistatus=false;
+        boolean poastatus=false;
         if (documentListCountryWiseJsonPojos.size() > 0) {
 
             for (int i = 0; i < kycUploadedDocumentListJsonPojos.get(0).getInfo().size(); i++) {
@@ -796,8 +798,16 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                     kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).setIsVisible(true);
                     if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeID().equalsIgnoreCase("1")) {
                         poacounter++;
+                        if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycStatus().equalsIgnoreCase("Approved"))
+                        {
+                            poastatus=true;
+                        }
                     } else if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeID().equalsIgnoreCase("2")) {
                         poicounter++;
+                        if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycStatus().equalsIgnoreCase("Approved"))
+                        {
+                            poistatus=true;
+                        }
                     }
                 }
                 else
@@ -810,7 +820,9 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
         if (poacounter > 0 && poicounter > 0) {
             uploaddocumentsSpinner.setError("Sufficient documents uploaded");
             uploaddocumentsSpinner.setEnabled(false);
-//            Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Sufficient documents uploaded");
+            if (!poastatus || !poistatus ) {
+                Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Please submit the documents with your registered agent");
+            }
         }
         else {
             uploaddocumentsSpinner.setEnabled(true);
