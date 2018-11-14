@@ -86,9 +86,14 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textviewupload.setText(datumLable_languages.getUpload());
         holder.textviewremove.setText(datumLable_languages.getRemove());
+        holder.approvedStatusTextView.setVisibility(View.GONE);
+        holder.uploadStatusTextView.setVisibility(View.VISIBLE);
         holder.documentNameTextView.setText(new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(position).getKycdoctypeName().trim().getBytes(), Base64.DEFAULT)) + " - " + new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(position).getKycdocnameName().trim().getBytes(), Base64.DEFAULT)));
         if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Approved")) {
             holder.uploadSignImageView.setVisibility(View.INVISIBLE);
+            holder.approvedStatusTextView.setVisibility(View.VISIBLE);
+            holder.uploadStatusTextView.setVisibility(View.GONE);
+            holder.approvedStatusTextView.setText("Documents received subject to final approval");
             Constants.Updateflag = false;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Pending")) {
@@ -511,6 +516,8 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         FrameLayout removeSignImageView;
         @BindView(R.id.uploadStatusTextView)
         TextView uploadStatusTextView;
+        @BindView(R.id.approvedStatusTextView)
+        TextView approvedStatusTextView;
         @BindView(R.id.mainlinearlayoutadapter)
         CardView mainlinearlayoutadapter;
 
