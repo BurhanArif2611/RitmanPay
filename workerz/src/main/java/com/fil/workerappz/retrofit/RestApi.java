@@ -110,7 +110,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("users/verify-otp")
-    Call<List<JsonListPojo>> verifyOTPJsonCall(@Field("json") String json);
+    Call<List<UserListPojo>> verifyOTPJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("users/forgot-pin")

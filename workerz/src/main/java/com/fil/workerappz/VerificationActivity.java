@@ -22,6 +22,7 @@ import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
 import com.fil.workerappz.utils.SessionManager;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +68,8 @@ public class VerificationActivity extends ActionBarActivity {
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String verificayionmsg;
-    private String nointernetmsg;
+    private String nointernetmsg, comeFrom, mobilenumber;
+    private final ArrayList<UserListPojo> userListPojos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,9 +82,11 @@ public class VerificationActivity extends ActionBarActivity {
         userListPojo = sessionManager.userProfileData();
 
 
-
         backImageViewHeader.setVisibility(View.INVISIBLE);
         mIntent = getIntent();
+        if (mIntent != null) {
+            comeFrom = mIntent.getStringExtra("come_from");
+        }
         try {
             SessionManager sessionManager = new SessionManager(VerificationActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
@@ -112,6 +116,11 @@ public class VerificationActivity extends ActionBarActivity {
         } else {
             verificayionmsg = getResources().getString(R.string.Please_Enter_Verification_Code);
         }
+        if (comeFrom.equalsIgnoreCase("")) {
+             mobilenumber=userListPojo.getUserMobile();
+        } else {
+            mobilenumber=comeFrom;
+        }
         customTextView(verificationCodeTextView);
     }
 
@@ -139,56 +148,57 @@ public class VerificationActivity extends ActionBarActivity {
         }
     }
 
-    private void autoCompleteJsonCall() {
-        JSONObject jsonObject = new JSONObject();
-        String userPin = exitTextVerification.getText().toString().trim();
-        try {
-            jsonObject.put("userPin", userPin);
-            jsonObject.put("userMobile", userListPojo.getUserMobile());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//    private void autoCompleteJsonCall() {
+//        JSONObject jsonObject = new JSONObject();
+//        String userPin = exitTextVerification.getText().toString().trim();
+//        try {
+//            jsonObject.put("userPin", userPin);
+//            jsonObject.put("userMobile", mobilenumber);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String json = "[" + jsonObject + "]";
+//        CustomLog.d("System out", "json " + json);
+//
+//        Constants.showProgress(VerificationActivity.this);
+//        Call<List<UserListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
+//
+//        call.enqueue(new Callback<List<JsonListPojo>>() {
+//            @Override
+//            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
+//                Constants.closeProgress();
+//                if (response.body() != null && response.body() instanceof ArrayList) {
+//                    jsonListPojos.clear();
+//                    jsonListPojos.addAll(response.body());
+//                    if (jsonListPojos.get(0).getStatus() == true) {
+//                        sessionManager.setVerify(true);
+//                        sessionManager.setLogoutVerify(true);
+//                        mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
+//                        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        mIntent.putExtra("come_from", "Registration");
+//                        startActivity(mIntent);
+//                        finish();
+//                    } else {
+//                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
+//                Constants.closeProgress();
+//            }
+//        });
+//    }
 
-        String json = "[" + jsonObject + "]";
-        CustomLog.d("System out", "json " + json);
-
-        Constants.showProgress(VerificationActivity.this);
-        Call<List<JsonListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
-
-        call.enqueue(new Callback<List<JsonListPojo>>() {
-            @Override
-            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
-                Constants.closeProgress();
-                if (response.body() != null && response.body() instanceof ArrayList) {
-                    jsonListPojos.clear();
-                    jsonListPojos.addAll(response.body());
-                    if (jsonListPojos.get(0).getStatus() == true) {
-                        sessionManager.setVerify(true);
-                        sessionManager.setLogoutVerify(true);
-                        mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        mIntent.putExtra("come_from", "Registration");
-                        startActivity(mIntent);
-                        finish();
-                    } else {
-                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
-                Constants.closeProgress();
-            }
-        });
-    }
 
     private void verifyVerificationCode() {
         JSONObject jsonObject = new JSONObject();
         String userPin = exitTextVerification.getText().toString().trim();
         try {
             jsonObject.put("userOTP", userPin);
-            jsonObject.put("userMobile", userListPojo.getUserMobile());
+            jsonObject.put("userMobile", mobilenumber);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -197,19 +207,47 @@ public class VerificationActivity extends ActionBarActivity {
         CustomLog.d("System out", "json " + json);
 
         Constants.showProgress(VerificationActivity.this);
-        Call<List<JsonListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
+        Call<List<UserListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
 
-        call.enqueue(new Callback<List<JsonListPojo>>() {
+        call.enqueue(new Callback<List<UserListPojo>>() {
             @Override
-            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
+            public void onResponse(Call<List<UserListPojo>> call, Response<List<UserListPojo>> response) {
                 Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
-                    jsonListPojos.clear();
-                    jsonListPojos.addAll(response.body());
-                    if (jsonListPojos.get(0).getStatus() == true) {
+//                    jsonListPojos.clear();
+//                    jsonListPojos.addAll(response.body());
+//                    if (jsonListPojos.get(0).getStatus() == true) {
+//                        sessionManager.setVerify(true);
+//                        sessionManager.setLogoutVerify(true);
+//                        sessionManager.setWalletBalance((float) 0.0);
+//                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                handler.removeCallbacks(this);
+//                                finish();
+//                                mIntent = new Intent(VerificationActivity.this, HomeActivity.class);
+//                                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                mIntent.putExtra("come_from", "Registration");
+//                                startActivity(mIntent);
+//
+//
+//                            }
+//                        }, 2000);
+
+                    userListPojos.clear();
+                    userListPojos.addAll(response.body());
+                    if (userListPojos.get(0).getStatus() == true) {
+                        SessionManager sessionManager = new SessionManager(VerificationActivity.this);
+
+//                        sessionManager.setuserflagimage(countryFlagImage);
+
+                        sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
+                        sessionManager.setLogin(true);
                         sessionManager.setVerify(true);
-                        sessionManager.setLogoutVerify(true);
                         sessionManager.setWalletBalance((float) 0.0);
+                        sessionManager.setLogoutVerify(true);
                         Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -227,74 +265,75 @@ public class VerificationActivity extends ActionBarActivity {
                         }, 2000);
 
                     } else {
-                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
+            public void onFailure(Call<List<UserListPojo>> call, Throwable t) {
                 Constants.closeProgress();
             }
         });
     }
 
-    private void verifyVerificationPIN() {
-        JSONObject jsonObject = new JSONObject();
-        String userPin = exitTextVerification.getText().toString().trim();
-        try {
-            jsonObject.put("userPin", userPin);
-            jsonObject.put("userMobile", userListPojo.getUserMobile());
-            jsonObject.put("userID", userListPojo.getUserID());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//    private void verifyVerificationPIN() {
+//        JSONObject jsonObject = new JSONObject();
+//        String userPin = exitTextVerification.getText().toString().trim();
+//        try {
+//            jsonObject.put("userPin", userPin);
+//            jsonObject.put("userMobile", mobilenumber);
+//            jsonObject.put("userID", userListPojo.getUserID());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String json = "[" + jsonObject + "]";
+//        CustomLog.d("System out", "json " + json);
+//
+//        Constants.showProgress(VerificationActivity.this);
+//        Call<List<JsonListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
+//
+//        call.enqueue(new Callback<List<JsonListPojo>>() {
+//            @Override
+//            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
+//                Constants.closeProgress();
+//                if (response.body() != null && response.body() instanceof ArrayList) {
+//                    jsonListPojos.clear();
+//                    jsonListPojos.addAll(response.body());
+//                    if (jsonListPojos.get(0).getStatus() == true) {
+//                        sessionManager.setVerify(true);
+//                        sessionManager.setLogoutVerify(true);
+//                        mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
+//                        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        mIntent.putExtra("come_from", "Registration");
+//                        startActivity(mIntent);
+//                        finish();
+//                    } else {
+//                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
+//                Constants.closeProgress();
+//            }
+//        });
+//    }
 
-        String json = "[" + jsonObject + "]";
-        CustomLog.d("System out", "json " + json);
-
-        Constants.showProgress(VerificationActivity.this);
-        Call<List<JsonListPojo>> call = RestClient.get().verifyOTPJsonCall(json);
-
-        call.enqueue(new Callback<List<JsonListPojo>>() {
-            @Override
-            public void onResponse(Call<List<JsonListPojo>> call, Response<List<JsonListPojo>> response) {
-                Constants.closeProgress();
-                if (response.body() != null && response.body() instanceof ArrayList) {
-                    jsonListPojos.clear();
-                    jsonListPojos.addAll(response.body());
-                    if (jsonListPojos.get(0).getStatus() == true) {
-                        sessionManager.setVerify(true);
-                        sessionManager.setLogoutVerify(true);
-                        mIntent = new Intent(VerificationActivity.this, UploadYourDocumentActivity.class);
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        mIntent.putExtra("come_from", "Registration");
-                        startActivity(mIntent);
-                        finish();
-                    } else {
-                        Constants.showMessage(mainLinearLayoutVerification, VerificationActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo().toString()));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<JsonListPojo>> call, Throwable t) {
-                Constants.closeProgress();
-            }
-        });
-    }
 
     private void customTextView(TextView view) {
         SpannableStringBuilder spanTxt;
         if (datumLable_languages.getPleaseTypeOTP() != null) {
             spanTxt = new SpannableStringBuilder(
-                    datumLable_languages.getPleaseTypeOTP()+" ");
+                    datumLable_languages.getPleaseTypeOTP() + " ");
         } else {
             spanTxt = new SpannableStringBuilder(
-                    getResources().getString(R.string.please_type_the_verification_code_sent_to_your_mobile_number)+" " );
+                    getResources().getString(R.string.please_type_the_verification_code_sent_to_your_mobile_number) + " ");
         }
-        spanTxt.append(userListPojo.getUserMobile());
-        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() -  userListPojo.getUserMobile().length(), spanTxt.length(), 0);
+        spanTxt.append(mobilenumber);
+        spanTxt.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), spanTxt.length() - mobilenumber.length(), spanTxt.length(), 0);
         view.setMovementMethod(LinkMovementMethod.getInstance());
         view.setText(spanTxt, TextView.BufferType.SPANNABLE);
     }
@@ -304,7 +343,7 @@ public class VerificationActivity extends ActionBarActivity {
 
         try {
 
-            jsonObject.put("userMobile", userListPojo.getUserMobile());
+            jsonObject.put("userMobile", mobilenumber);
         } catch (JSONException e) {
             e.printStackTrace();
         }

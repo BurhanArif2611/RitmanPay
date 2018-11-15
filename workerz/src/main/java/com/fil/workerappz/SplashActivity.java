@@ -101,12 +101,16 @@ public class SplashActivity extends Activity {
 //                    startActivity(mIntent);
 //                }
 //                else {
-                if(sessionManager.getLogin()&&!sessionManager.getVerify())
-                {
-                    mIntent = new Intent(SplashActivity.this, VerificationActivity.class);
-                    startActivity(mIntent);
-                }
-                else {
+
+                //AFTER SPLASH OTP VERIFICATION
+//                if(sessionManager.getLogin()&&!sessionManager.getVerify())
+//                {
+//                    mIntent = new Intent(SplashActivity.this, VerificationActivity.class);
+//                    mIntent.putExtra("come_from","");
+//                    startActivity(mIntent);
+//                }
+//                else {
+
                     if (sessionManager.getRememberMe() == true && sessionManager.getLogoutVerify() == true) {
                         mIntent = new Intent(SplashActivity.this, HomeActivity.class);
 //                    mIntent = new Intent(SplashActivity.this, SignUpActivity.class);
@@ -119,7 +123,7 @@ public class SplashActivity extends Activity {
                         mIntent = new Intent(SplashActivity.this, MainLanguageActivity.class);
                         startActivity(mIntent);
                     }
-                }
+//                }
 //                }
                 finish();
             }

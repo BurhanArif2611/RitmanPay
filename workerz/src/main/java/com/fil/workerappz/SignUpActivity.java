@@ -5,8 +5,11 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
@@ -19,6 +22,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fil.workerappz.pojo.LabelListData;
+import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.SessionManager;
 import com.google.android.gms.auth.api.Auth;
@@ -29,6 +33,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONObject;
 
@@ -62,6 +67,14 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
 
     @BindView(R.id.textviewsigninwithfacebook)
     TextView textviewsigninwithfacebook;
+    @BindView(R.id.signInWithGoogle)
+    LinearLayout signInWithGoogle;
+    @BindView(R.id.signInWithFacebook)
+    LinearLayout signInWithFacebook;
+    @BindView(R.id.alreadyhaveotptextview)
+    TextView alreadyhaveotptextview;
+    @BindView(R.id.mainSignUpLinearlayout)
+    LinearLayout mainSignUpLinearlayout;
 
     //G+ Login
     private GoogleApiClient mGoogleApiClient;
@@ -69,7 +82,7 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
     private boolean mIntentInProgress;
     // fb login
     private CallbackManager callbackManager;
-    private String accessTokenNew = "", email = "", userPin = "";
+    private String accessTokenNew = "", email = "", userPin = "", mobilenumber, validmobilenumber;
     private LabelListData datumLable_languages = new LabelListData();
 
 
@@ -109,6 +122,7 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 texdtviewor.setText(datumLable_languages.getOR());
                 textviewsigninwithfacebook.setText(datumLable_languages.getSignUpWithFacebook());
                 textviewsigninwithgoogle.setText(datumLable_languages.getSignUpWithGoogle());
+
             } else {
                 signInTextViewSignUpActivity.setText(getResources().getString(R.string.sign_in));
                 signUpWithEmailMobileTextViewSignUpActivity.setText(getResources().getString(R.string.sign_up_with_email_mobile));
@@ -121,10 +135,12 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mobilenumber = getResources().getString(R.string.Please_Enter_Mobile_number);
+        validmobilenumber = getResources().getString(R.string.Please_Enter_valid_Mobile_number);
 
     }
 
-    @OnClick({R.id.signUpWithEmailMobileTextViewSignUpActivity, R.id.signInTextViewSignUpActivity, R.id.signInWithFacebook ,R.id.signInWithGoogle})
+    @OnClick({R.id.signUpWithEmailMobileTextViewSignUpActivity, R.id.signInTextViewSignUpActivity, R.id.signInWithFacebook, R.id.signInWithGoogle, R.id.alreadyhaveotptextview})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.signUpWithEmailMobileTextViewSignUpActivity:
@@ -147,10 +163,58 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 mIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(mIntent, RC_SIGN_IN);
                 break;
-            case  R.id.signInWithFacebook:
+            case R.id.signInWithFacebook:
                 fbButton.performClick();
                 break;
+            case R.id.alreadyhaveotptextview:
+                openOtpDialog();
+                break;
         }
+    }
+
+    private void openOtpDialog() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.mobile_number_custom_dialog, null);
+
+        final MaterialEditText editText = (MaterialEditText) dialogView.findViewById(R.id.MobileNoEditTextSignUpActivity);
+        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+       final LinearLayout customDialogLayput = (LinearLayout) dialogView.findViewById(R.id.customDialogLayput);
+
+//        editText.setHint(datumLable_languages.getMobileNumber());
+//        editText.setFloatingLabelText(datumLable_languages.getMobileNumber());
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Constants.hideKeyboard(SignUpActivity.this);
+                if (editText.getText().toString().length() == 0 || editText.getText().toString().length() == 0) {
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, mobilenumber);
+                } else if (editText.getText().toString().length() > 0 && editText.getText().toString().length() < 7) {
+                    Constants.hideKeyboard(SignUpActivity.this);
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, validmobilenumber);
+                } else if (editText.getText().toString().startsWith("0")) {
+                    Constants.hideKeyboard(SignUpActivity.this);
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, validmobilenumber);
+                }
+                else {
+                    dialogBuilder.dismiss();
+                    mIntent = new Intent(SignUpActivity.this, VerificationActivity.class);
+                    mIntent.putExtra("come_from", editText.getText().toString());
+                    startActivity(mIntent);
+                }
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 
     @Override

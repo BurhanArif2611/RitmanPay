@@ -2,6 +2,7 @@
     <string name="facebook_app_id">729833804072709</string>
     <string name="app_name">WorkerAppz</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="already_have_an_otp">Already have an otp?</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_IN">Sign IN</string>
     <string name="sign_up_with_email_mobile">Sign Up with Email/Mobile</string>

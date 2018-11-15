@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
+    android:id="@+id/mainSignUpLinearlayout"
     android:orientation="vertical">
 
     <ImageView
@@ -24,12 +25,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
             android:contentDescription="TODO"
+            android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:src="@drawable/google_icon"
-           />
+            android:src="@drawable/google_icon" />
 
         <TextView
             android:id="@+id/textviewsigninwithgoogle"
@@ -57,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="TODO"
-            android:src="@drawable/fb_icon"
-            android:padding="@dimen/_10sdp"/>
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/fb_icon" />
 
         <TextView
             android:id="@+id/textviewsigninwithfacebook"
@@ -121,18 +121,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:contentDescription="TODO"
             android:padding="@dimen/_10sdp"
-            android:layout_gravity="center"
             android:src="@drawable/or_btn_line" />
 
         <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/colorWhite"-->
-            <!--android:gravity="center"-->
-            <!--android:padding="@dimen/_10sdp" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@color/colorWhite"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="@dimen/_10sdp" />-->
 
         <TextView
             android:id="@+id/texdtviewor"
@@ -162,14 +162,23 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/yellow_btn"
         android:text="@string/sign_up_with_email_mobile" />
-
+    <TextView
+        android:id="@+id/alreadyhaveotptextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:text="@string/already_have_an_otp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_10ssp" />
     <TextView
         android:id="@+id/alreadyhaveaccounttextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_30sdp"
         android:gravity="center"
+        android:padding="@dimen/_5sdp"
         android:text="@string/already_have_an_account"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/_10ssp" />
@@ -180,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="@dimen/_5sdp"
+        android:padding="@dimen/_3sdp"
         android:text="@string/sign_in"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_14ssp" />

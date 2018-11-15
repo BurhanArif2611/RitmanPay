@@ -529,7 +529,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (Constants.productListData != null) {

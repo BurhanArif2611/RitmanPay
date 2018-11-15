@@ -233,6 +233,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 //                }
 //                else {
                 mIntent = new Intent(UploadYourDocumentActivity.this, VerificationActivity.class);
+                mIntent.putExtra("come_from", "");
                 startActivity(mIntent);
                 break;
 //                }

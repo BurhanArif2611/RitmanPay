@@ -261,7 +261,7 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         refreshProfile();

@@ -212,7 +212,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
 
             } else {
                 shareString = "I love using WorkerAppz, It's simple and incredible. Sign up with my code " + userListPojo.getUserReferKey() + ". " + "You should try it here. " + userListPojo.getAndroidAppUrl();
-                accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance()+": " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
+                accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ": " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
                 pointdrawermenutextview.setText(getResources().getString(R.string.points));
                 Hometextview.setText(getResources().getString(R.string.home));
                 LegaldocTextview.setText(getResources().getString(R.string.legal_documents));
@@ -284,7 +284,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
         } else if (v == profileLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, ProfileActivity.class);
             mContext.startActivity(mIntent);
-        }else if (v == prepaiedcardLinearLayoutDrawerMenu) {
+        } else if (v == prepaiedcardLinearLayoutDrawerMenu) {
             mIntent = new Intent(mContext, PrepaidCardActivity.class);
 //            mIntent.putExtra("come_from", "prepaiedcard");
             mIntent.putExtra("come_from", "");
@@ -375,9 +375,10 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                             sessionManager.clearUser();
                         }
 //                        sessionManager.clearUser();
+                        sessionManager.setLogin(false);
+                        sessionManager.setVerify(false);
                         sessionManager.setAppLanguageLabel(datumLable_languages);
                         sessionManager.setAppLanguageMessage(datumLable_languages_msg);
-
                         Constants.cashBenificaryCount = 0;
                         Constants.bankNextBenificaryCount = 0;
                         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -417,7 +418,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                     balanceListJsonPojos.addAll(response.body());
                     if (balanceListJsonPojos.get(0).getStatus() == true) {
                         sessionManager.setWalletBalance((float) balanceListJsonPojos.get(0).getData().get(0).getBalance());
-                        accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance()+": "+ " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
+                        accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ": " + " " + currency.getCurrencyCode() + " " + sessionManager.getWalletBalance());
 
 
 //                        Constants.showMessage(mainHomeActivityLinearLayout, HomeActivity.this, balanceListJsonPojos.get(0).getInfo());
