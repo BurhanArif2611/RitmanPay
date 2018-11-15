@@ -184,7 +184,8 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
 
 //        editText.setHint(datumLable_languages.getMobileNumber());
 //        editText.setFloatingLabelText(datumLable_languages.getMobileNumber());
-
+        dialogBuilder.setTitle(datumLable_languages.getWorkerAppz());
+        dialogBuilder .setIcon(R.drawable.app_icon);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
