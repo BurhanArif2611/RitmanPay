@@ -687,8 +687,15 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, address);
             checkFlag = false;
         }
-        else if (CountryName.equalsIgnoreCase("")) {
+        else if (countryTextViewAddBeneficiary.getText().toString().length()==0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Country");
+            checkFlag = false;
+        }
+        else if (stateId == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select state");
+            checkFlag = false;
+        } else if (cityId == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select city");
             checkFlag = false;
         }
 //        else if (nationalitySpinnerAddBeneficiary == null && nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
@@ -709,6 +716,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, idnumbermsg);
             checkFlag = false;
         }
+
 //        else if (idNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
 //            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
 //            checkFlag = false;

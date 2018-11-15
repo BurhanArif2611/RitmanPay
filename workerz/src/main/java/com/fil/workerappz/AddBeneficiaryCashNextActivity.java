@@ -40,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -89,6 +88,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     TextView addTextViewAddBeneficiary;
     @BindView(R.id.mainAddBeneficiaryCashNextActivityLinearLayout)
     LinearLayout mainAddBeneficiaryCashNextActivityLinearLayout;
+    @BindView(R.id.destinationAddressEditTextAddBeneficiaryNext1)
+    MaterialEditText destinationAddressEditTextAddBeneficiaryNext1;
 
     private String Countrycode;
     private String purposecode;
@@ -196,6 +197,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
         }
         if (IsNetworkConnection.checkNetworkConnection(this)) {
             cashAgentNetworkListJsonCall();
+            purposeOfTransferJsonCall();
         } else {
             Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, this, nointernetmsg);
         }
@@ -293,9 +295,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                     if (cashnetworklistListPojos.get(0).getStatus() == true) {
                         if (cashnetworklistListPojos.get(0).getInfo().equalsIgnoreCase("NORECORD")) {
 
-                        }
-                        else
-                        {
+                        } else {
                             ArrayList<String> countryList1 = new ArrayList<>();
 
 
@@ -362,15 +362,15 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
         });
     }
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.addressTextViewAddBeneficiary, R.id.addTextViewAddBeneficiary, R.id.appImageViewHeader2})
+    @OnClick({R.id.menuImageViewHeader2, R.id.addTextViewAddBeneficiary, R.id.appImageViewHeader2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
                 finish();
                 break;
-            case R.id.addressTextViewAddBeneficiary:
-                openAutocompleteActivity();
-                break;
+//            case R.id.addressTextViewAddBeneficiary:
+//                openAutocompleteActivity();
+//                break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(AddBeneficiaryCashNextActivity.this, HomeActivity.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

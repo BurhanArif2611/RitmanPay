@@ -788,10 +788,18 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, nationalitymsg);
 //            checkFlag = false;
 //        }
-        else if (CountryName.equalsIgnoreCase("")) {
+
+        else if (countryTextViewAddBeneficiary.getText().toString().length()==0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Country");
             checkFlag = false;
-        } else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+        }
+        else if (stateId == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select state");
+            checkFlag = false;
+        } else if (cityId == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select city");
+            checkFlag = false;
+        }else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
             checkFlag = false;
         } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {

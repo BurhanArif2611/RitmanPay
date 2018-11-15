@@ -83,7 +83,11 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     TextView addressTextViewAddBeneficiary;
     @BindView(R.id.mainAddBeneficiaryCashNextActivityLinearLayout)
     LinearLayout addBeneficiaryCashNextActivityLinearLayout;
-    private String countryCode, purposeCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode,customerNumber;
+    @BindView(R.id.skipTextViewViewHeader2)
+    TextView skipTextViewViewHeader2;
+    @BindView(R.id.destinationAddressEditTextAddBeneficiaryNext1)
+    MaterialEditText destinationAddressEditTextAddBeneficiaryNext1;
+    private String countryCode, purposeCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode, customerNumber;
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
     private final ArrayList<PurposeOfTransferListPojo> purposeOfTransferListPojos = new ArrayList<>();
     private final ArrayList<CashNetworkListJsonPojo> cashNetworkListJsonPojos = new ArrayList<>();
@@ -95,7 +99,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String purposetransfermsg, agentmsg,zipcodemsg,landmarkmsg,destinationmsg;
+    private String purposetransfermsg, agentmsg, zipcodemsg, landmarkmsg, destinationmsg;
     private String nointernetmsg;
 
     @Override
@@ -113,7 +117,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
 
         try {
-            sessionManager=new SessionManager(CashPickupAddBeneficiaryNextActivity.this);
+            sessionManager = new SessionManager(CashPickupAddBeneficiaryNextActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
@@ -133,11 +137,10 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
 
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 //                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.get());
 
-            }
-            else {
+            } else {
                 titleTextViewViewHeader2.setText("Beneficiary Info");
                 destinationAddressEditTextAddBeneficiaryNext.setHint(getResources().getString(R.string.dest_add));
                 destinationLandmarkEditTextAddBeneficiary.setHint(getResources().getString(R.string.dest_land));
@@ -145,27 +148,25 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 agentsSpinnerAddBeneficiary.setHint(getResources().getString(R.string.availiable_agents));
                 purposeOfTransferSpinnerCashAddBeneficiary.setHint(getResources().getString(R.string.purpose_of_transfer));
                 addTextViewAddBeneficiary.setText(getResources().getString(R.string.add));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (datumLable_languages_msg != null) {
-            purposetransfermsg=datumLable_languages_msg.getSelectPurposeOfTransfer();
-            agentmsg =datumLable_languages_msg.getSelectAvailableAgents();
-            zipcodemsg =datumLable_languages_msg.getEnterDestinationZipCode();
-            landmarkmsg =datumLable_languages_msg.getEnterDestinationLandmark();
-            destinationmsg =datumLable_languages_msg.getEnterDestinationAddress();
+            purposetransfermsg = datumLable_languages_msg.getSelectPurposeOfTransfer();
+            agentmsg = datumLable_languages_msg.getSelectAvailableAgents();
+            zipcodemsg = datumLable_languages_msg.getEnterDestinationZipCode();
+            landmarkmsg = datumLable_languages_msg.getEnterDestinationLandmark();
+            destinationmsg = datumLable_languages_msg.getEnterDestinationAddress();
         } else {
-            purposetransfermsg=getResources().getString(R.string.Please_select_purpose_transfer);
-            agentmsg=getResources().getString(R.string.Please_select_agents);
-            zipcodemsg=getResources().getString(R.string.Please_Enter_zip_code);
-            landmarkmsg=getResources().getString(R.string.Please_Enter_landmark);
-            destinationmsg=getResources().getString(R.string.Please_Enter_destination);
+            purposetransfermsg = getResources().getString(R.string.Please_select_purpose_transfer);
+            agentmsg = getResources().getString(R.string.Please_select_agents);
+            zipcodemsg = getResources().getString(R.string.Please_Enter_zip_code);
+            landmarkmsg = getResources().getString(R.string.Please_Enter_landmark);
+            destinationmsg = getResources().getString(R.string.Please_Enter_destination);
 
 
         }
@@ -173,7 +174,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             cashAgentNetworkListJsonCall();
             purposeOfTransferJsonCall();
         } else {
-            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this,nointernetmsg);
+            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this, nointernetmsg);
         }
     }
 
@@ -265,9 +266,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     if (cashNetworkListJsonPojos.get(0).getStatus() == true) {
                         if (cashNetworkListJsonPojos.get(0).getInfo().equalsIgnoreCase("NORECORD")) {
 
-                        }
-                        else
-                        {
+                        } else {
                             ArrayList<String> countryList = new ArrayList<>();
                             for (int i = 0; i < cashNetworkListJsonPojos.get(0).getData().size(); i++) {
                                 countryList.add(new String(cashNetworkListJsonPojos.get(0).getData().get(i).getPayOutAgent().trim()));
@@ -324,7 +323,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.addressTextViewAddBeneficiary, R.id.addTextViewAddBeneficiary,R.id.appImageViewHeader2})
+    @OnClick({R.id.menuImageViewHeader2, R.id.addTextViewAddBeneficiary, R.id.appImageViewHeader2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -335,19 +334,19 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
                 break;
-            case R.id.addressTextViewAddBeneficiary:
-                openAutocompleteActivity();
-                break;
+//            case R.id.addressTextViewAddBeneficiary:
+//                openAutocompleteActivity();
+//                break;
             case R.id.addTextViewAddBeneficiary:
                 if (destinationAddressEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, destinationmsg);
                 } else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,landmarkmsg);
+                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, landmarkmsg);
 
                 } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,zipcodemsg);
+                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, zipcodemsg);
                 } else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,agentmsg);
+                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
                 } else if (agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
 
@@ -362,7 +361,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
                         addBeneficiaryJsonCall();
                     } else {
-                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this,nointernetmsg);
+                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this, nointernetmsg);
                     }
                 }
 
@@ -526,12 +525,10 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     createBeneficiaryJsonPojos.addAll(response.body());
                     if (createBeneficiaryJsonPojos.get(0).getStatus() == true) {
 
-                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString())!=null) {
+                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()) != null) {
                             Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
-                        }
-                        else
-                        {
-                            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,response.body().get(0).getInfo().toString());
+                        } else {
+                            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, response.body().get(0).getInfo().toString());
                         }
 
                         Constants.cashBenificaryCount++;
@@ -539,14 +536,12 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                         beneficiaryInfoListPojo.setPayoutbranchcode(payoutBranchCode);
                         Intent intent = new Intent(CashPickupAddBeneficiaryNextActivity.this, PinVerificationActivity.class);
                         intent.putExtra("come_from", "selectcashnext");
-                        intent.putExtra("flagimage",beneficiaryInfoListPojo.getCountryFlagImage());
-                        intent.putExtra("countryshortcode",countryShortCode);
+                        intent.putExtra("flagimage", beneficiaryInfoListPojo.getCountryFlagImage());
+                        intent.putExtra("countryshortcode", countryShortCode);
                         intent.putExtra("beneficiary_data", beneficiaryInfoListPojo);
                         startActivity(intent);
-                    }
-                    else
-                    {
-                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,response.body().get(0).getInfo().toString());
+                    } else {
+                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, response.body().get(0).getInfo().toString());
                     }
                 }
             }
