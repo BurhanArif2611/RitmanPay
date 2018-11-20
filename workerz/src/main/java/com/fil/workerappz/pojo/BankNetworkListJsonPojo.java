@@ -18,16 +18,31 @@ import java.util.regex.Pattern;
 public class BankNetworkListJsonPojo implements Serializable {
 
 
-    @Expose
-    @SerializedName("info")
-    private String info;
-    @Expose
-    @SerializedName("data")
-    private List<Data> data;
-    @Expose
     @SerializedName("status")
-    private boolean status;
+    @Expose
+    private Boolean status;
+    @SerializedName("data")
+    @Expose
+    private Data data;
+    @SerializedName("info")
+    @Expose
+    private String info;
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
 
     public String getInfo() {
         return info;
@@ -37,80 +52,52 @@ public class BankNetworkListJsonPojo implements Serializable {
         this.info = info;
     }
 
-    public List<Data> getData() {
-        return data;
-    }
+    public  class Data {
 
-    public void setData(List<Data> data) {
-        this.data = data;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public static class Data {
-        @Expose
-        @SerializedName("BankCode")
-        private String BankCode;
-        @Expose
-        @SerializedName("BranchName")
-        private String BranchName;
-        @Expose
-        @SerializedName("BankAddress")
-        private String BankAddress;
-        @Expose
         @SerializedName("BankName")
-        private String BankName;
+        @Expose
+        private String bankName;
+        @SerializedName("BankAddress")
+        @Expose
+        private String bankAddress;
+        @SerializedName("BranchName")
+        @Expose
+        private String branchName;
+        @SerializedName("BankCode")
+        @Expose
+        private String bankCode;
 
-        public String getBankCode() {
-            return BankCode;
+        public String getBankName() {
+            return bankName;
         }
 
-        public void setBankCode(String BankCode) {
-            this.BankCode = BankCode;
-        }
-
-        public String getBranchName() {
-////            String normalizedbranchname = Normalizer.normalize(BranchName, Normalizer.Form.NFD)
-////                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-////            return normalizedbranchname;
-//            String temp = Normalizer.normalize(BranchName, Normalizer.Form.NFD);
-//            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-//            return pattern.matcher(temp).replaceAll("");
-            return BranchName;
-        }
-
-        public void setBranchName(String BranchName) {
-            this.BranchName = BranchName;
+        public void setBankName(String bankName) {
+            this.bankName = bankName;
         }
 
         public String getBankAddress() {
-//            String normalizedbankaddress = Normalizer.normalize(BankAddress, Normalizer.Form.NFD)
-//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-//            return normalizedbankaddress;
-            return BankAddress;
-
+            return bankAddress;
         }
 
-        public void setBankAddress(String BankAddress) {
-            this.BankAddress = BankAddress;
+        public void setBankAddress(String bankAddress) {
+            this.bankAddress = bankAddress;
         }
 
-        public String getBankName() {
-//            String normalized = Normalizer.normalize(BankName, Normalizer.Form.NFD)
-//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-//            return normalized;
-            return BankName;
+        public String getBranchName() {
+            return branchName;
         }
 
-        public void setBankName(String BankName) {
-            this.BankName = BankName;
+        public void setBranchName(String branchName) {
+            this.branchName = branchName;
         }
+
+        public String getBankCode() {
+            return bankCode;
+        }
+
+        public void setBankCode(String bankCode) {
+            this.bankCode = bankCode;
+        }
+
     }
-
 }

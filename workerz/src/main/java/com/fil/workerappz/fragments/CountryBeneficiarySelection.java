@@ -41,12 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * Created by HS on 21-Mar-18.
- * FIL AHM
- */
-@SuppressLint("RestrictedApi")
-public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
+public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
 
     @BindView(R.id.countrySelectionRecyclerView)
     RecyclerView countrySelectionRecyclerView;
@@ -63,11 +58,12 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     LinearLayout rootBottomSheet2;
 
 
-    private List<CountryData> countryListPojos = new ArrayList<>();
+    private List<ModeWiseCountryListJsonPojo.Data> countryListPojos = new ArrayList<>();
     private Activity activity;
     private RecyclerView.LayoutManager layoutManager;
-    private CountryListAdapter countryListAdapter;
+    private CountryBeneficiarySelection.CountryListAdapter countryListAdapter;
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
@@ -92,7 +88,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 //            Constants.showMessage(mainLinearLayoutSignIn, getActivity(), getResources().getString(R.string.no_internet));
         }*/
 
-        countryListPojos = (List<CountryData>) getArguments().getSerializable("country_list");
+        countryListPojos = (List<ModeWiseCountryListJsonPojo.Data>) getArguments().getSerializable("country_list");
         countryListJsonCall();
     }
 
@@ -122,64 +118,51 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     }
 
 
-    public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.ViewHolder> implements Filterable {
+    public class CountryListAdapter extends RecyclerView.Adapter<CountryBeneficiarySelection.CountryListAdapter.ViewHolder> implements Filterable {
 
         private final Activity mContext;
-        private List<CountryData> countryListPojos;
+        private List<ModeWiseCountryListJsonPojo.Data> countryListPojos;
         private Currency currency;
-        private List<CountryData> countryList;
+        private List<ModeWiseCountryListJsonPojo.Data> countryList;
 //        private List<CountryData> countryListFiltered;
 
-        CountryListAdapter(Activity mContext, List<CountryData> countryListPojos) {
+        CountryListAdapter(Activity mContext, List<ModeWiseCountryListJsonPojo.Data> countryListPojos) {
             this.mContext = mContext;
             this.countryListPojos = countryListPojos;
             this.countryList = countryListPojos;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CountryBeneficiarySelection.CountryListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_selection_adapter, parent, false);
-            return new ViewHolder(view);
+            return new CountryBeneficiarySelection.CountryListAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            if (getActivity() instanceof AddBeneficiaryActivity|| getActivity() instanceof SelectBeneficiaryViewActivity)
-            {
+        public void onBindViewHolder(final CountryBeneficiarySelection.CountryListAdapter.ViewHolder holder, int position) {
+
                 holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
-                holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-            }
-            else {
-                holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
-                holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-                Picasso.with(getActivity()).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(holder.imageViewCountrySelectionAdapter);
-            }
+                holder.textViewCountrySelectionAdapter.setText(countryListPojos.get(position).getCountryName());
+
+//            else {
+//                holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
+//                holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+//                Picasso.with(getActivity()).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(holder.imageViewCountrySelectionAdapter);
+//            }
             holder.mainCountrySelectionAdapterLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (getActivity() instanceof SignInActivity ) {
-                        SignInActivity signInActivity = (SignInActivity) getActivity();
-                        signInActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-                        dismiss();
-                    } else if (getActivity() instanceof SignUpSubmitActivity) {
-                        SignUpSubmitActivity signUpSubmitActivity = (SignUpSubmitActivity) getActivity();
-                        signUpSubmitActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-                        dismiss();
-                    } else if (getActivity() instanceof ForgotPinActivity) {
-                        ForgotPinActivity forgotPinActivity = (ForgotPinActivity) getActivity();
+
+                    if (getActivity() instanceof AddBeneficiaryActivity) {
+                        AddBeneficiaryActivity forgotPinActivity = (AddBeneficiaryActivity) getActivity();
                         forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     }
-//                    else if (getActivity() instanceof AddBeneficiaryActivity) {
-//                        AddBeneficiaryActivity forgotPinActivity = (AddBeneficiaryActivity) getActivity();
-//                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-//                        dismiss();
-//                    }
-//                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
-//                        SelectBeneficiaryViewActivity forgotPinActivity = (SelectBeneficiaryViewActivity) getActivity();
-//                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-//                        dismiss();
-//                    }
+                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
+                        SelectBeneficiaryViewActivity forgotPinActivity = (SelectBeneficiaryViewActivity) getActivity();
+                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
+                        dismiss();
+                    }
                 }
             });
 
@@ -194,12 +177,12 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
                     if (charString.isEmpty()) {
                         countryListPojos = countryList;
                     } else {
-                        List<CountryData> filteredList = new ArrayList<>();
-                        for (CountryData row : countryList) {
+                        List<ModeWiseCountryListJsonPojo.Data> filteredList = new ArrayList<>();
+                        for (ModeWiseCountryListJsonPojo.Data row : countryList) {
 
                             // name match condition. this might differ depending on your requirement
                             // here we are looking for name or phone number match
-                            if ((new String(Base64.decode(row.getCountryName().trim().getBytes(), Base64.DEFAULT))).toLowerCase().contains(charString.toLowerCase())) {
+                            if (((row.getCountryName())).toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
                             }
                         }
@@ -214,7 +197,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                    countryListPojos = (ArrayList<CountryData>) filterResults.values;
+                    countryListPojos = (ArrayList<ModeWiseCountryListJsonPojo.Data>) filterResults.values;
                     notifyDataSetChanged();
                 }
             };
@@ -259,7 +242,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
 //                if (response.body() != null && response.body() instanceof ArrayList) {
 //                    countryListPojos.addAll(response.body());
         if (countryListPojos.size() > 0) {
-            countryListAdapter = new CountryListAdapter(getActivity(), countryListPojos);
+            countryListAdapter = new CountryBeneficiarySelection.CountryListAdapter(getActivity(), countryListPojos);
             countrySelectionRecyclerView.setAdapter(countryListAdapter);
 
             inputSearch.addTextChangedListener(new TextWatcher() {

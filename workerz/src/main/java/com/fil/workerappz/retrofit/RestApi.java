@@ -28,6 +28,7 @@ import com.fil.workerappz.pojo.KYCUploadedDocumentListJsonPojo;
 import com.fil.workerappz.pojo.LabelListJsonPojo;
 import com.fil.workerappz.pojo.LanguagesListPojo;
 import com.fil.workerappz.pojo.MessageListJsonPojo;
+import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
 import com.fil.workerappz.pojo.NotificationListJsonPojo;
 import com.fil.workerappz.pojo.PurposeOfTransferListPojo;
 import com.fil.workerappz.pojo.QuickPayJsonPojo;
@@ -179,6 +180,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("wallettransactions/get-id-type-list")
     Call<List<IdTypeListJsonPojo>> getIdTypeJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("wallettransactions/get-mode-wise-country")
+    Call<List<ModeWiseCountryListJsonPojo>>getModeWiseCountryJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("users/update-user")

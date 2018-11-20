@@ -126,6 +126,26 @@ public class BeneficiaryInfoListPojo implements Serializable {
     private String IDNumber="";
     private String IDType="";
 
+    public String getState() {
+        return State;
+    }
+
+    public void setState(String state) {
+        State = state;
+    }
+
+    private String State="";
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    private String City="";
+
     public String getCountryFlagImage() {
         return CountryFlagImage;
     }

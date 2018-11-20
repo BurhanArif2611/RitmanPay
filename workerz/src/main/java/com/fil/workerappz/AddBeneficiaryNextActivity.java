@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,6 +81,10 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
     MaterialEditText accountHolderNameEditTextAddBeneficiaryNext;
     @BindView(R.id.ifscCodeEditTextAddBeneficiaryNext)
     MaterialEditText ifscCodeEditTextAddBeneficiaryNext;
+    @BindView(R.id.bankNameSpinner)
+    MaterialSpinner bankNameSpinner;
+    @BindView(R.id.bankNameNewEditTextAddBeneficiary)
+    MaterialEditText bankNameNewEditTextAddBeneficiary;
 
     private String countryCode, purposeCode, countryShortCode, bankBranchName, customerNumber, BankBranchCode, BankbranchAddress, BankBranchNamevalidation;
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
@@ -95,7 +98,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String accountnumbermsg, minimumaccountmsg, banknamemsg, branchcodemsg, branchaddmsg, validbankmsg, mobilenumber, validmobilenumber, purposetransfermsg;
-    private String nointernetmsg;
+    private String nointernetmsg, cityname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
         ButterKnife.bind(this);
 
         countryCode = getIntent().getExtras().getString("country_code");
+        cityname = getIntent().getExtras().getString("cityname");
         countryShortCode = getIntent().getExtras().getString("country_short_code");
         customerNumber = getIntent().getExtras().getString("customer_number");
         beneficiaryInfoListPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiary_data");
@@ -122,12 +126,15 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 bankAccountNumberEditTextAddBeneficiaryNext.setHint(datumLable_languages.getAccountNumber());
                 bankAccountNumberEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getAccountNumber());
                 bankNameEditTextAddBeneficiary.setHint(datumLable_languages.getBankName());
+                bankNameNewEditTextAddBeneficiary.setHint(datumLable_languages.getBankName());
                 bankCodeEditTextAddBeneficiary.setHint(datumLable_languages.getBranchCode());
                 bankCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchCode());
                 bankAddressEditTextAddBeneficiary.setHint(datumLable_languages.getBranchAddress());
                 bankAddressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchAddress());
                 phoneNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber());
+                bankNameSpinner.setHint(datumLable_languages.getBankName());
                 phoneNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber());
+                bankNameSpinner.setFloatingLabelText(datumLable_languages.getBankName());
                 purposeOfTransferSpinnerAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
@@ -138,11 +145,13 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 
                 bankAccountNumberEditTextAddBeneficiaryNext.setHint(getResources().getString(R.string.bank_account_number));
                 bankNameEditTextAddBeneficiary.setHint(getResources().getString(R.string.bank_name));
+                bankNameNewEditTextAddBeneficiary.setHint(getResources().getString(R.string.bank_name));
                 bankCodeEditTextAddBeneficiary.setHint(getResources().getString(R.string.bank_code));
                 bankAddressEditTextAddBeneficiary.setHint(getResources().getString(R.string.bank_address));
                 addTextViewAddBeneficiary.setHint(getResources().getString(R.string.add));
                 phoneNumberEditTextAddBeneficiary.setHint(getResources().getString(R.string.phone_number));
                 purposeOfTransferSpinnerAddBeneficiary.setHint(getResources().getString(R.string.purpose_of_transfer));
+                bankNameSpinner.setHint(getResources().getString(R.string.bank_name));
                 nointernetmsg = getResources().getString(R.string.no_internet);
 
 
@@ -176,7 +185,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 
         }
         if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryNextActivity.this)) {
-            bankListJsonCall("");
+//            bankListJsonCall("");
         }
         if (IsNetworkConnection.checkNetworkConnection(this)) {
             purposeOfTransferJsonCall();
@@ -247,23 +256,66 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
             }
         });
 
-        bankNameEditTextAddBeneficiary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        bankNameEditTextAddBeneficiary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String selectedItem = (String) parent.getItemAtPosition(position);
+//                Log.d("System out", selectedItem);
+//
+//                int index = stringArrayList.indexOf(bankNameEditTextAddBeneficiary.getText().toString());
+//                Log.d("System out", String.valueOf(index));
+//                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode());
+//                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankAddress());
+//                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
+//                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode();
+//                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(index).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
+////                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(position).get;
+////                receiverId = walletSuggestionListPojos.get(0).getData().get(position).getUserID();
+//            }
+//        });
+        ifscCodeEditTextAddBeneficiaryNext.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-                Log.d("System out", selectedItem);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                int index = stringArrayList.indexOf(bankNameEditTextAddBeneficiary.getText().toString());
-                Log.d("System out", String.valueOf(index));
-                bankCodeEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode());
-                bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(index).getBankAddress());
-                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
-                BankBranchCode = bankNetworkListJsonPojos.get(0).getData().get(index).getBankCode();
-                BankBranchNamevalidation = bankNetworkListJsonPojos.get(0).getData().get(index).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(index).getBranchName();
-//                bankBranchName = bankNetworkListJsonPojos.get(0).getData().get(position).get;
-//                receiverId = walletSuggestionListPojos.get(0).getData().get(position).getUserID();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                int main_length = ifscCodeEditTextAddBeneficiaryNext.getText().toString().length();
+
+                if (main_length > 10) {
+                    bankListJsonCall("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//                CustomLog.d("System out", "substring " + bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().substring(0, editable.length()));
+                CustomLog.d("System out", "editable " + editable);
+
+                int main_length = ifscCodeEditTextAddBeneficiaryNext.getText().toString().length();
+
+                if (main_length < 11) {
+                    ifscCodeEditTextAddBeneficiaryNext.setError("Enter Valid IFSC/IBAN Code");
+                } else if (main_length > 4) {
+                    String foo = ifscCodeEditTextAddBeneficiaryNext.getText().toString();
+                    if (foo.length() > 0) { //just checks that there is something. You may want to check that length is greater than or equal to 3
+                        String bar = foo.substring(0, 3);
+                        if (bar.toString().matches("[a-zA-Z ]+")) {
+
+                        } else {
+                            ifscCodeEditTextAddBeneficiaryNext.setError("Enter Valid IFSC/IBAN Code");
+                        }
+
+                    }
+
+                } else {
+
+                }
             }
         });
+
 
     }
 
@@ -356,11 +408,10 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
                             , "Account number and Reaccount number does not match");
-                } else if (bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
+                } else if (bankNameNewEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, banknamemsg);
 
-                }
-                else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
+                } else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, branchcodemsg);
 
                 } else if (bankAddressEditTextAddBeneficiary.getText().toString().length() == 0) {
@@ -373,13 +424,14 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //                else if (!bankAddressEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankbranchAddress)) {
 //                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, "Please Enter Valid Branch Address");
 //                }
-                else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, mobilenumber);
-
-                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, validmobilenumber);
-
-                } else if (purposeOfTransferSpinnerAddBeneficiary == null && purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
+//                else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, mobilenumber);
+//
+//                } else if (phoneNumberEditTextAddBeneficiary.getText().toString().length() < 7) {
+//                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, validmobilenumber);
+//
+//                }
+                else if (purposeOfTransferSpinnerAddBeneficiary == null && purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, purposetransfermsg);
                 } else if (purposeOfTransferSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, purposetransfermsg);
@@ -423,7 +475,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("PaymentMode", "BANK");
 //            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
             jsonObject.put("PayOutBranchCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
-            jsonObject.put("BankName", bankNameEditTextAddBeneficiary.getText().toString());
+            jsonObject.put("BankName", bankNameNewEditTextAddBeneficiary.getText().toString());
             jsonObject.put("BankCountry", "IND");
             jsonObject.put("BranchNameAndAddress", bankAddressEditTextAddBeneficiary.getText().toString());
 //            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
@@ -498,8 +550,10 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
         try {
             jsonObject.put("countryCode", countryShortCode);
             jsonObject.put("bankName", "");
-            jsonObject.put("bankIFSC", "");
-            jsonObject.put("branchName", beneficiaryInfoListPojo.getLandMark());
+            jsonObject.put("bankIFSC", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
+//            jsonObject.put("branchName", beneficiaryinfoPojo.getLandMark());
+            jsonObject.put("branchName", "");
+            jsonObject.put("city", cityname);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -518,12 +572,31 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                     bankNetworkListJsonPojos.addAll(response.body());
                     if (bankNetworkListJsonPojos.get(0).getStatus() == true) {
                         if (bankNetworkListJsonPojos.get(0).getData() != null) {
-                            stringArrayList.clear();
-                            for (int i = 0; i < bankNetworkListJsonPojos.get(0).getData().size(); i++) {
-                                stringArrayList.add(bankNetworkListJsonPojos.get(0).getData().get(i).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(i).getBranchName());
-                            }
-                            ArrayAdapter bankAdapter = new ArrayAdapter<>(AddBeneficiaryNextActivity.this, android.R.layout.simple_list_item_1, stringArrayList);
-                            bankNameEditTextAddBeneficiary.setAdapter(bankAdapter);
+                            bankNameNewEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().getBankName());
+                            bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().getBankAddress());
+//                            stringArrayList.clear();
+//                            for (int i = 0; i < bankNetworkListJsonPojos.get(0).getData().size(); i++) {
+//                                stringArrayList.add(bankNetworkListJsonPojos.get(0).getData().get(i).getBankName() + "," + bankNetworkListJsonPojos.get(0).getData().get(i).getBranchName());
+//                            }
+//
+//                            ArrayAdapter<String> adapter = new ArrayAdapter<>(AddBeneficiaryNextActivity.this, android.R.layout.simple_spinner_item, stringArrayList);
+//                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            bankNameSpinner.setAdapter(adapter);
+//                            bankNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                                @Override
+//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                    if (position != -1) {
+//                                        bankAddressEditTextAddBeneficiary.setText(bankNetworkListJsonPojos.get(0).getData().get(position).getBankAddress());
+//
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onNothingSelected(AdapterView<?> parent) {
+//
+//                                }
+//                            });
+
                         }
                     }
                 }

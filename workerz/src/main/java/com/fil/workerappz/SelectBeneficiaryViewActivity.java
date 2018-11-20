@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fil.workerappz.fragments.CountryBeneficiarySelection;
 import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
@@ -33,6 +34,7 @@ import com.fil.workerappz.pojo.CountryListPojo;
 import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
 import com.fil.workerappz.pojo.QuickPayDataPojo;
 import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.retrofit.RestClient;
@@ -84,6 +86,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     private final ArrayList<CountryData> countryFieldListPojos = new ArrayList<>();
     private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
     private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
+    private final ArrayList<ModeWiseCountryListJsonPojo.Data> modeWisecountryListPojos = new ArrayList<>();
     @BindView(R.id.menuImageViewHeader2)
     ImageView menuImageViewHeader2;
     @BindView(R.id.appImageViewHeader2)
@@ -374,16 +377,24 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             locale = getResources().getConfiguration().locale.getISO3Country();
             if (IsNetworkConnection.checkNetworkConnection(this)) {
 //            countryFieldListJsonCall();
+                ModeWisecountryListJsonCall();
 
                 if (SugarRecord.count(CountryData.class) > 0) {
                     countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
-                    for (int i = 0; i < countryListPojos.size(); i++) {
-                        if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
-                            countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-                            break;
-                        }
-
-                    }
+//                    for (int i = 0; i < countryListPojos.size(); i++) {
+//                        if (locale.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+//                            countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+//                            break;
+//                        }
+//                    for (int i = 0; i < countryListPojos.size(); i++) {
+//                        if (getUserData().getCountryShortCode().equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
+//                            countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+//                            break;
+//                        }
+//
+//                    }
+//
+//                    }
 
                     ArrayList<String> countryList = new ArrayList<>();
                     for (int i = 0; i < countryListPojos.size(); i++) {
@@ -500,7 +511,48 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             }
         });
     }
+    private void ModeWisecountryListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        Constants.showProgress(SelectBeneficiaryViewActivity.this);
+        String paymentMode = "";
+        if (activitytype.equalsIgnoreCase("bank")) {
+            paymentMode = "BANK";
+        } else {
+            paymentMode = "CASH";
+        }
+        try {
+            jsonObject.put("countryCode", getUserData().getCountryShortCode());
+            jsonObject.put("paymentMode", paymentMode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        String json = "[" + jsonObject + "]";
+//        Constants.showProgress(ProfileActivity.this);
+        Call<List<ModeWiseCountryListJsonPojo>> call = RestClient.get().getModeWiseCountryJsonCall(json);
+
+        call.enqueue(new Callback<List<ModeWiseCountryListJsonPojo>>() {
+
+            @Override
+            public void onResponse(Call<List<ModeWiseCountryListJsonPojo>> call, Response<List<ModeWiseCountryListJsonPojo>> response) {
+                Constants.closeProgress();
+                countryListPojos.clear();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    if (response.body().get(0).getStatus() == true) {
+                        ArrayList<String> countryList = new ArrayList<>();
+                        modeWisecountryListPojos.addAll(response.body().get(0).getData());
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ModeWiseCountryListJsonPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
     public static void OnlyCharacter1(MaterialEditText editText) {
 //        if (editText.getText().toString().length() > 0) {
 //
@@ -666,9 +718,9 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //                openAutocompleteActivity();
 //                break;
             case R.id.countryEditTextAddBeneficiary:
-                CountrySelectionBottomSheet countrySelectionBottomSheet = new CountrySelectionBottomSheet();
+                CountryBeneficiarySelection countrySelectionBottomSheet = new CountryBeneficiarySelection();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("country_list", countryListPojos);
+                bundle.putSerializable("country_list", modeWisecountryListPojos);
                 countrySelectionBottomSheet.setArguments(bundle);
                 countrySelectionBottomSheet.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
@@ -697,6 +749,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setPayoutcurrency(countryCurrency);
                     beneficiaryInfoListPojo.setPayoutcountry(countryshortcode);
 
+
                     if (activitytype.equalsIgnoreCase("bank")) {
                         Intent intent = new Intent(SelectBeneficiaryViewActivity.this, AddBeneficiaryBankNextActivity.class);
                         beneficiaryInfoListPojo.setActivitytype("BANK");
@@ -705,6 +758,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                         intent.putExtra("countryshortcode", countryshortcode);
                         intent.putExtra("beneficiarydata", beneficiaryInfoListPojo);
                         intent.putExtra("beneficiaryapidata", bankbenefiardata);
+                        intent.putExtra("cityname", citySpinnerAddBeneficiary.getSelectedItem().toString());
                         startActivity(intent);
 
                     } else if (activitytype.equalsIgnoreCase("bankquickpay")) {
@@ -716,6 +770,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                         intent.putExtra("countryshortcode", countryshortcode);
                         intent.putExtra("beneficiarydata", beneficiaryInfoListPojo);
                         intent.putExtra("beneficiaryapidata", quickPayData);
+                        intent.putExtra("cityname", citySpinnerAddBeneficiary.getSelectedItem().toString());
                         startActivity(intent);
 
                     } else if (activitytype.equalsIgnoreCase("cash")) {
@@ -789,17 +844,16 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //            checkFlag = false;
 //        }
 
-        else if (countryTextViewAddBeneficiary.getText().toString().length()==0) {
+        else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Country");
             checkFlag = false;
-        }
-        else if (stateId == 0) {
+        } else if (stateId == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select state");
             checkFlag = false;
         } else if (cityId == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select city");
             checkFlag = false;
-        }else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+        } else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
             checkFlag = false;
         } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
@@ -1406,36 +1460,50 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         });
     }
 
-    public void updateCountrySelection(List<CountryData> countryListPojosupdated, int position) {
-        countryTextViewAddBeneficiary.setText(new String(Base64.decode(countryListPojosupdated.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
-        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+    public void updateCountrySelection(List<ModeWiseCountryListJsonPojo.Data> countryListPojosupdated, int position) {
+        countryTextViewAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
+        for (int i = 0; i < countryListPojos.size(); i++) {
+            if (countryListPojosupdated.get(position).getCountryShortName().equalsIgnoreCase(new String(Base64.decode(countryListPojos.get(i).getCountryShortCode().trim().getBytes(), Base64.DEFAULT)))) {
+                countryCode = countryListPojos.get(i).getCountryDialCode();
 
-        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
-        countryId = countryListPojosupdated.get(position).getCountryID();
-        countryFlagImage = countryListPojosupdated.get(position).getCountryFlagImage();
-        countryCurrency = countryListPojosupdated.get(position).getCountryCurrencySymbol();
-        countryShortCode = countryListPojosupdated.get(position).getCountryShortCode();
-        countryshortcode = countryListPojosupdated.get(position).getCountryShortCode();
-        CountryName = countryListPojosupdated.get(position).getCountryName();
-        for (int i = 0; i < countryListPojosupdated.size(); i++) {
-            if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojosupdated.get(i).getCountryCurrencySymbol())) {
-                countryflagimagesender = countryListPojosupdated.get(i).getCountryFlagImage();
+                countryCode = countryListPojos.get(i).getCountryDialCode();
+                countryId = countryListPojos.get(i).getCountryID();
+                countryFlagImage = countryListPojos.get(i).getCountryFlagImage();
+                countryCurrency = countryListPojos.get(i).getCountryCurrencySymbol();
+                countryShortCode = countryListPojos.get(i).getCountryShortCode();
+                CountryName = countryListPojos.get(i).getCountryName();
                 break;
+//                            }
+            }
+//        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+//
+//        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+//        countryId = countryListPojosupdated.get(position).getCountryID();
+//        countryFlagImage = countryListPojosupdated.get(position).getCountryFlagImage();
+//        countryCurrency = countryListPojosupdated.get(position).getCountryCurrencySymbol();
+//        countryShortCode = countryListPojosupdated.get(position).getCountryShortCode();
+//        countryshortcode = countryListPojosupdated.get(position).getCountryShortCode();
+//        CountryName = countryListPojosupdated.get(position).getCountryName();
+            for (int j = 0; j < countryListPojosupdated.size(); j++) {
+                if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(j).getCountryCurrencySymbol())) {
+                    countryflagimagesender = countryListPojos.get(i).getCountryFlagImage();
+                    break;
+                }
+            }
+            if (CountryName != null) {
+                if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryViewActivity.this)) {
+                    stateId = 0;
+                    cityId = 0;
+                    stateListJsonCall();
+                    idTypeJsonCall();
+
+                } else {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, nointernetmsg);
+                }
+
             }
         }
-        if (CountryName != null) {
-            if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryViewActivity.this)) {
-                stateId = 0;
-                cityId = 0;
-                stateListJsonCall();
-                idTypeJsonCall();
 
-            } else {
-                Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, nointernetmsg);
-            }
 
-        }
     }
-
-
 }
