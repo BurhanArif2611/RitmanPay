@@ -240,7 +240,6 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
 
     private void beneficiaryListJsonCall() {
 
-
         Constants.showProgress(SelectBeneficiaryActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {

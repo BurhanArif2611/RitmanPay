@@ -823,7 +823,8 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
             uploaddocumentsSpinner.setError("Sufficient documents uploaded");
             uploaddocumentsSpinner.setEnabled(false);
             if (!poastatus || !poistatus) {
-                Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Please submit the documents with your registered agent");
+//                Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Please submit the documents with your registered agent");
+                Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Documents subject to final approval");
             }
         } else {
             uploaddocumentsSpinner.setEnabled(true);

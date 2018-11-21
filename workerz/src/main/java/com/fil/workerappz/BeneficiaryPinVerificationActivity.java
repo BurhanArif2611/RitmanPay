@@ -221,6 +221,16 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
                             beneficiaryInfoListPojo.setPayoutcountry(bankbenefiardata.getBenificaryPayoutCountryCode());
                             beneficiaryInfoListPojo.setBeneficiarynumber(bankbenefiardata.getBenificaryBeneficiaryNo());
                             beneficiaryInfoListPojo.setPayoutbranchcode(bankbenefiardata.getBenificaryPayOutBranchCode());
+                            String type="";
+                            if (activitytype.equalsIgnoreCase("cash"))
+                            {
+                                type="CASH";
+                            }
+                            else
+                            {
+                                type="BANK";
+                            }
+                            beneficiaryInfoListPojo.setActivitytype(type);
 
                             mIntent = new Intent(BeneficiaryPinVerificationActivity.this, BeneficiaryInfoSendActivity.class);
                             mIntent.putExtra("flagimage", flagimage);

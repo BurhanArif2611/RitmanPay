@@ -127,17 +127,23 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         if (getIntent().getExtras().getString("quick_pay") != null) {
             quickPayData = (QuickPayDataPojo) getIntent().getSerializableExtra("beneficiaryapidata");
             bankAccountNumberEditTextAddBeneficiaryNext.setText(quickPayData.getBenificaryAccountNumber());
+            bankReAccountNumberEditTextAddBeneficiaryNext.setText(quickPayData.getBenificaryAccountNumber());
             bankNameEditTextAddBeneficiary.setText(quickPayData.getBenificaryBankName());
             bankCodeEditTextAddBeneficiary.setText(quickPayData.getBenificaryBankCode());
+            bankNameNewEditTextAddBeneficiary.setText(quickPayData.getBenificaryBankName());
             BankBranchCode = quickPayData.getBenificaryBankCode();
             bankAddressEditTextAddBeneficiary.setText(quickPayData.getBenificaryBranchNameAndAddress());
             phoneNumberEditTextAddBeneficiary.setText(quickPayData.getBenificaryTelephone());
+            ifscCodeEditTextAddBeneficiaryNext.setText(quickPayData.getBenificaryBankCode());
             purposecode = quickPayData.getBenificaryPurposeCode();
         } else {
             bankbenefiardata = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiaryapidata");
             bankAccountNumberEditTextAddBeneficiaryNext.setText(bankbenefiardata.getBenificaryAccountNumber());
+            bankReAccountNumberEditTextAddBeneficiaryNext.setText(bankbenefiardata.getBenificaryAccountNumber());
             bankNameEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBankName());
+            bankNameNewEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBankName());
             bankCodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBankCode());
+            ifscCodeEditTextAddBeneficiaryNext.setText(bankbenefiardata.getBenificaryBankCode());
             BankBranchCode = bankbenefiardata.getBenificaryBankCode();
             bankAddressEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryBranchNameAndAddress());
             phoneNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());

@@ -341,7 +341,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             jsonObject.put("transferAmount", s);
             jsonObject.put("customerNo", String.valueOf(Constants.bankBenificaryCount));
             jsonObject.put("beneficiaryNo", String.valueOf(beneficiaryInfoListPojo.getBeneficiarynumber()));
-            jsonObject.put("txnNo", "RP0875361893");
+//            jsonObject.put("txnNo", "RP0875361893");
+            jsonObject.put("txnNo", "");
             jsonObject.put("nickName", beneficiaryInfoListPojo.getNickName());
 //            jsonObject.put("nickName", "");
 

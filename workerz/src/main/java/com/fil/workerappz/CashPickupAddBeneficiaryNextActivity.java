@@ -243,6 +243,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("countryCode", beneficiaryInfoListPojo.getNationality());
+            jsonObject.put("bankName", "");
+            jsonObject.put("branch", "");
 //            jsonObject.put("countryCode", "NPL");
         } catch (JSONException e) {
             e.printStackTrace();

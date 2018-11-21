@@ -273,6 +273,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("countryCode", cashbeneficiarinfopojo.getBenificaryNationality());
+            jsonObject.put("bankName", "");
+            jsonObject.put("branch", "");
 //            jsonObject.put("countryCode", "NPL");
         } catch (JSONException e) {
             e.printStackTrace();
