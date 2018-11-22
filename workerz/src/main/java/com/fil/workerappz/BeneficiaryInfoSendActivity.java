@@ -526,6 +526,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             @Override
             public void onResponse(Call<List<SendMoneyBeneficiaryJsonPojo>> call, Response<List<SendMoneyBeneficiaryJsonPojo>> response) {
                 Constants.closeProgress();
+                sendReceiveMoneyBeneficiaryJsonPojos.clear();
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     sendReceiveMoneyBeneficiaryJsonPojos.addAll(response.body());
                     if (sendReceiveMoneyBeneficiaryJsonPojos.get(0).getStatus() == true) {
@@ -547,7 +548,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                                 finish();
                                 Intent mIntent;
 //                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
-                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionHistoryActivity.class);
+                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionReceiptActivity.class);
+                                mIntent.putExtra("transactionnumber",sendReceiveMoneyBeneficiaryJsonPojos.get(0).getData().getRPTxnNo());
                                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mIntent);
 

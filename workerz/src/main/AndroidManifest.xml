@@ -235,7 +235,8 @@
 
         <activity android:name=".MainLanguageActivity" />
         <activity android:name=".ChangeLanguageActivity" />
-        <activity android:name=".CropActivity"></activity>
+        <activity android:name=".CropActivity" />
+        <activity android:name=".TransactionReceiptActivity"></activity>
     </application>
 
 </manifest>

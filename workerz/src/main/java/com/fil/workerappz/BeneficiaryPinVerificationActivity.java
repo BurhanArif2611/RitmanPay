@@ -173,6 +173,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
                     Constants.closeProgress();
                     if (response.body().get(0).getStatus() == true) {
 //                        Constants.showMessage(mainPinVerificationLinearLayout, BeneficiaryPinVerificationActivity.this, response.body().get(0).getInfo());
+                        pinEditTextVerifiedPinActivity.setText("");
                         if (searchType.equalsIgnoreCase("")) {
                             if (activitytype.equalsIgnoreCase("cash")) {
                                 mIntent = new Intent(BeneficiaryPinVerificationActivity.this, SelectBeneficiaryViewActivity.class);

@@ -37,6 +37,7 @@ import com.fil.workerappz.pojo.SendPaymentJsonPojo;
 import com.fil.workerappz.pojo.SendReceiveMoneyJsonPojo;
 import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.pojo.TransactionHistoryListJsonPojo;
+import com.fil.workerappz.pojo.TransactionReceiptListJsonPojo;
 import com.fil.workerappz.pojo.UserListPojo;
 import com.fil.workerappz.pojo.VerifySecurityListPojo;
 import com.fil.workerappz.pojo.WalletSuggestionListPojo;
@@ -152,6 +153,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("wallettransactions/get-history")
     Call<List<TransactionHistoryListJsonPojo>> walletHistoryJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("wallettransactions/get-transaction-receipt")
+    Call<List<TransactionReceiptListJsonPojo>> transactionReceipyJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-bank-network")

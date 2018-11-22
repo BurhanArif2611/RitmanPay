@@ -72,6 +72,7 @@
     <string name="Please_select_idType">"Please Select IdType"</string>
     <string name="last_name">Last Name</string>
     <string name="address">Address</string>
+    <string name="address_">Address:</string>
     <string name="street">Street</string>
     <string name="email">Email</string>
     <string name="passport_no">Passport No.</string>
@@ -99,7 +100,9 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
     <string name="bank_name">Bank Name</string>
+    <string name="bank_name_">Bank Name:</string>
     <string name="bank_account_number">Account Number</string>
+    <string name="bank_account_number_">Account Number:</string>
     <string name="re_enter_bank_account_number">Re Enter Account Number</string>
     <string name="account_holder_name">Account Holder Name</string>
     <string name="ifsc_code">IFSC Code/IBAN No</string>
@@ -211,8 +214,10 @@
     <string name="purpose_of_transfer">Purpose of Transfer</string>
     <string name="add">Add</string>
     <string name="bank_code">Bank Code</string>
+    <string name="bank_code_">Bank Code:</string>
     <string name="bank_address">Bank Address</string>
     <string name="id_type">Id type</string>
+    <string name="id_type_">Id type:</string>
     <string name="dest_add">Destination address</string>
     <string name="dest_land">Destination landmark</string>
     <string name="dest_zip">Destination zip code</string>
@@ -222,11 +227,13 @@
     <string name="charge">Charge:&#160;</string>
     <string name="validity">Validity:</string>
     <string name="customer_info">Customer Info</string>
+    <string name="customer_details">Customer Details:</string>
     <string name="legal_documents">Legal Documents</string>
     <string name="sending_amount">Sending Amount:&#160;</string>
     <string name="exchange_rate">Exchange Rate:&#160;</string>
     <string name="service_charges">Service Charges:&#160;</string>
     <string name="id_number">Id Number</string>
+    <string name="id_number_">Id Number:</string>
     <string name="phone_number">Phone Number</string>
     <string name="_91">+91</string>
     <string name="todo">TODO</string>
@@ -256,4 +263,23 @@
     <string name="didn_t_receive_otp">Didn\'t Receive OTP?  <u>Resend OTP</u></string>
     <string name="resend_otp"></string>
     <string name="convert">Convert</string>
+    <string name="transaction_details">Transaction Details:</string>
+    <string name="txn_number">TXN Number:</string>
+    <string name="date_amp_time"><![CDATA[Date & Time:]]></string>
+    <string name="payment_details">Payment Details:</string>
+    <string name="sending_currency">Sending Currency:</string>
+    <string name="service_fee">Service Fee:</string>
+    <string name="other_charge">Other Charge:</string>
+    <string name="vat_10_00">VAT</string>
+    <string name="bank_details">Bank Details:</string>
+    <string name="branch">Branch:</string>
+    <string name="name">Name:</string>
+    <string name="id_expiry">Id Expiry:</string>
+    <string name="relation_with_beneficiary">Relation With Beneficiary:</string>
+    <string name="beneficiary_details">Beneficiary Details:</string>
+    <string name="loyalty_points_details">Loyalty Points Details:</string>
+    <string name="avail_points">Avail Points:</string>
+    <string name="balance_points">Balance Points:</string>
+    <string name="payoutagentname">PayoutAgentName:</string>
+    <string name="customer_id">Customer ID:</string>
 </resources>
