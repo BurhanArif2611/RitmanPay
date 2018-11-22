@@ -384,6 +384,7 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
                         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancelAll();
                         mIntent = new Intent(mContext, SignUpActivity.class);
+                        mIntent.putExtra("auto_logout"," ");
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         mContext.startActivity(mIntent);
                     }

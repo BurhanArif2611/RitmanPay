@@ -145,8 +145,8 @@ public class ActionBarActivity extends AppCompatActivity {
             // Perform any required operation on disconnect
             if (sessionManager.getLogin() && sessionManager.getVerify()) {
                 Log.d("inactive user log1", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
-//                updateDeviceTokenJsonCall();
-                logoutUser();
+                updateDeviceTokenJsonCall();
+//                logoutUser();
 
             }
         }
@@ -231,6 +231,7 @@ public class ActionBarActivity extends AppCompatActivity {
                         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancelAll();
                         mIntent = new Intent(getApplicationContext(), SignUpActivity.class);
+                        mIntent.putExtra("auto_logout","log out");
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(mIntent);
                     }

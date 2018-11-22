@@ -162,6 +162,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String nickname;
     private String nointernetmsg;
     private String countryName = "";
+    private String stateName = "";
+    private String cityname = "";
     private String locale = "IND";
 
     @Override
@@ -591,6 +593,9 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setIDtype_Description(idTypeDescription);
 //                    beneficiaryInfoListPojo.setNationality(nationalitySpinnerAddBeneficiary.getSelectedItem().toString());
                     beneficiaryInfoListPojo.setNationality(countryShortCode);
+
+                    beneficiaryInfoListPojo.setState( new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
+                    beneficiaryInfoListPojo.setCity(new String(Base64.decode(cityname.trim().getBytes(),Base64.DEFAULT)));
                     if (comeFrom.equalsIgnoreCase("bank")) {
                         Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
                         beneficiaryInfoListPojo.setPayoutcurrency(countryCurrency);
@@ -689,10 +694,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, dateofbirthmsg);
             checkFlag = false;
-        } else if (addressEditTextAddBeneficiary.getText().toString().length() == 0) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, address);
-            checkFlag = false;
-        } else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
+        }  else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Country");
             checkFlag = false;
         } else if (stateId == 0) {
@@ -700,6 +702,10 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             checkFlag = false;
         } else if (cityId == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select city");
+            checkFlag = false;
+        }
+        else if (addressEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, address);
             checkFlag = false;
         }
 //        else if (nationalitySpinnerAddBeneficiary == null && nationalitySpinnerAddBeneficiary.getSelectedItem() == null) {
@@ -1159,7 +1165,9 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     stateId = stateListPojos.get(position).getStateID();
+                                    stateName = stateListPojos.get(position).getStateName();
                                     cityId = 0;
+                                    cityname="";
                                     cityListJsonCall();
 
                                 }
@@ -1174,6 +1182,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 //                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
                         adapter.notifyDataSetChanged();
                         stateId = 0;
+                        stateName="";
                         cityListJsonCall();
 
 
@@ -1244,6 +1253,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     cityId = cityListPojos.get(position).getCityID();
+                                    cityname = cityListPojos.get(position).getCityName();
 
                                 }
                             }
@@ -1296,6 +1306,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         if (CountryName != null) {
             if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryActivity.this)) {
                 stateId = 0;
+                stateName="";
+                cityname="";
                 cityId = 0;
                 stateListJsonCall();
                 cityListJsonCall();

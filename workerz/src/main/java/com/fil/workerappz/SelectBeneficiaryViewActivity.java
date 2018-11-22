@@ -175,6 +175,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     private String countryFlagImage;
     private String countryShortCode;
     private String CountryName;
+    private String stateName = "";
+    private String cityname = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,6 +302,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             idNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryIDNumber());
             nationality = bankbenefiardata.getBenificaryNationality();
             idType = bankbenefiardata.getBenificaryIDType();
+            stateName =(bankbenefiardata.getBenificaryState());
+            cityname =(bankbenefiardata.getBenificaryCity());
         } else if (activitytype.equalsIgnoreCase("bankquickpay")) {
             quickPayData = (QuickPayDataPojo) getIntent().getSerializableExtra("beneficiary_object");
             beneficiarnumber = quickPayData.getBenificaryBeneficiaryNo();
@@ -332,6 +336,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             idNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryIDNumber());
             nationality = bankbenefiardata.getBenificaryNationality();
             idType = bankbenefiardata.getBenificaryIDType();
+            stateName =(bankbenefiardata.getBenificaryState());
+            cityname =(bankbenefiardata.getBenificaryCity());
         } else if (activitytype.equalsIgnoreCase("cashquickpay")) {
             quickPayData = (QuickPayDataPojo) getIntent().getSerializableExtra("beneficiary_object");
             firstNameEditTextAddBeneficiary.setText(quickPayData.getBenificaryFirstName());
@@ -511,6 +517,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             }
         });
     }
+
     private void ModeWisecountryListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         Constants.showProgress(SelectBeneficiaryViewActivity.this);
@@ -548,7 +555,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                                 countryTextViewAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
                                 break;
 
-                    }
+                            }
                         }
                         for (int i = 0; i < countryListPojos.size(); i++) {
                             if (nationality.equalsIgnoreCase(countryListPojos.get(i).getCountryShortCode())) {
@@ -563,8 +570,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //                            }
                             }
                         }
-                        stateId = 0;
-                        cityId = 0;
+//                        stateId = 0;
+//                        cityId = 0;
                         idTypeJsonCall();
                         stateListJsonCall();
 
@@ -579,6 +586,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             }
         });
     }
+
     public static void OnlyCharacter1(MaterialEditText editText) {
 //        if (editText.getText().toString().length() > 0) {
 //
@@ -774,6 +782,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setNationality(countryshortcode);
                     beneficiaryInfoListPojo.setPayoutcurrency(countryCurrency);
                     beneficiaryInfoListPojo.setPayoutcountry(countryshortcode);
+                    beneficiaryInfoListPojo.setState( new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
+                    beneficiaryInfoListPojo.setCity(new String(Base64.decode(cityname.trim().getBytes(),Base64.DEFAULT)));
 
 
                     if (activitytype.equalsIgnoreCase("bank")) {
@@ -1361,10 +1371,13 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                         stateListPojos.addAll(response.body().get(0).getData());
                         for (int i = 0; i < stateListPojos.size(); i++) {
                             stateList.add(new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)));
-//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(stateListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
-//                                countryId = stateListPojos.get(i).getCountryID();
-//                                break;
-//                            }
+                            if (stateName.equalsIgnoreCase( new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)))){
+                                stateId = stateListPojos.get(i).getStateID();
+                                stateName=stateListPojos.get(i).getStateName();
+                                stateSpinnerAddBeneficiary.setSelection(i + 1);
+                                cityListJsonCall();
+                                break;
+                            }
 
 
                         }
@@ -1377,7 +1390,9 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     stateId = stateListPojos.get(position).getStateID();
+                                    stateName = stateListPojos.get(position).getStateName();
                                     cityId = 0;
+//                                    cityname="";
                                     cityListJsonCall();
 
                                 }
@@ -1392,6 +1407,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
                         adapter.notifyDataSetChanged();
                         stateId = 0;
+                        stateName="";
                         cityListJsonCall();
 
 
@@ -1446,6 +1462,12 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
                         for (int i = 0; i < cityListPojos.size(); i++) {
                             cityList.add(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)));
+                            if (cityname.equalsIgnoreCase(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)))) {
+                                cityId = cityListPojos.get(i).getCityID();
+                                cityname = cityListPojos.get(i).getCityName();
+                                citySpinnerAddBeneficiary.setSelection(i);
+                                break;
+                            }
 //                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(cityListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
 //                                countryId = cityListPojos.get(i).getCountryID();
 //                                break;
@@ -1453,6 +1475,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
 
                         }
+
+
                         adapter = new ArrayAdapter<>(SelectBeneficiaryViewActivity.this, android.R.layout.simple_spinner_item, cityList);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         citySpinnerAddBeneficiary.setAdapter(adapter);
@@ -1462,6 +1486,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     cityId = cityListPojos.get(position).getCityID();
+                                    cityname = cityListPojos.get(position).getCityName();
 
                                 }
                             }
@@ -1516,27 +1541,28 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //        countryShortCode = countryListPojosupdated.get(position).getCountryShortCode();
 //        countryshortcode = countryListPojosupdated.get(position).getCountryShortCode();
 //        CountryName = countryListPojosupdated.get(position).getCountryName();
-            for (int j = 0; j < countryListPojosupdated.size(); j++) {
-                if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(j).getCountryCurrencySymbol())) {
-                    countryflagimagesender = countryListPojos.get(j).getCountryFlagImage();
-                    break;
-                }
-            }
-            if (CountryName != null) {
-                if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryViewActivity.this)) {
-                    stateId = 0;
-                    cityId = 0;
-                    idTypeJsonCall();
-                    stateListJsonCall();
-
-
-                } else {
-                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, nointernetmsg);
-                }
-
+        for (int j = 0; j < countryListPojosupdated.size(); j++) {
+            if (getUserData().getCountryCurrencySymbol().equalsIgnoreCase(countryListPojos.get(j).getCountryCurrencySymbol())) {
+                countryflagimagesender = countryListPojos.get(j).getCountryFlagImage();
+                break;
             }
         }
+        if (CountryName != null) {
+            if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryViewActivity.this)) {
+                stateId = 0;
+                stateName="";
+                cityId = 0;
+                cityname="";
+                idTypeJsonCall();
+                stateListJsonCall();
 
+
+            } else {
+                Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, nointernetmsg);
+            }
+
+        }
+    }
 
 
 }

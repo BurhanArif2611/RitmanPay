@@ -176,14 +176,23 @@
         android:text="@string/remember_me"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_12ssp" />
-
+    <TextView
+        android:id="@+id/alreadyhaveotptextviewSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/already_have_an_otp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_10ssp" />
     <TextView
         android:id="@+id/textviewdontaccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_20sdp"
         android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/don_t_have_an_account"
         android:textColor="@color/colorGrey"
         android:textSize="@dimen/_10ssp" />

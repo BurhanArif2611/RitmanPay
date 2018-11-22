@@ -171,6 +171,7 @@ public class MainLanguageActivity extends AppCompatActivity {
                             startActivity(mIntent);
                         } else {
                             mIntent = new Intent(MainLanguageActivity.this, SignUpActivity.class);
+                            mIntent.putExtra("auto_logout"," ");
                             startActivity(mIntent);
                         }
 

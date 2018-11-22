@@ -508,6 +508,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("PurposeCode", purposeCode);
             jsonObject.put("PayoutCountryCode", payoutCountryCode);
             jsonObject.put("BeneficiaryNo", "0");
+            jsonObject.put("benificaryState", beneficiaryInfoListPojo.getState());
+            jsonObject.put("benificaryCity", beneficiaryInfoListPojo.getCity());
             jsonObject.put("userID", getUserData().getUserID());
         } catch (JSONException e) {
             e.printStackTrace();

@@ -453,6 +453,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             jsonObject.put("PayoutCountryCode", payoutCountryCode);
             jsonObject.put("BeneficiaryNo", Beneficiarnumber);
             jsonObject.put("userID", getUserData().getUserID());
+            jsonObject.put("benificaryState", beneficiaryinfoPojo.getState());
+            jsonObject.put("benificaryCity", beneficiaryinfoPojo.getCity());
         } catch (JSONException e) {
             e.printStackTrace();
         }

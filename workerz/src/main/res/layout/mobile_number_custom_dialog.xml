@@ -45,6 +45,7 @@
             android:layout_marginEnd="8dp"
             style="@style/CustomButtonStyle"
             android:layout_marginBottom="8dp"
+            android:textAllCaps="false"
             android:text="@string/submit"
           />
 
@@ -56,6 +57,7 @@
             style="@style/CustomButtonStyle"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:textAllCaps="false"
             android:text="@string/cancel"
            />
     </LinearLayout>

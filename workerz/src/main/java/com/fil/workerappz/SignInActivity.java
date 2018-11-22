@@ -3,13 +3,15 @@ package com.fil.workerappz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,6 +89,10 @@ public class SignInActivity extends ActionBarActivity {
     TextView textViewSignInerror;
     @BindView(R.id.signInerrorLayoyt)
     LinearLayout signInerrorLayoyt;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
+    @BindView(R.id.alreadyhaveotptextviewSignIn)
+    TextView alreadyhaveotptextviewSignIn;
 
     private Intent mIntent;
     private boolean showFlag = false;
@@ -256,11 +262,14 @@ public class SignInActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.forgotPinEditTextSignInActivity, R.id.signInTextViewSignInActivity, R.id.createNewAccountTextViewSignInActivity, R.id.countrySpinnerSignIn})
+    @OnClick({R.id.backImageViewHeader, R.id.forgotPinEditTextSignInActivity, R.id.signInTextViewSignInActivity, R.id.createNewAccountTextViewSignInActivity, R.id.countrySpinnerSignIn, R.id.alreadyhaveotptextviewSignIn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
                 finish();
+                break;
+            case R.id.alreadyhaveotptextviewSignIn:
+                openOtpDialog();
                 break;
             case R.id.forgotPinEditTextSignInActivity:
                 mIntent = new Intent(SignInActivity.this, ForgotPinActivity.class);
@@ -312,8 +321,7 @@ public class SignInActivity extends ActionBarActivity {
 
 //            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
             checkFlag = false;
-        }
-        else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().startsWith("0")) {
+        } else if (inputType == true && emailMobileNoEditTextSignInActivity.getText().toString().startsWith("0")) {
             emailMobileNoEditTextSignInActivity.setError(validmobilenumber);
 
 //            Constants.showMessage(mainLinearLayoutSignIn, SignInActivity.this, validmobilenumber);
@@ -434,6 +442,51 @@ public class SignInActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void openOtpDialog() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.mobile_number_custom_dialog, null);
+
+        final MaterialEditText editText = (MaterialEditText) dialogView.findViewById(R.id.MobileNoEditTextSignUpActivity);
+        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+        final LinearLayout customDialogLayput = (LinearLayout) dialogView.findViewById(R.id.customDialogLayput);
+
+//        editText.setHint(datumLable_languages.getMobileNumber());
+//        editText.setFloatingLabelText(datumLable_languages.getMobileNumber());
+        dialogBuilder.setTitle(datumLable_languages.getWorkerAppz());
+        dialogBuilder.setIcon(R.drawable.app_icon);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Constants.hideKeyboard(SignInActivity.this);
+                if (editText.getText().toString().length() == 0 || editText.getText().toString().length() == 0) {
+                    Constants.showMessage(customDialogLayput, SignInActivity.this, validmobilenumber);
+                } else if (editText.getText().toString().length() > 0 && editText.getText().toString().length() < 7) {
+                    Constants.hideKeyboard(SignInActivity.this);
+                    Constants.showMessage(customDialogLayput, SignInActivity.this, validmobilenumber);
+                } else if (editText.getText().toString().startsWith("0")) {
+                    Constants.hideKeyboard(SignInActivity.this);
+                    Constants.showMessage(customDialogLayput, SignInActivity.this, validmobilenumber);
+                } else {
+                    dialogBuilder.dismiss();
+                    mIntent = new Intent(SignInActivity.this, VerificationActivity.class);
+                    mIntent.putExtra("come_from", editText.getText().toString());
+                    startActivity(mIntent);
+                }
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 
     private void countryListJsonCall() {

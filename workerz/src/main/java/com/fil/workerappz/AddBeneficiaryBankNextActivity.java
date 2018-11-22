@@ -329,7 +329,15 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int main_length = ifscCodeEditTextAddBeneficiaryNext.getText().toString().length();
 
-                if (main_length > 10) {
+                if (main_length==0)
+                {
+                    bankNameNewEditTextAddBeneficiary.setText("");
+                    bankAddressEditTextAddBeneficiary.setText("");
+                }
+
+                else if (main_length > 10) {
+                    bankNameNewEditTextAddBeneficiary.setText("");
+                    bankAddressEditTextAddBeneficiary.setText("");
                     bankListJsonCall("");
                 }
             }
@@ -578,6 +586,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("BeneficiaryNo", Beneficiarnumber);
             jsonObject.put("CustomerRelation", "0");
             jsonObject.put("userID", getUserData().getUserID());
+            jsonObject.put("benificaryState", beneficiaryinfoPojo.getState());
+            jsonObject.put("benificaryCity", beneficiaryinfoPojo.getCity());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -635,7 +645,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
         try {
             jsonObject.put("countryCode", Countryshortcode);
             jsonObject.put("bankName", "");
-            jsonObject.put("bankIFSC", ifscCodeEditTextAddBeneficiaryNext.getText().toString());
+            jsonObject.put("bankIFSC", ifscCodeEditTextAddBeneficiaryNext.getText().toString().trim());
 //            jsonObject.put("branchName", beneficiaryinfoPojo.getLandMark());
             jsonObject.put("branchName", "");
             jsonObject.put("city", cityname);
@@ -688,6 +698,13 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 //                                });
 
                             }
+                            else
+                            {
+                                Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
+                                    , datumLable_languages.getNoRecordFound());
+                                bankNameNewEditTextAddBeneficiary.setText("");
+                                bankAddressEditTextAddBeneficiary.setText("");
+                            }
                         }
                     }
                 }
@@ -696,6 +713,10 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             @Override
             public void onFailure(Call<List<BankNetworkListJsonPojo>> call, Throwable t) {
                 Constants.closeProgress();
+                Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
+                        , datumLable_languages.getNoRecordFound());
+                bankNameNewEditTextAddBeneficiary.setText("");
+                bankAddressEditTextAddBeneficiary.setText("");
                 Log.d("fail", "fail");
             }
         });

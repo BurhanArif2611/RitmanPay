@@ -93,7 +93,7 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
             holder.uploadSignImageView.setVisibility(View.INVISIBLE);
             holder.approvedStatusTextView.setVisibility(View.VISIBLE);
             holder.uploadStatusTextView.setVisibility(View.GONE);
-            holder.approvedStatusTextView.setText("Documents received subject to final approval");
+            holder.approvedStatusTextView.setText("Please submit the documents with your registered agent");
             Constants.Updateflag = false;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Pending")) {
