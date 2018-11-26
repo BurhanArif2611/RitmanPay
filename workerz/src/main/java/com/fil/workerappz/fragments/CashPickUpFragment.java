@@ -1,5 +1,6 @@
 package com.fil.workerappz.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fil.workerappz.ActionBarActivity;
 import com.fil.workerappz.AddBeneficiaryActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryActivity;
@@ -36,6 +38,8 @@ public class CashPickUpFragment extends BaseFragment {
     private Intent mIntent;
     private LabelListData datumLable_languages = new LabelListData();
     private SessionManager sessionManager;
+    private ActionBarActivity activity;
+
 
     public CashPickUpFragment() {
 
@@ -49,8 +53,14 @@ public class CashPickUpFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        activity.onUserInteraction();
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (ActionBarActivity) context;
 
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

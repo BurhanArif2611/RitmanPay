@@ -2,6 +2,7 @@ package com.fil.workerappz;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -93,6 +94,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     private String nointernetmsg;
     private int idtypemaxlength = 15;
     private int idtypeminlength = 7;
+    private ActionBarActivity activity;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -111,6 +113,11 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         } else {
             // fragment is no longer visible
         }
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (ActionBarActivity) context;
     }
 
     @Override
@@ -299,7 +306,9 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+
         super.onResume();
+        activity.onUserInteraction();
     }
 
     @Override
@@ -329,7 +338,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth, mDay);
         int themeResId = 2;
-        DatePickerDialog dpd = new DatePickerDialog(getContext(),AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dpd = new DatePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

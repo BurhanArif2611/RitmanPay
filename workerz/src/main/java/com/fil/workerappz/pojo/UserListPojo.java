@@ -185,6 +185,18 @@ public class UserListPojo implements Serializable {
         @SerializedName("secID")
         private String secID;
         @Expose
+        @SerializedName("userDateOfBirth")
+        private String userDateOfBirth;
+        @Expose
+        @SerializedName("userStreet")
+        private String userStreet;
+        @Expose
+        @SerializedName("userLandmark")
+        private String userLandmark;
+        @Expose
+        @SerializedName("userZipcode")
+        private String userZipcode;
+        @Expose
         @SerializedName("userID")
         private int userID;
 
@@ -527,21 +539,53 @@ public class UserListPojo implements Serializable {
         public String getUserFirstName() {
             return userFirstName;
         }
+
         public String getUserSecurityAnswer() {
             return userSecurityAnswer;
         }
+
         public String getSecID() {
             return secID;
+        }
+
+        public String getuserDateOfBirth() {
+            return userDateOfBirth;
+        }
+
+        public String getuserZipcode() {
+            return userZipcode;
+        }
+
+        public String getuserLandmark() {
+            return userLandmark;
+        }
+
+        public String getuserStreet() {
+            return userStreet;
         }
 
         public void setUserFirstName(String userFirstName) {
             this.userFirstName = userFirstName;
         }
+
         public void setSecID(String secID) {
             this.secID = secID;
         }
-        public void setUserSecurityAnswer(String userSecurityAnswer) {
-            this.userSecurityAnswer = userSecurityAnswer;
+
+        public void setuserDateOfBirth(String userDateOfBirth) {
+            this.userDateOfBirth = userDateOfBirth;
+        }
+
+        public void setuserStreet(String userStreet) {
+            this.userStreet = userStreet;
+        }
+
+        public void setuserLandmark(String userLandmark) {
+            this.userLandmark = userLandmark;
+        }
+
+        public void setuserZipcode(String userZipcode) {
+            this.userZipcode = userZipcode;
         }
 
         public int getUserID() {

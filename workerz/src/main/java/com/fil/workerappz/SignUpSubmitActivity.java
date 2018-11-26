@@ -514,7 +514,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
         dateOfBirthEditTextSignUpSubmit.setText(sdf.format(myCalendar1.getTime()));
 
-        dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+//        dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        dateOfBirth = sdf.format(myCalendar1.getTime());
 
     }
 
@@ -779,7 +780,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         try {
             jsonObject.put("userFirstName", firstNameEditTextSignUpSubmit.getText().toString().trim());
             jsonObject.put("userLastName", lastNameEditTextSignUpSubmit.getText().toString().trim());
-            jsonObject.put("userGender", gender);
+            jsonObject.put("userGender", gender.trim());
             jsonObject.put("userAddress", addressEditTextSignUp.getText().toString().trim());
             jsonObject.put("cityID", cityId);
             jsonObject.put("stateID", stateId);
@@ -803,6 +804,10 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             jsonObject.put("userGPlusID", "");
             jsonObject.put("secID", answerId);
             jsonObject.put("userSecurityAnswer", answer);
+            jsonObject.put("userDateOfBirth", dateOfBirth);
+            jsonObject.put("userStreet", streetEditTextSignUp.getText().toString());
+            jsonObject.put("userLandmark", landmarkEditTextSignUp.getText().toString());
+            jsonObject.put("userZipcode", zipcodeEditTextSignUp.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

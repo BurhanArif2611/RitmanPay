@@ -1,11 +1,9 @@
 package com.fil.workerappz;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,12 +13,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.autofill.AutofillManager;
-import android.widget.Toast;
 
 import com.fil.workerappz.pojo.JsonListPojo;
 import com.fil.workerappz.pojo.LabelListData;
-import com.fil.workerappz.pojo.LabelListJsonPojo;
 import com.fil.workerappz.pojo.MessagelistData;
 import com.fil.workerappz.pojo.UserListPojo;
 import com.fil.workerappz.retrofit.RestClient;
@@ -38,8 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * Created by HS on 23-Feb-18.
  * FIL AHM
@@ -50,8 +43,13 @@ public class ActionBarActivity extends AppCompatActivity {
     private View mDecorView;
     private SessionManager sessionManager;
     private UserListPojo.Data userListPojo = new UserListPojo.Data();
+
     public static final long DISCONNECT_TIMEOUT = 300000;
-//    300000
+
+//    public static final long DISCONNECT_TIMEOUT = 60000;
+
+
+    //    300000
     private Intent mIntent;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
@@ -127,17 +125,10 @@ public class ActionBarActivity extends AppCompatActivity {
         return sessionManager.updateUserData(userListPojo);
     }
 
-//code for detact user inactive]
+    //code for detact user inactive]
+    private static Handler disconnectHandler = new Handler();
 
-    private Handler disconnectHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            if (sessionManager.getLogin() && sessionManager.getVerify()) {
-                Log.d("inactive user log", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
-            }
-            return true;
-        }
-    });
+
 
     private Runnable disconnectCallback = new Runnable() {
         @Override
@@ -146,15 +137,24 @@ public class ActionBarActivity extends AppCompatActivity {
             if (sessionManager.getLogin() && sessionManager.getVerify()) {
                 Log.d("inactive user log1", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
                 updateDeviceTokenJsonCall();
-//                logoutUser();
+
 
             }
         }
     };
 
     public void resetDisconnectTimer() {
-        disconnectHandler.removeCallbacks(disconnectCallback);
-        disconnectHandler.postDelayed(disconnectCallback, DISCONNECT_TIMEOUT);
+        Log.d("inactive user resumed", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
+        disconnectHandler.removeCallbacksAndMessages(null);
+        disconnectHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (sessionManager.getLogin() && sessionManager.getVerify()) {
+                    Log.d("inactive user log1", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
+                    updateDeviceTokenJsonCall();
+                }
+            }
+        }, DISCONNECT_TIMEOUT);
     }
 
     public void stopDisconnectTimer() {
@@ -163,30 +163,27 @@ public class ActionBarActivity extends AppCompatActivity {
 
     @Override
     public void onUserInteraction() {
-        if (sessionManager.getLogin() && sessionManager.getVerify()) {
-            resetDisconnectTimer();
-        }
+//        if (sessionManager.getLogin() && sessionManager.getVerify()) {
+//            resetDisconnectTimer();
+//        }
     }
 
-
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         if (sessionManager.getLogin() && sessionManager.getVerify()) {
             resetDisconnectTimer();
-            Log.d("inactive user resumed", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onStop() {
         super.onStop();
         if (sessionManager.getLogin() && sessionManager.getVerify()) {
             stopDisconnectTimer();
             Log.d("inactive user log1 stop", "Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
-
         }
-    }
+    }*/
 
     private void updateDeviceTokenJsonCall() {
 //        Constants.showProgress((Activity) mContext);
@@ -231,7 +228,7 @@ public class ActionBarActivity extends AppCompatActivity {
                         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancelAll();
                         mIntent = new Intent(getApplicationContext(), SignUpActivity.class);
-                        mIntent.putExtra("auto_logout","log out");
+                        mIntent.putExtra("auto_logout", "log out");
                         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(mIntent);
                     }

@@ -1,6 +1,8 @@
 package com.fil.workerappz;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -66,7 +69,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -181,11 +187,13 @@ public class ProfileActivity extends ActionBarActivity {
     private int stateId = 0;
     private int cityId = 0;
     private static final int REQUEST_CODE_WRITE_PERMISSIONS = 003;
+    private String dateofbirth;
+    private Calendar myCalendar1 = Calendar.getInstance();
 
 
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg, nointernetmsg;
+    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg,dateofbirthmsg, nointernetmsg;
     private SecurityQuestionListAdapter securityQuestionListAdapter;
     private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
     private LinearLayoutManager layoutManager;
@@ -267,6 +275,7 @@ public class ProfileActivity extends ActionBarActivity {
             passportmsg = datumLable_languages_msg.getEnterPassportNo();
             emiratesidmsg = datumLable_languages_msg.getEnterEmiratesId();
             address = datumLable_languages_msg.getEnterAddress();
+            dateofbirthmsg = datumLable_languages_msg.getSelectDateOfBirth();
 
         } else {
 
@@ -276,6 +285,7 @@ public class ProfileActivity extends ActionBarActivity {
             passportmsg = getResources().getString(R.string.Please_enter_passport_no);
             emiratesidmsg = getResources().getString(R.string.Please_enter_emirates_id);
             address = getResources().getString(R.string.Please_Enter_address);
+            dateofbirthmsg =  getResources().getString(R.string.Please_select_Dob);
 
 
         }
@@ -447,6 +457,16 @@ public class ProfileActivity extends ActionBarActivity {
                         for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
                             questionList.add(SequrityQuestionListPojos.get(i).getSecQuestion().trim());
                         }
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            if (getUserData().getSecID().equalsIgnoreCase(SequrityQuestionListPojos.get(i).getSecID())) {
+                                securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
+                                securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(i).getSecQuestion());
+                                securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(i).getSecQuestion());
+                                answerId = SequrityQuestionListPojos.get(i).getSecID();
+                                securityQuestionsEditTexProfile.setText(getUserData().getUserSecurityAnswer());
+                                break;
+                            }
+                        }
 
 //
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, questionList);
@@ -461,6 +481,8 @@ public class ProfileActivity extends ActionBarActivity {
                                     securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
                                     securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
                                     answerId = SequrityQuestionListPojos.get(position).getSecID();
+                                    securityQuestionsEditTexProfile.setText("");
+                                    answer="";
 
                                 }
                             }
@@ -526,6 +548,12 @@ public class ProfileActivity extends ActionBarActivity {
         mobileNumberEditTextProfile.setText(userListPojo.getUserMobile());
         emiratesIdEditTextProfile.setText(userListPojo.getUserEmiratesID());
         passportNoEditTextProfile.setText(userListPojo.getUserPassportNo());
+        dateOfBirthEditTextProfile.setText(userListPojo.getuserDateOfBirth());
+        streetEditTextProfile.setText(userListPojo.getuserStreet());
+        landmarkEditTextProfile.setText(userListPojo.getuserLandmark());
+        zipcodeEditTextProfile.setText(userListPojo.getuserZipcode());
+        dateofbirth=userListPojo.getuserDateOfBirth();
+
 
 //        if (userListPojo.getUserGender().equalsIgnoreCase("Male")) {
 //            maleRadioButtonProfile.setChecked(true);
@@ -605,7 +633,8 @@ public class ProfileActivity extends ActionBarActivity {
         finish();
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile,R.id.appImageViewHeader1})
+
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -620,6 +649,10 @@ public class ProfileActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 finish();
                 break;
+            case R.id.dateOfBirthEditTextProfile:
+                DataPickerDialog1();
+                break;
+
             case R.id.changePinTextViewProfile:
                 mIntent = new Intent(ProfileActivity.this, ChangePinActivity.class);
                 startActivity(mIntent);
@@ -681,6 +714,51 @@ public class ProfileActivity extends ActionBarActivity {
         }
     }
 
+
+    private void DataPickerDialog1() {
+        final Calendar myCalendar = Calendar.getInstance();
+        int mYear = myCalendar.get(Calendar.YEAR) - 18;
+        int mMonth = myCalendar.get(Calendar.MONTH);
+        int mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth, mDay);
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(ProfileActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                Calendar minAdultAge = new GregorianCalendar();
+                minAdultAge.add(Calendar.YEAR, -18);
+                if (minAdultAge.before(myCalendar)) {
+                    Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please Enter Valid Date");
+                } else {
+                    myCalendar1 = myCalendar;
+                    updateLabel();
+                }
+            }
+        }, mYear, mMonth, mDay);
+
+        dpd.getDatePicker().setMaxDate(mincalendar.getTimeInMillis());
+        dpd.show();
+
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        dateOfBirthEditTextProfile.setText(sdf.format(myCalendar1.getTime()));
+
+//        dateofbirth = Constants.formatDate(dateOfBirthEditTextProfile.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        dateofbirth = sdf.format(myCalendar1.getTime());
+
+    }
     private boolean checkValidation() {
         boolean checkFlag = true;
         try {
@@ -695,7 +773,11 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (lastNameEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, lastname);
             checkFlag = false;
-        } else if (countryName.length() == 0) {
+        }
+        else if (dateOfBirthEditTextProfile.getText().toString().length() == 0) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, dateofbirthmsg);
+            checkFlag = false;
+        }else if (countryName.length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, selectcountry);
             checkFlag = false;
         } else if (addressEditTextProfile.getText().toString().length() == 0) {
@@ -707,10 +789,15 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
             checkFlag = false;
-        } else if (answer.equals("")) {
+        }
+        else if ( securityQuestionsEditTexProfile.getText().toString().equals("")) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
+//        else if (answer.equals("")) {
+//            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
+//            checkFlag = false;
+//        }
 
 //        if (emailEditTextSignUpSubmit.getText().toString().length() != 0) {
 //            signUpWith = "Email";
@@ -758,8 +845,9 @@ public class ProfileActivity extends ActionBarActivity {
 //            countryOfResidenceEditTextProfile.setEnabled(true);
             countryOfResidenceEditTextProfile.setEnabled(false);
             securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
-            dateOfBirthTextViewProfile.setEnabled(false);
-            dateOfBirthEditTextProfile.setEnabled(false);
+            dateOfBirthTextViewProfile.setEnabled(true);
+            dateOfBirthEditTextProfile.setEnabled(true);
+
             stateSpinnerSignUpProfile.setEnabled(false);
             citySpinnerSignUpProfile.setEnabled(false);
             streetEditTextProfile.setEnabled(false);
@@ -781,7 +869,7 @@ public class ProfileActivity extends ActionBarActivity {
             emiratesIdEditTextProfile.setEnabled(false);
             mobileNumberEditTextProfile.setEnabled(false);
             emailEditTextProfile.setEnabled(false);
-            securityQuestionsSpinneProfile.setVisibility(View.GONE);
+            securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
             dateOfBirthTextViewProfile.setEnabled(false);
@@ -1059,9 +1147,13 @@ public class ProfileActivity extends ActionBarActivity {
             jsonObject.put("userDeviceID", Constants.device_token);
             jsonObject.put("userID", getMyUserId());
             jsonObject.put("userProfilePicture", userListPojo.getUserProfilePicture());
-            jsonObject.put("userGender", gender);
+            jsonObject.put("userGender", gender.trim());
             jsonObject.put("secID", answerId);
             jsonObject.put("userSecurityAnswer", answer);
+            jsonObject.put("userDateOfBirth", dateofbirth);
+            jsonObject.put("userStreet", streetEditTextProfile.getText().toString());
+            jsonObject.put("userLandmark", landmarkEditTextProfile.getText().toString());
+            jsonObject.put("userZipcode", zipcodeEditTextProfile.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
