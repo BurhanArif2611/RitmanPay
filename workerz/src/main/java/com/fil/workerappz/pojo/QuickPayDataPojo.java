@@ -28,6 +28,12 @@ public class QuickPayDataPojo implements Serializable {
     @SerializedName("benificaryDestiantionAddress")
     private String benificaryDestiantionAddress;
     @Expose
+    @SerializedName("benificaryState")
+    private String benificaryState;
+    @Expose
+    @SerializedName("benificaryCity")
+    private String benificaryCity;
+    @Expose
     @SerializedName("benificaryBeneficiaryNo")
     private String benificaryBeneficiaryNo;
     @Expose
@@ -214,8 +220,23 @@ public class QuickPayDataPojo implements Serializable {
         return benificaryDestiantionAddress;
     }
 
+    public String getBenificaryState() {
+        return benificaryState;
+    }
+
+    public String getBenificaryCity() {
+        return benificaryCity;
+    }
+
     public void setBenificaryDestiantionAddress(String benificaryDestiantionAddress) {
         this.benificaryDestiantionAddress = benificaryDestiantionAddress;
+    }
+
+    public void setBenificaryCity(String benificaryCity) {
+        this.benificaryCity = benificaryCity;
+    }
+    public void setBenificaryState(String benificaryState) {
+        this.benificaryState = benificaryState;
     }
 
     public String getBenificaryBeneficiaryNo() {

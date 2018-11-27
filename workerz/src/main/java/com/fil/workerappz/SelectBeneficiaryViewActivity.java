@@ -328,6 +328,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             nationality = quickPayData.getBenificaryNationality();
             customerRelation = quickPayData.getBenificaryCustomerRelation();
             idType = quickPayData.getBenificaryIDType();
+            stateName = (quickPayData.getBenificaryState());
+            cityname = (quickPayData.getBenificaryCity());
         } else if (activitytype.equalsIgnoreCase("cash")) {
             bankbenefiardata = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiary_object");
             firstNameEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryFirstName());
@@ -365,6 +367,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             nationality = quickPayData.getBenificaryNationality();
             idType = quickPayData.getBenificaryIDType();
             customerRelation = quickPayData.getBenificaryCustomerRelation();
+            stateName = (quickPayData.getBenificaryState());
+            cityname = (quickPayData.getBenificaryCity());
         }
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
