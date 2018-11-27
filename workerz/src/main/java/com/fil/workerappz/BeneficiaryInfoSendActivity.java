@@ -550,6 +550,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 //                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
                                 mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionReceiptActivity.class);
                                 mIntent.putExtra("transactionnumber",sendReceiveMoneyBeneficiaryJsonPojos.get(0).getData().getRPTxnNo());
+                                mIntent.putExtra("beneficiarMobileNumber",beneficiaryInfoListPojo.getTelephone());
                                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mIntent);
 

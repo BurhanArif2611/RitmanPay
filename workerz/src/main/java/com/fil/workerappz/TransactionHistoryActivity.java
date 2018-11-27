@@ -148,12 +148,13 @@ public class TransactionHistoryActivity extends ActionBarActivity {
 
         transactionPagerAdapter = new TransactionPagerAdapter(getSupportFragmentManager(), arrayList, getMyUserId(), TransactionHistoryActivity.this,datumLable_languages);
         transactionViewPager.setAdapter(transactionPagerAdapter);
+        transactionViewPager.setOffscreenPageLimit(0);
         transactionTabLayout.post(new Runnable() {
             @Override
             public void run() {
                 transactionTabLayout.setupWithViewPager(transactionViewPager);
                 transactionViewPager.setCurrentItem(0);
-                transactionViewPager.setOffscreenPageLimit(0);
+                transactionViewPager.setOffscreenPageLimit(1);
             }
         });
 

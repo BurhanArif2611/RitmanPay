@@ -353,7 +353,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
             jsonObject.put("countryIsos", countryIso);
             jsonObject.put("regionCodes", "");
 
-            jsonObject.put("mobNo", String.valueOf(countryPrefix + mobileNumberEditTextRecharge.getText().toString()));
+            jsonObject.put("mobNo", String.valueOf(countryPrefix + mobileNumberEditTextRecharge.getText().toString().trim()));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -486,8 +486,15 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 break;
             case R.id.browserPlansEditTextMobileTopUp:
-                Constants.hideKeyboard(MobileTopUpActivity.this
-                );
+                Constants.hideKeyboard(MobileTopUpActivity.this);
+                String serviceprovider="";
+                try {
+                    serviceprovider = serviceProviderSpinnerMobileTopup.getSelectedItem().toString();
+                } catch (Exception e) {
+                    serviceprovider = "";
+                    e.printStackTrace();
+                }
+
                 if (countryCodeTextViewMobileTopUp.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
@@ -496,10 +503,9 @@ public class MobileTopUpActivity extends ActionBarActivity {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
                 } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                } else if (selctedProviderposition == -1) {
-                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
+                } else if (serviceprovider.length() == 0) {
+                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectplanmsg);
                 } else {
-
                     mIntent = new Intent(MobileTopUpActivity.this, BrowsePlansActivity.class);
                     mIntent.putExtra("provider", serviceProviderJsonPojos.get(0).getData().get(selctedProviderposition));
                     mIntent.putExtra("mobile_no", countryPrefix + mobileNumberEditTextRecharge.getText().toString().trim());

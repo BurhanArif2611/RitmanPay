@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fil.workerappz.fragments.CountryBeneficiarySelection;
-import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.CityListPojo;
 import com.fil.workerappz.pojo.CountryData;
@@ -32,6 +31,7 @@ import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
 import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
+import com.fil.workerappz.pojo.RelationshipListJsonPojo;
 import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
@@ -46,10 +46,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -80,6 +78,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private final ArrayList<IdTypeListJsonPojo> idTypePojos = new ArrayList<>();
     private final ArrayList<CountryData> countryFieldListPojos = new ArrayList<>();
     private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
+    private final ArrayList<RelationshipListJsonPojo.Datum> relationListPojos = new ArrayList<>();
     private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
     private final ArrayList<ModeWiseCountryListJsonPojo.Data> modeWisecountryListPojos = new ArrayList<>();
@@ -137,6 +136,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     MaterialEditText countryEditTextAddBeneficiary;
     @BindView(R.id.countryTextViewAddBeneficiary)
     TextView countryTextViewAddBeneficiary;
+    @BindView(R.id.customerRelationShipSpinnerAddBeneficiary)
+    MaterialSpinner customerRelationShipSpinnerAddBeneficiary;
     private String countryCode;
     private String CountryName;
     private String countryCodeField, countryIdNationalityFiled;
@@ -151,6 +152,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String dateOfBirth, type;
     private Intent mIntent;
     private int stateId = 0;
+    private String relationId = "";
     private int cityId = 0;
     private int countryIdField = 0;
     private String countryflagimagesender = "";
@@ -163,6 +165,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String nointernetmsg;
     private String countryName = "";
     private String stateName = "";
+    private String relationName = "";
     private String cityname = "";
     private String locale = "IND";
 
@@ -287,6 +290,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         if (IsNetworkConnection.checkNetworkConnection(this)) {
 //            countryFieldListJsonCall();
             ModeWisecountryListJsonCall();
+            relationShipListJsonCall();
             if (SugarRecord.count(CountryData.class) > 0) {
                 countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
 
@@ -593,9 +597,10 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setIDtype_Description(idTypeDescription);
 //                    beneficiaryInfoListPojo.setNationality(nationalitySpinnerAddBeneficiary.getSelectedItem().toString());
                     beneficiaryInfoListPojo.setNationality(countryShortCode);
+                    beneficiaryInfoListPojo.setRelation(relationName);
 
-                    beneficiaryInfoListPojo.setState( new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
-                    beneficiaryInfoListPojo.setCity(new String(Base64.decode(cityname.trim().getBytes(),Base64.DEFAULT)));
+                    beneficiaryInfoListPojo.setState(new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
+                    beneficiaryInfoListPojo.setCity(new String(Base64.decode(cityname.trim().getBytes(), Base64.DEFAULT)));
                     if (comeFrom.equalsIgnoreCase("bank")) {
                         Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
                         beneficiaryInfoListPojo.setPayoutcurrency(countryCurrency);
@@ -694,7 +699,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, dateofbirthmsg);
             checkFlag = false;
-        }  else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
+        } else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Country");
             checkFlag = false;
         } else if (stateId == 0) {
@@ -703,8 +708,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (cityId == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select city");
             checkFlag = false;
-        }
-        else if (addressEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (addressEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, address);
             checkFlag = false;
         }
@@ -736,6 +740,13 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             checkFlag = false;
         } else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
+            checkFlag = false;
+        }
+        else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
+            checkFlag = false;
+        } else if (customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
             checkFlag = false;
         }
         return checkFlag;
@@ -1167,7 +1178,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                                     stateId = stateListPojos.get(position).getStateID();
                                     stateName = stateListPojos.get(position).getStateName();
                                     cityId = 0;
-                                    cityname="";
+                                    cityname = "";
                                     cityListJsonCall();
 
                                 }
@@ -1182,7 +1193,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 //                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
                         adapter.notifyDataSetChanged();
                         stateId = 0;
-                        stateName="";
+                        stateName = "";
                         cityListJsonCall();
 
 
@@ -1306,8 +1317,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         if (CountryName != null) {
             if (IsNetworkConnection.checkNetworkConnection(AddBeneficiaryActivity.this)) {
                 stateId = 0;
-                stateName="";
-                cityname="";
+                stateName = "";
+                cityname = "";
                 cityId = 0;
                 stateListJsonCall();
                 cityListJsonCall();
@@ -1317,6 +1328,75 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             }
 
         }
+    }
+
+    private void relationShipListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userMobile", "0");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(AddBeneficiaryActivity.this);
+        CustomLog.d("System out", "relation json " + json);
+        Call<List<RelationshipListJsonPojo>> call = RestClient.get().userRelationShipListJsonCall(json);
+
+        call.enqueue(new Callback<List<RelationshipListJsonPojo>>() {
+            @Override
+            public void onResponse(Call<List<RelationshipListJsonPojo>> call, Response<List<RelationshipListJsonPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    relationListPojos.clear();
+
+                    if (response.body().get(0).getStatus() == true) {
+                        ArrayList<String> relationList = new ArrayList<>();
+                        relationListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < relationListPojos.size(); i++) {
+                            relationList.add(relationListPojos.get(i).getRelationName());
+
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(relationListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = relationListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                        }
+                        ArrayAdapter<String>   adapter = new ArrayAdapter<>(AddBeneficiaryActivity.this, android.R.layout.simple_spinner_item, relationList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        customerRelationShipSpinnerAddBeneficiary.setAdapter(adapter);
+
+                        customerRelationShipSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    relationId = relationListPojos.get(position).getRelationID();
+                                    relationName = relationListPojos.get(position).getRelationName();
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RelationshipListJsonPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
     }
 
 }

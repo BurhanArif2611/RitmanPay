@@ -431,6 +431,27 @@
                         app:met_primaryColor="@color/colorGreen"
                         app:met_singleLineEllipsis="false" />
                     <!--android:maxLength="15"-->
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/customerRelationShipSpinnerAddBeneficiary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp"
+                        app:ms_alignLabels="true"
+                        app:ms_arrowColor="@color/colorGreen"
+                        app:ms_arrowSize="@dimen/_12sdp"
+                        app:ms_baseColor="@color/colorSpinner"
+                        app:ms_enableErrorLabel="false"
+                        app:ms_enableFloatingLabel="false"
+                        app:ms_floatingLabelColor="@color/colorSpinnerText"
+                        app:ms_floatingLabelText="@string/relation_with_customer"
+                        app:ms_highlightColor="@color/colorGreen"
+                        app:ms_hint="@string/relation_with_customer"
+                        app:ms_hintColor="@color/colorSpinnerText"
+                        app:ms_hintTextSize="@dimen/_10ssp"
+                        app:ms_multiline="false"
+                        app:ms_thickness="0.5dp" />
 
 
                     <TextView

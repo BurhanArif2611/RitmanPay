@@ -493,7 +493,8 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //            jsonObject.put("PayoutCountryCode", "IND");
             jsonObject.put("PayoutCountryCode", countryShortCode);
             jsonObject.put("BeneficiaryNo", "0");
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryInfoListPojo.getRelation());
             jsonObject.put("userID", getUserData().getUserID());
             jsonObject.put("benificaryState", beneficiaryInfoListPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryInfoListPojo.getCity());

@@ -32,6 +32,7 @@ import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
 import com.fil.workerappz.pojo.NotificationListJsonPojo;
 import com.fil.workerappz.pojo.PurposeOfTransferListPojo;
 import com.fil.workerappz.pojo.QuickPayJsonPojo;
+import com.fil.workerappz.pojo.RelationshipListJsonPojo;
 import com.fil.workerappz.pojo.SendMoneyBeneficiaryJsonPojo;
 import com.fil.workerappz.pojo.SendPaymentJsonPojo;
 import com.fil.workerappz.pojo.SendReceiveMoneyJsonPojo;
@@ -129,6 +130,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("userkyc/list-kyc")
     Call<List<KYCUploadedDocumentListJsonPojo>> uploadedKYCDocumentListJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("users/get-relationships")
+    Call<List<RelationshipListJsonPojo>> userRelationShipListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-balance")

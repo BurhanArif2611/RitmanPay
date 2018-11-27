@@ -54,7 +54,13 @@ public class BeneficiaryListAdapter extends RecyclerView.Adapter<BeneficiaryList
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
-        holder.bankNameBeneficiaryTextView.setText(beneficiaryListPojoList.get(listPosition).getBenificaryBankName().trim());
+        if (comeFrom.equalsIgnoreCase("")) {
+            holder.bankNameBeneficiaryTextView.setText(beneficiaryListPojoList.get(holder.getAdapterPosition()).getBenificaryPaymentMode() + ":" + " " + beneficiaryListPojoList.get(listPosition).getBenificaryBankName().trim());
+        }
+        else
+        {
+            holder.bankNameBeneficiaryTextView.setText( beneficiaryListPojoList.get(listPosition).getBenificaryBankName().trim());
+        }
         holder.nameTextViewSelectBeneficiary.setText(beneficiaryListPojoList.get(listPosition).getBenificaryFirstName().trim() + " " + beneficiaryListPojoList.get(listPosition).getBenificaryLastName().trim());
         if (comeFrom.equalsIgnoreCase("cash")) {
             holder.bankBranchNameBeneficiary.setVisibility(View.VISIBLE);

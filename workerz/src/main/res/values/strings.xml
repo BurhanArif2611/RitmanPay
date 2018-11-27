@@ -150,7 +150,7 @@
     <string name="profile">Profile</string>
     <string name="transaction_history">Transaction History</string>
     <string name="paid">Paid</string>
-    <string name="received">Received</string>
+    <string name="received">received</string>
     <string name="send_money">Send Money</string>
     <string name="bank">Bank</string>
     <string name="cash_pickup">Cash Pickup</string>
@@ -217,6 +217,7 @@
     <string name="bank_code_">Bank Code:</string>
     <string name="bank_address">Bank Address</string>
     <string name="id_type">Id type</string>
+    <string name="relation_with_customer">Relation With Customer</string>
     <string name="id_type_">Id type:</string>
     <string name="dest_add">Destination address</string>
     <string name="dest_land">Destination landmark</string>

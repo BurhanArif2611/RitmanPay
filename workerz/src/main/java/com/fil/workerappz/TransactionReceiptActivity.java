@@ -105,7 +105,7 @@ public class TransactionReceiptActivity extends ActionBarActivity {
     @BindView(R.id.vatpercentageTextView)
     TextView vatpercentageTextView;
     private Intent mIntent;
-    private String transactionNumber;
+    private String transactionNumber,mobilenumber;
     private final ArrayList<TransactionReceiptListJsonPojo> transactionReceiptListJsonPojos = new ArrayList<>();
 
     @Override
@@ -120,6 +120,7 @@ public class TransactionReceiptActivity extends ActionBarActivity {
         mIntent = getIntent();
         if (mIntent != null) {
             transactionNumber = mIntent.getStringExtra("transactionnumber");
+            mobilenumber = mIntent.getStringExtra("beneficiarMobileNumber");
         }
         if (IsNetworkConnection.checkNetworkConnection(TransactionReceiptActivity.this)) {
             getTransactionReceipt();
@@ -196,7 +197,7 @@ public class TransactionReceiptActivity extends ActionBarActivity {
                             idExpireyDateTextView.setText(transactionReceiptListJsonPojos.get(0).getData().getSenderIDExpiry());
                             relationTextView.setText(transactionReceiptListJsonPojos.get(0).getData().getRelationWithBeneficiary());
                             beneficiaryNameTextView.setText(transactionReceiptListJsonPojos.get(0).getData().getBeneficiaryName());
-                            beneficiaryMobileNumber.setText(transactionReceiptListJsonPojos.get(0).getData().getBeneficiaryNo());
+                            beneficiaryMobileNumber.setText(mobilenumber);
                             beneficiaryAddressTextView.setText(transactionReceiptListJsonPojos.get(0).getData().getBeneficiaryAddress());
                             cardNumberTextView.setText("");
                             availPointTextView.setText(transactionReceiptListJsonPojos.get(0).getData().getAvailPoints());

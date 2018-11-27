@@ -515,7 +515,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         dateOfBirthEditTextSignUpSubmit.setText(sdf.format(myCalendar1.getTime()));
 
 //        dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
-        dateOfBirth = sdf.format(myCalendar1.getTime());
+        dateOfBirth = Constants.formatDate(dateOfBirthEditTextSignUpSubmit.getText().toString(), "dd/MM/yyyy", "dd/MM/yyyy");
 
     }
 

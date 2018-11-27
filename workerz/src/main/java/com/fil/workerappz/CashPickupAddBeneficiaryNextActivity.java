@@ -342,12 +342,14 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             case R.id.addTextViewAddBeneficiary:
                 if (destinationAddressEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, destinationmsg);
-                } else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, landmarkmsg);
-
-                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, zipcodemsg);
-                } else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
+                }
+//                else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, landmarkmsg);
+//
+//                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, zipcodemsg);
+//                }
+                else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
                 } else if (agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
@@ -500,7 +502,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("BankName", agentName);
 //            jsonObject.put("BankCountry", payoutCountry);
             jsonObject.put("BankCountry", countryShortCode);
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryInfoListPojo.getRelation());
             jsonObject.put("BranchNameAndAddress", address);
             jsonObject.put("BankCode", branchCode);
             jsonObject.put("BankBranch", branchName);

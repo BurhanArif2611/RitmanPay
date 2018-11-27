@@ -126,6 +126,16 @@ public class BeneficiaryInfoListPojo implements Serializable {
     private String IDNumber="";
     private String IDType="";
 
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    private String relation="";
+
     public String getState() {
         return State;
     }

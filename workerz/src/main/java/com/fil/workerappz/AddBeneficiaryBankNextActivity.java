@@ -584,7 +584,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("PurposeCode", purposecode);
             jsonObject.put("PayoutCountryCode", Countryshortcode);
             jsonObject.put("BeneficiaryNo", Beneficiarnumber);
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryinfoPojo.getRelation());
             jsonObject.put("userID", getUserData().getUserID());
             jsonObject.put("benificaryState", beneficiaryinfoPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryinfoPojo.getCity());
@@ -754,7 +755,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("PurposeCode", purposecode);
             jsonObject.put("PayoutCountryCode", "IND");
             jsonObject.put("BeneficiaryNo", "0");
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryinfoPojo.getRelation());
             jsonObject.put("userID", getUserData().getUserID());
         } catch (JSONException e) {
             e.printStackTrace();

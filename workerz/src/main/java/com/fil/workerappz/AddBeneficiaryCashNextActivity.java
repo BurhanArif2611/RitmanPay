@@ -381,12 +381,14 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             case R.id.addTextViewAddBeneficiary:
                 if (destinationAddressEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, destinationmsg);
-                } else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, landmarkmsg);
-
-                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, zipcodemsg);
-                } else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
+                }
+//                else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, landmarkmsg);
+//
+//                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, zipcodemsg);
+//                }
+                else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, agentmsg);
                 } else if (agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, agentmsg);
@@ -444,7 +446,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             jsonObject.put("BankName", agentname);
 //            jsonObject.put("BankCountry", payoutCountry);
             jsonObject.put("BankCountry", CountryShortCode);
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryinfoPojo.getRelation());
             jsonObject.put("BranchNameAndAddress", address);
             jsonObject.put("BankCode", branchCode);
             jsonObject.put("BankBranch", branchName);
