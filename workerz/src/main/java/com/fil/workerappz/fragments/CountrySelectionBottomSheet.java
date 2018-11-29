@@ -32,7 +32,6 @@ import com.fil.workerappz.SelectBeneficiaryViewActivity;
 import com.fil.workerappz.SignInActivity;
 import com.fil.workerappz.SignUpSubmitActivity;
 import com.fil.workerappz.pojo.CountryData;
-import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
 import com.fil.workerappz.utils.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -64,6 +63,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
     LinearLayout rootBottomSheet1;
     @BindView(R.id.rootBottomSheet2)
     LinearLayout rootBottomSheet2;
+
 
 
     private List<CountryData> countryListPojos = new ArrayList<>();
@@ -107,7 +107,7 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         bottomSheetBehavior.setPeekHeight(screenHeight);
 
         if (params.getBehavior() instanceof BottomSheetBehavior) {
-            ((BottomSheetBehavior)params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            ((BottomSheetBehavior) params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
                 public void onStateChanged(@NonNull View bottomSheet, int newState) {
                     mBottomSheetBehaviorCallback.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -162,7 +162,6 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         countrySelectionRecyclerView.setLayoutManager(layoutManager);
         return rootView;
     }
-
 
 
     @Override

@@ -106,7 +106,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String purposetransfermsg, agentmsg, zipcodemsg, landmarkmsg, destinationmsg;
+    private String purposetransfermsg, agentmsg, zipcodemsg, landmarkmsg, destinationmsg,nationality;
     private String nointernetmsg;
 
 
@@ -126,6 +126,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             destinationZipCodeEditTextAddBeneficiary.setText(quickPayData.getBenificaryDestinationZipCode());
             agentname = quickPayData.getBenificaryPayOutBranchCode();
             purposecode = quickPayData.getBenificaryPurposeCode();
+            nationality=quickPayData.getBenificaryNationality();
         } else {
             cashbeneficiarinfopojo = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiaryapidata");
             destinationAddressEditTextAddBeneficiaryNext.setText(cashbeneficiarinfopojo.getBenificaryDestiantionAddress());
@@ -133,6 +134,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             destinationZipCodeEditTextAddBeneficiary.setText(cashbeneficiarinfopojo.getBenificaryDestinationZipCode());
             agentname = cashbeneficiarinfopojo.getBenificaryPayOutBranchCode();
             purposecode = cashbeneficiarinfopojo.getBenificaryPurposeCode();
+            nationality=cashbeneficiarinfopojo.getBenificaryNationality();
         }
         beneficiaryinfoPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiarydata");
 
@@ -281,7 +283,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     private void cashAgentNetworkListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("countryCode", cashbeneficiarinfopojo.getBenificaryNationality());
+            jsonObject.put("countryCode",nationality );
             jsonObject.put("bankName", "");
             jsonObject.put("branch", "");
 //            jsonObject.put("countryCode", "NPL");

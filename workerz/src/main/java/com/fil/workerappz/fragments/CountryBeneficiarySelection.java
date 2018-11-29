@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,15 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fil.workerappz.AddBeneficiaryActivity;
-import com.fil.workerappz.ForgotPinActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryViewActivity;
-import com.fil.workerappz.SignInActivity;
-import com.fil.workerappz.SignUpSubmitActivity;
-import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
-import com.fil.workerappz.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -61,10 +54,11 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
     LinearLayout rootBottomSheet2;
 
 
+
     private List<ModeWiseCountryListJsonPojo.Data> countryListPojos = new ArrayList<>();
     private Activity activity;
     private RecyclerView.LayoutManager layoutManager;
-    private CountryBeneficiarySelection.CountryListAdapter countryListAdapter;
+    private CountryListAdapter countryListAdapter;
     BottomSheetBehavior mBottomSheetBehaviorCallback;
 
 
@@ -104,7 +98,7 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
         bottomSheetBehavior.setPeekHeight(screenHeight);
 
         if (params.getBehavior() instanceof BottomSheetBehavior) {
-            ((BottomSheetBehavior)params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            ((BottomSheetBehavior) params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
                 public void onStateChanged(@NonNull View bottomSheet, int newState) {
                     mBottomSheetBehaviorCallback.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -164,10 +158,11 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
     }
 
 
-    public class CountryListAdapter extends RecyclerView.Adapter<CountryBeneficiarySelection.CountryListAdapter.ViewHolder> implements Filterable {
+    public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.ViewHolder> implements Filterable {
 
         private final Activity mContext;
         private List<ModeWiseCountryListJsonPojo.Data> countryListPojos;
@@ -182,16 +177,16 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
         }
 
         @Override
-        public CountryBeneficiarySelection.CountryListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_selection_adapter, parent, false);
-            return new CountryBeneficiarySelection.CountryListAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final CountryBeneficiarySelection.CountryListAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
 
-                holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
-                holder.textViewCountrySelectionAdapter.setText(countryListPojos.get(position).getCountryName());
+            holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
+            holder.textViewCountrySelectionAdapter.setText(countryListPojos.get(position).getCountryName());
 
 //            else {
 //                holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
@@ -206,8 +201,7 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
                         AddBeneficiaryActivity forgotPinActivity = (AddBeneficiaryActivity) getActivity();
                         forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
-                    }
-                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
+                    } else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
                         SelectBeneficiaryViewActivity forgotPinActivity = (SelectBeneficiaryViewActivity) getActivity();
                         forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
@@ -291,7 +285,7 @@ public class CountryBeneficiarySelection extends BottomSheetDialogFragment {
 //                if (response.body() != null && response.body() instanceof ArrayList) {
 //                    countryListPojos.addAll(response.body());
         if (countryListPojos.size() > 0) {
-            countryListAdapter = new CountryBeneficiarySelection.CountryListAdapter(getActivity(), countryListPojos);
+            countryListAdapter = new CountryListAdapter(getActivity(), countryListPojos);
             countrySelectionRecyclerView.setAdapter(countryListAdapter);
 
             inputSearch.addTextChangedListener(new TextWatcher() {

@@ -127,12 +127,6 @@ public class ProfileActivity extends ActionBarActivity {
     MaterialEditText zipcodeEditTextProfile;
     @BindView(R.id.appImageViewHeader1)
     ImageView appImageViewHeader1;
-    @BindView(R.id.mobileNumberFramelayoutProfile)
-    LinearLayout mobileNumberFramelayoutProfile;
-    @BindView(R.id.emailFramelayoutProfile)
-    LinearLayout emailFramelayoutProfile;
-    @BindView(R.id.countryrFramelayoutProfile)
-    LinearLayout countryrFramelayoutProfile;
     @BindView(R.id.stateFramelayoutProfile)
     LinearLayout stateFramelayoutProfile;
     @BindView(R.id.cityFramelayoutProfile)
@@ -149,6 +143,12 @@ public class ProfileActivity extends ActionBarActivity {
     LinearLayout passportnumberFramelayoutProfile;
     @BindView(R.id.emiratsFramelayoutProfile)
     LinearLayout emiratsFramelayoutProfile;
+    @BindView(R.id.mobileNumberFramelayoutProfile)
+    FrameLayout mobileNumberFramelayoutProfile;
+    @BindView(R.id.emailFramelayoutProfile)
+    FrameLayout emailFramelayoutProfile;
+    @BindView(R.id.countryrFramelayoutProfile)
+    FrameLayout countryrFramelayoutProfile;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)

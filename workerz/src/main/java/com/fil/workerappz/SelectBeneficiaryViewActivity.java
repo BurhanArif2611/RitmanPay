@@ -788,7 +788,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setZipCode(zipcodeEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setEmailID(emailEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setDateOfBirth(dateofbirth);
-                    beneficiaryInfoListPojo.setCountryFlagImage(countryflagimage);
+                    beneficiaryInfoListPojo.setCountryFlagImage(countryFlagImage);
                     beneficiaryInfoListPojo.setTelephone(mobileNumberEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setIDType(idtypeId);
                     beneficiaryInfoListPojo.setIDNumber(idNumberEditTextAddBeneficiary.getText().toString());
@@ -800,6 +800,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setState(new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
                     beneficiaryInfoListPojo.setCity(cityname);
                     beneficiaryInfoListPojo.setRelation(relationName);
+
 
 
                     if (activitytype.equalsIgnoreCase("bank")) {

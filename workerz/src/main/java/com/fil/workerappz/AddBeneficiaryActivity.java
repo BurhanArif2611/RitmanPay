@@ -983,7 +983,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                                 break;
                             }
                         }
-                        idTypeJsonCall();
+//                        idTypeJsonCall();
 
                     }
                 }

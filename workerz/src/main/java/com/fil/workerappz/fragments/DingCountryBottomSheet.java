@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,16 +24,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fil.workerappz.AddBeneficiaryActivity;
-import com.fil.workerappz.ForgotPinActivity;
 import com.fil.workerappz.MobileTopUpActivity;
 import com.fil.workerappz.R;
-import com.fil.workerappz.SelectBeneficiaryViewActivity;
-import com.fil.workerappz.SignInActivity;
-import com.fil.workerappz.SignUpSubmitActivity;
 import com.fil.workerappz.pojo.ding.GetCountryList;
-import com.fil.workerappz.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -64,7 +56,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
     private List<GetCountryList.Data> countryListPojos = new ArrayList<>();
     private Activity activity;
     private RecyclerView.LayoutManager layoutManager;
-    private DingCountryBottomSheet.CountryListAdapter countryListAdapter;
+    private CountryListAdapter countryListAdapter;
     BottomSheetBehavior mBottomSheetBehaviorCallback;
 
     @SuppressLint("RestrictedApi")
@@ -103,7 +95,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
         bottomSheetBehavior.setPeekHeight(screenHeight);
 
         if (params.getBehavior() instanceof BottomSheetBehavior) {
-            ((BottomSheetBehavior)params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            ((BottomSheetBehavior) params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
                 public void onStateChanged(@NonNull View bottomSheet, int newState) {
                     mBottomSheetBehaviorCallback.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -165,7 +157,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
     }
 
 
-    public class CountryListAdapter extends RecyclerView.Adapter<DingCountryBottomSheet.CountryListAdapter.ViewHolder> implements Filterable {
+    public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.ViewHolder> implements Filterable {
 
         private final Activity mContext;
         private List<GetCountryList.Data> countryListPojos;
@@ -180,16 +172,16 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
         }
 
         @Override
-        public DingCountryBottomSheet.CountryListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_selection_adapter, parent, false);
-            return new DingCountryBottomSheet.CountryListAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final DingCountryBottomSheet.CountryListAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
 
-                holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
-                holder.textViewCountrySelectionAdapter.setText(countryListPojos.get(position).getCountryName());
+            holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
+            holder.textViewCountrySelectionAdapter.setText(countryListPojos.get(position).getCountryName());
 
 
             holder.mainCountrySelectionAdapterLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -279,7 +271,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
 //                if (response.body() != null && response.body() instanceof ArrayList) {
 //                    countryListPojos.addAll(response.body());
         if (countryListPojos.size() > 0) {
-            countryListAdapter = new DingCountryBottomSheet.CountryListAdapter(getActivity(), countryListPojos);
+            countryListAdapter = new CountryListAdapter(getActivity(), countryListPojos);
             countrySelectionRecyclerView.setAdapter(countryListAdapter);
 
             inputSearch.addTextChangedListener(new TextWatcher() {
