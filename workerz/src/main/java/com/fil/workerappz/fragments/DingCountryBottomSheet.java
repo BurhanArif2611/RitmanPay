@@ -4,14 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +65,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
     private Activity activity;
     private RecyclerView.LayoutManager layoutManager;
     private DingCountryBottomSheet.CountryListAdapter countryListAdapter;
+    BottomSheetBehavior mBottomSheetBehaviorCallback;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -70,6 +74,50 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
         View contentView = View.inflate(getContext(), R.layout.country_selection, null);
         dialog.setContentView(contentView);
         ButterKnife.bind(this, contentView);
+
+        mBottomSheetBehaviorCallback = BottomSheetBehavior.from(rootBottomSheet2);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
+        CoordinatorLayout.Behavior behavior = params.getBehavior();
+
+        if (behavior != null && behavior instanceof BottomSheetBehavior) {
+            ((BottomSheetBehavior) behavior).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    mBottomSheetBehaviorCallback.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+                }
+            });
+        }
+
+        View parent = (View) contentView.getParent();
+        parent.setFitsSystemWindows(true);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(parent);
+        contentView.measure(0, 0);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenHeight = displaymetrics.heightPixels;
+        bottomSheetBehavior.setPeekHeight(screenHeight);
+
+        if (params.getBehavior() instanceof BottomSheetBehavior) {
+            ((BottomSheetBehavior)params.getBehavior()).setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    mBottomSheetBehaviorCallback.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+                }
+            });
+        }
+
+        params.height = screenHeight;
+        parent.setLayoutParams(params);
     }
 
     @Override
@@ -97,8 +145,7 @@ public class DingCountryBottomSheet extends BottomSheetDialogFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        final BottomSheetBehavior behavior = BottomSheetBehavior.from(rootBottomSheet2);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         closeCountrySelectionImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
