@@ -163,9 +163,9 @@ public class ActionBarActivity extends AppCompatActivity {
 
     @Override
     public void onUserInteraction() {
-//        if (sessionManager.getLogin() && sessionManager.getVerify()) {
-//            resetDisconnectTimer();
-//        }
+        if (sessionManager.getLogin() && sessionManager.getVerify()) {
+            resetDisconnectTimer();
+        }
     }
 
     /*@Override

@@ -73,6 +73,7 @@ public class Constants {
     private static Dialog dialog;
     public static GetProductsList.Data productListData = null;
     public static boolean Updateflag=false;
+    public static boolean firsttimeautologout=false;
     public static int beneficiarcount=0;
 
     public static ArrayList<String>answerevalidation;

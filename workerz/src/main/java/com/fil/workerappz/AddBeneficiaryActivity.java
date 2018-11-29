@@ -251,6 +251,17 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+      countryEditTextAddBeneficiary.setHint(getResources().getString(R.string.country));
+      countryEditTextAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.country));
+//        stateSpinnerAddBeneficiary.setHint(getResources().getString(R.string.state));
+//        stateSpinnerAddBeneficiary.showFloatingLabel();
+//        stateSpinnerAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.state));
+//        citySpinnerAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.city));
+//        citySpinnerAddBeneficiary.setHint(getResources().getString(R.string.city));
+//        idTypeSpinnerAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.id_type));
+//        idTypeSpinnerAddBeneficiary.setHint(getResources().getString(R.string.id_type));
+//        customerRelationShipSpinnerAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.relation_with_customer));
+//        customerRelationShipSpinnerAddBeneficiary.setHint(getResources().getString(R.string.relation_with_customer));
 
         if (datumLable_languages_msg != null) {
             firstname = datumLable_languages_msg.getEnterFirstName();
@@ -609,7 +620,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                         intent.putExtra("country_code", countryCode);
                         intent.putExtra("country_short_code", countryShortCode);
                         intent.putExtra("customer_number", Customerno);
-                        intent.putExtra("cityname", citySpinnerAddBeneficiary.getSelectedItem().toString());
+                        intent.putExtra("cityname", (new String(Base64.decode(cityname.trim().getBytes(), Base64.DEFAULT))));
                         intent.putExtra("beneficiary_data", beneficiaryInfoListPojo);
                         startActivity(intent);
                     } else if (comeFrom.equalsIgnoreCase("cash")) {
@@ -699,7 +710,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, dateofbirthmsg);
             checkFlag = false;
-        } else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
+        } else if (countryEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Country");
             checkFlag = false;
         } else if (stateId == 0) {
@@ -968,7 +979,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                         modeWisecountryListPojos.addAll(response.body().get(0).getData());
                         for (int i = 0; i < modeWisecountryListPojos.size(); i++) {
                             if (getUserData().getCountryShortCode().equalsIgnoreCase(modeWisecountryListPojos.get(i).getCountryShortName())) {
-                                countryTextViewAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
+                                countryEditTextAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
                                 break;
                             }
                         }
@@ -1290,7 +1301,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     }
 
     public void updateCountrySelection(List<ModeWiseCountryListJsonPojo.Data> countryListPojosupdated, int position) {
-        countryTextViewAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
+        countryEditTextAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
         if (SugarRecord.count(CountryData.class) > 0) {
             countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
         }

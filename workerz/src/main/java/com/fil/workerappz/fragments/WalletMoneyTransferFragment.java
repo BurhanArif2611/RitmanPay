@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     ArrayList<String> stringArrayList = new ArrayList<>();
     ArrayList<String> stringArrayListname = new ArrayList<>();
     private SessionManager sessionManager;
-    private String amountsendmsg, vaildamountmsg, largeramountmsg, mobilenumber, mobilenumbernotregisteredmsg;
+    private String amountsendmsg, vaildamountmsg, largeramountmsg, mobilenumber, mobilenumbernotregisteredmsg,number, name;
 
     public WalletMoneyTransferFragment() {
 
@@ -223,8 +224,15 @@ public class WalletMoneyTransferFragment extends BaseFragment {
         mobileNoSendMoneyEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                walletNameSendMoneyEditText.setText(walletSuggestionListPojos.get(0).getData().get(0).getUserFirstName());
-                receiverId = walletSuggestionListPojos.get(0).getData().get(0).getUserID();
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Log.d("System out", selectedItem);
+
+                int index = stringArrayList.indexOf(mobileNoSendMoneyEditText.getText().toString());
+                Log.d("System out", String.valueOf(index));
+                walletNameSendMoneyEditText.setText(walletSuggestionListPojos.get(0).getData().get(index).getUserFirstName());
+             number=walletSuggestionListPojos.get(0).getData().get(index).getUserMobile();
+               name=walletSuggestionListPojos.get(0).getData().get(index).getUserFirstName();
+                receiverId = walletSuggestionListPojos.get(0).getData().get(index).getUserID();
             }
         });
 
@@ -281,6 +289,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
                     if (walletSuggestionListPojos.get(0).getStatus() == true) {
                         if (walletSuggestionListPojos.get(0).getData() != null) {
                             stringArrayList.clear();
+                            stringArrayListname.clear();
                             for (int i = 0; i < walletSuggestionListPojos.get(0).getData().size(); i++) {
                                 stringArrayList.add(walletSuggestionListPojos.get(0).getData().get(i).getUserMobile());
                                 stringArrayListname.add(walletSuggestionListPojos.get(0).getData().get(i).getUserFirstName());
@@ -316,11 +325,13 @@ public class WalletMoneyTransferFragment extends BaseFragment {
                     flag = true;
 
                 }
-                if (walletNameSendMoneyEditText.getText().toString().equalsIgnoreCase(stringArrayListname.get(i))) {
+              if (walletNameSendMoneyEditText.getText().toString().equalsIgnoreCase(stringArrayListname.get(i))) {
                     flagname = true;
 
                 }
             }
+
+
             if (flag == true && flagname == true) {
                 mIntent = new Intent(getActivity(), WalletActivity.class);
                 mIntent.putExtra("amount", amountSendMoneyEditText.getText().toString().trim());

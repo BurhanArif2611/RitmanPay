@@ -153,6 +153,12 @@ public class HomeActivity extends ActionBarActivity {
         }
         Constants.beneficiarcount = userListPojo.getBankBenificaryCount();
 
+
+        if (!Constants.firsttimeautologout) {
+            onUserInteraction();
+            Constants.firsttimeautologout = true;
+        }
+
 //        currency=userListPojo.getCountryCurrencySymbol();
 
 
@@ -163,15 +169,15 @@ public class HomeActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
                 goodtohavetextview.setText(datumLable_languages.getGoodToHaveYouBack());
                 textbalance.setText(datumLable_languages.getBALANCE());
-                textviewpointbalance.setText(datumLable_languages.getPointBalance()+":");
-                textviewpoints.setText(" "+datumLable_languages.getPoints());
+                textviewpointbalance.setText(datumLable_languages.getPointBalance() + ":");
+                textviewpoints.setText(" " + datumLable_languages.getPoints());
                 textviewloadmoney.setText(datumLable_languages.getLoadMoney());
                 textviewmoneytransfer.setText(datumLable_languages.getMoneyTransfer());
                 homeTextViewFooter.setText(datumLable_languages.getHome());
                 quickPayTextViewFooter.setText(datumLable_languages.getQuickPay());
                 beneficiaryTextViewFooter.setText(datumLable_languages.getBeneficiary());
                 historyTextViewFooter.setText(datumLable_languages.getHistory());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
             } else {
                 goodtohavetextview.setText(getResources().getString(R.string.good_to_have_you_back));
                 textbalance.setText(getResources().getString(R.string.balance));
@@ -183,7 +189,7 @@ public class HomeActivity extends ActionBarActivity {
                 quickPayTextViewFooter.setText(getResources().getString(R.string.quick_pay));
                 beneficiaryTextViewFooter.setText(getResources().getString(R.string.beneficiary));
                 historyTextViewFooter.setText(getResources().getString(R.string.history));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
 
         } catch (
@@ -201,7 +207,7 @@ public class HomeActivity extends ActionBarActivity {
                 sessionManager.setDeviceToken(Constants.device_token);
             }
         } else {
-            Constants.showMessage(mainHomeActivityLinearLayout, this,nointernetmsg);
+            Constants.showMessage(mainHomeActivityLinearLayout, this, nointernetmsg);
         }
 
         Picasso.with(HomeActivity.this).load(Constants.IMAGE_URL_USER + getUserData().getUserProfilePicture()).placeholder(R.drawable.user_profile_home).error(R.drawable.user_profile_home).transform(new CircleTransform()).into(homeUserProfileImageView);
@@ -209,6 +215,7 @@ public class HomeActivity extends ActionBarActivity {
         homeSelection();
         setBeanData();
     }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -240,14 +247,14 @@ public class HomeActivity extends ActionBarActivity {
                         sessionManager.setWalletBalance((float) balanceListJsonPojos.get(0).getData().get(0).getBalance());
                         walletAmountTextViewHomeActivity.setText(sessionManager.userProfileData().getCountryCurrencySymbol() + " " + (float) balanceListJsonPojos.get(0).getData().get(0).getBalance());
 //                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText("Balance: " + " " + currency.getCurrencyCode() + " " + balanceListJsonPojos.get(0).getData().get(0).getBalance());
- DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" +" "+ sessionManager.userProfileData().getCountryCurrencySymbol() + " " + balanceListJsonPojos.get(0).getData().get(0).getBalance());
+                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" + " " + sessionManager.userProfileData().getCountryCurrencySymbol() + " " + balanceListJsonPojos.get(0).getData().get(0).getBalance());
 
 
 //                        Constants.showMessage(mainHomeActivityLinearLayout, HomeActivity.this, balanceListJsonPojos.get(0).getInfo());
                     } else {
 
                         walletAmountTextViewHomeActivity.setText(" " + sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
-                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" +" "+ sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
+                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" + " " + sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
 //                        Constants.showMessage(mainHomeActivityLinearLayout, HomeActivity.this, balanceListJsonPojos.get(0).getInfo());
                     }
                 }
@@ -294,11 +301,11 @@ public class HomeActivity extends ActionBarActivity {
 
     private void refreshProfile() {
         userListPojo = getUserData();
-        nameTextViewHomeActivity.setText(datumLable_languages.getHi() +" "+ userListPojo.getUserFirstName()+",");
+        nameTextViewHomeActivity.setText(datumLable_languages.getHi() + " " + userListPojo.getUserFirstName() + ",");
         currency = Currency.getInstance(userListPojo.getCountryCurrencySymbol());
         if (sessionManager.getWalletBalance() != 0) {
             walletAmountTextViewHomeActivity.setText(sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
-            DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" +" "+ sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
+            DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" + " " + sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
         }
 
     }

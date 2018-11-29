@@ -255,6 +255,7 @@ public class VerificationActivity extends ActionBarActivity {
                             public void run() {
                                 handler.removeCallbacks(this);
                                 finish();
+
                                 mIntent = new Intent(VerificationActivity.this, HomeActivity.class);
                                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 mIntent.putExtra("come_from", "Registration");

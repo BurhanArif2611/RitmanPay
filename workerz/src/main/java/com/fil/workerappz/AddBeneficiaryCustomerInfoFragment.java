@@ -453,9 +453,9 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 //            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
 //        }
 
-        else if (dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), dateofbirthmsg);
-        }
+//        else if (dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), dateofbirthmsg);
+//        }
 // else if (idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
 //            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), );
 //        }
@@ -486,7 +486,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userID", String.valueOf(userId));
-            jsonObject.put("userDateOfBirth", Constants.formatDate(dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy"));
+//            jsonObject.put("userDateOfBirth", Constants.formatDate(dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy"));
+            jsonObject.put("userDateOfBirth", "");
             jsonObject.put("IDType", idtype);
             jsonObject.put("IDtype_Description", idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString());
             jsonObject.put("IDExpiryDate", "12/31/2099");

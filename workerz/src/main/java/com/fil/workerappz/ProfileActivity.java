@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -126,6 +127,28 @@ public class ProfileActivity extends ActionBarActivity {
     MaterialEditText zipcodeEditTextProfile;
     @BindView(R.id.appImageViewHeader1)
     ImageView appImageViewHeader1;
+    @BindView(R.id.mobileNumberFramelayoutProfile)
+    LinearLayout mobileNumberFramelayoutProfile;
+    @BindView(R.id.emailFramelayoutProfile)
+    LinearLayout emailFramelayoutProfile;
+    @BindView(R.id.countryrFramelayoutProfile)
+    LinearLayout countryrFramelayoutProfile;
+    @BindView(R.id.stateFramelayoutProfile)
+    LinearLayout stateFramelayoutProfile;
+    @BindView(R.id.cityFramelayoutProfile)
+    LinearLayout cityFramelayoutProfile;
+    @BindView(R.id.addressFramelayout)
+    FrameLayout addressFramelayout;
+    @BindView(R.id.streetFramelayoutProfile)
+    LinearLayout streetFramelayoutProfile;
+    @BindView(R.id.landmarkFramelayoutProfile)
+    LinearLayout landmarkFramelayoutProfile;
+    @BindView(R.id.zipcodeFramelayoutProfile)
+    LinearLayout zipcodeFramelayoutProfile;
+    @BindView(R.id.passportnumberFramelayoutProfile)
+    LinearLayout passportnumberFramelayoutProfile;
+    @BindView(R.id.emiratsFramelayoutProfile)
+    LinearLayout emiratsFramelayoutProfile;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)
@@ -193,7 +216,7 @@ public class ProfileActivity extends ActionBarActivity {
 
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg,dateofbirthmsg, nointernetmsg;
+    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg, dateofbirthmsg, nointernetmsg;
     private SecurityQuestionListAdapter securityQuestionListAdapter;
     private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
     private LinearLayoutManager layoutManager;
@@ -285,7 +308,7 @@ public class ProfileActivity extends ActionBarActivity {
             passportmsg = getResources().getString(R.string.Please_enter_passport_no);
             emiratesidmsg = getResources().getString(R.string.Please_enter_emirates_id);
             address = getResources().getString(R.string.Please_Enter_address);
-            dateofbirthmsg =  getResources().getString(R.string.Please_select_Dob);
+            dateofbirthmsg = getResources().getString(R.string.Please_select_Dob);
 
 
         }
@@ -482,7 +505,7 @@ public class ProfileActivity extends ActionBarActivity {
                                     securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
                                     answerId = SequrityQuestionListPojos.get(position).getSecID();
                                     securityQuestionsEditTexProfile.setText("");
-                                    answer="";
+                                    answer = "";
 
                                 }
                             }
@@ -552,7 +575,7 @@ public class ProfileActivity extends ActionBarActivity {
         streetEditTextProfile.setText(userListPojo.getuserStreet());
         landmarkEditTextProfile.setText(userListPojo.getuserLandmark());
         zipcodeEditTextProfile.setText(userListPojo.getuserZipcode());
-        dateofbirth=userListPojo.getuserDateOfBirth();
+        dateofbirth = userListPojo.getuserDateOfBirth();
 
 
 //        if (userListPojo.getUserGender().equalsIgnoreCase("Male")) {
@@ -634,7 +657,7 @@ public class ProfileActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile})
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile, R.id.mobileNumberFramelayoutProfile, R.id.emailFramelayoutProfile, R.id.countryrFramelayoutProfile, R.id.stateFramelayoutProfile, R.id.cityFramelayoutProfile, R.id.addressFramelayout, R.id.streetFramelayoutProfile, R.id.landmarkFramelayoutProfile, R.id.zipcodeFramelayoutProfile, R.id.passportnumberFramelayoutProfile, R.id.emiratsFramelayoutProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -652,7 +675,39 @@ public class ProfileActivity extends ActionBarActivity {
             case R.id.dateOfBirthEditTextProfile:
                 DataPickerDialog1();
                 break;
-
+            case R.id.mobileNumberFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.emailFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.countryrFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.stateFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.cityFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.addressFramelayout:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.streetFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.landmarkFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.zipcodeFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.emiratsFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.passportnumberFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
             case R.id.changePinTextViewProfile:
                 mIntent = new Intent(ProfileActivity.this, ChangePinActivity.class);
                 startActivity(mIntent);
@@ -759,6 +814,7 @@ public class ProfileActivity extends ActionBarActivity {
         dateofbirth = sdf.format(myCalendar1.getTime());
 
     }
+
     private boolean checkValidation() {
         boolean checkFlag = true;
         try {
@@ -773,11 +829,10 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (lastNameEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, lastname);
             checkFlag = false;
-        }
-        else if (dateOfBirthEditTextProfile.getText().toString().length() == 0) {
+        } else if (dateOfBirthEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, dateofbirthmsg);
             checkFlag = false;
-        }else if (countryName.length() == 0) {
+        } else if (countryName.length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, selectcountry);
             checkFlag = false;
         } else if (addressEditTextProfile.getText().toString().length() == 0) {
@@ -789,8 +844,7 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
             checkFlag = false;
-        }
-        else if ( securityQuestionsEditTexProfile.getText().toString().equals("")) {
+        } else if (securityQuestionsEditTexProfile.getText().toString().equals("")) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -853,9 +907,31 @@ public class ProfileActivity extends ActionBarActivity {
             streetEditTextProfile.setEnabled(false);
             landmarkEditTextProfile.setEnabled(false);
             zipcodeEditTextProfile.setEnabled(false);
+            mobileNumberEditTextProfile.setEnabled(false);
+            emailFramelayoutProfile.setEnabled(true);
+            countryrFramelayoutProfile.setEnabled(true);
+            stateFramelayoutProfile.setEnabled(true);
+            cityFramelayoutProfile.setEnabled(true);
+            addressFramelayout.setEnabled(true);
+            landmarkFramelayoutProfile.setEnabled(true);
+            streetFramelayoutProfile.setEnabled(true);
+            zipcodeFramelayoutProfile.setEnabled(true);
+            emiratsFramelayoutProfile.setEnabled(true);
+            passportnumberFramelayoutProfile.setEnabled(true);
             securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos, true);
 //            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         } else {
+            mobileNumberFramelayoutProfile.setEnabled(false);
+            emailFramelayoutProfile.setEnabled(false);
+            countryrFramelayoutProfile.setEnabled(false);
+            stateFramelayoutProfile.setEnabled(false);
+            cityFramelayoutProfile.setEnabled(false);
+            addressFramelayout.setEnabled(false);
+            landmarkFramelayoutProfile.setEnabled(false);
+            streetFramelayoutProfile.setEnabled(false);
+            zipcodeFramelayoutProfile.setEnabled(false);
+            emiratsFramelayoutProfile.setEnabled(false);
+            passportnumberFramelayoutProfile.setEnabled(false);
             mainProfileActivityLinearLayout.setFocusable(true);
             skipTextViewViewHeader.setFocusable(true);
             skipTextViewViewHeader.setFocusableInTouchMode(true);

@@ -87,6 +87,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     TextView skipTextViewViewHeader2;
     @BindView(R.id.destinationAddressEditTextAddBeneficiaryNext1)
     MaterialEditText destinationAddressEditTextAddBeneficiaryNext1;
+    @BindView(R.id.otherPurposeOfTransferEditTextCashAddBeneficiary)
+    MaterialEditText otherPurposeOfTransferEditTextCashAddBeneficiary;
     private String countryCode, purposeCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode, customerNumber;
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
     private final ArrayList<PurposeOfTransferListPojo> purposeOfTransferListPojos = new ArrayList<>();
@@ -181,7 +183,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     private void purposeOfTransferJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("countryCode", countryCode);
+            jsonObject.put("countryCode", countryShortCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -220,6 +222,13 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                                 if (position != -1) {
                                     purposeCode = purposeOfTransferListPojos.get(0).getData().get(position).getPurposeOfTransferID();
 //                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
+//                                    if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString().equalsIgnoreCase("Others")) {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                    } else {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+//                                    }
                                 }
                             }
 
@@ -359,7 +368,14 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, purposetransfermsg);
 
-                } else {
+                }
+//                else if (purposeCode.equalsIgnoreCase("12")&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length() == 0) {
+//
+//                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this
+//                                , "Please specify purpose of transfer");
+//
+//                }
+                else {
 //                    Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
 //                    startActivity(intent);
                     if (IsNetworkConnection.checkNetworkConnection(this)) {

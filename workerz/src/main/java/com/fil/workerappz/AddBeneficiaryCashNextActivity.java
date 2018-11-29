@@ -90,6 +90,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     LinearLayout mainAddBeneficiaryCashNextActivityLinearLayout;
     @BindView(R.id.destinationAddressEditTextAddBeneficiaryNext1)
     MaterialEditText destinationAddressEditTextAddBeneficiaryNext1;
+    @BindView(R.id.otherPurposeOfTransferEditTextCashAddBeneficiary)
+    MaterialEditText otherPurposeOfTransferEditTextCashAddBeneficiary;
 
     private String Countrycode;
     private String purposecode;
@@ -113,7 +115,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cash_pickup_addbeneficiary_next);
         ButterKnife.bind(this);
-        Countrycode = getIntent().getExtras().getString("countrycode");
+        CountryShortCode = getIntent().getExtras().getString("countrycode");
 
 //        beneficiaryinfoPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiarydata");
 //        cashbeneficiarinfopojo = (StaticBeneficiaryInfoPojo) getIntent().getSerializableExtra("beneficiaryapidata");
@@ -207,13 +209,13 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     private void purposeOfTransferJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("countryCode", Countrycode);
+            jsonObject.put("countryCode", CountryShortCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String json = "[" + jsonObject + "]";
-
+        CustomLog.d("System out", "add beneficiary purpose of transfer json " + json);
         Constants.showProgress(AddBeneficiaryCashNextActivity.this);
         Call<List<PurposeOfTransferListPojo>> call = RestClient.get().getPurposeOfTransferJsonCall(json);
 
@@ -247,6 +249,13 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                                 if (position != -1) {
                                     purposecode = purposeOfTransferListPojos.get(0).getData().get(position).getPurposeOfTransferID();
 
+//                                    if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString().equalsIgnoreCase("Others")) {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                    } else {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+//                                    }
 
 //                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
 
@@ -398,7 +407,12 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                 } else if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, purposetransfermsg);
 
-                } else {
+                }
+//                else if  (purposecode.equalsIgnoreCase("12")&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length() == 0) {
+//                        Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this
+//                                , "Please specify purpose of transfer");
+//                }
+                else {
 //                    Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
 //                    startActivity(intent);
                     if (IsNetworkConnection.checkNetworkConnection(this)) {

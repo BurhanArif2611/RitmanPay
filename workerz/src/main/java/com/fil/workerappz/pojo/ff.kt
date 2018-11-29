@@ -3,22 +3,39 @@ import com.google.gson.annotations.SerializedName
 
 
 data class ff(
-        @SerializedName("result")
-        var result: List<Result?>?
+    @SerializedName("message")
+    var message: String?,
+    @SerializedName("result")
+    var result: Result?,
+    @SerializedName("status")
+    var status: String?
 ) {
     data class Result(
-            @SerializedName("address_id")
-            var addressId: String?,
-            @SerializedName("area")
-            var area: List<Area?>?,
-            @SerializedName("cityname")
-            var cityname: String?
+        @SerializedName("agentlist")
+        var agentlist: List<Agentlist?>?,
+        @SerializedName("subscriptionDetails")
+        var subscriptionDetails: List<SubscriptionDetail?>?
     ) {
-        data class Area(
-                @SerializedName("areaName")
-                var areaName: String?,
-                @SerializedName("areaZipcode")
-                var areaZipcode: String?
+        data class SubscriptionDetail(
+            @SerializedName("subscriptionID")
+            var subscriptionID: String?,
+            @SerializedName("subscriptionImage")
+            var subscriptionImage: String?,
+            @SerializedName("subscriptionItem")
+            var subscriptionItem: String?,
+            @SerializedName("subscriptionName")
+            var subscriptionName: String?
+        )
+
+        data class Agentlist(
+            @SerializedName("agentsubscriptionID")
+            var agentsubscriptionID: String?,
+            @SerializedName("userEmail")
+            var userEmail: String?,
+            @SerializedName("userFullName")
+            var userFullName: String?,
+            @SerializedName("userID")
+            var userID: String?
         )
     }
 }

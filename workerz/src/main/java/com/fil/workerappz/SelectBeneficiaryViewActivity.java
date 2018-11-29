@@ -567,7 +567,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
                         for (int i = 0; i < modeWisecountryListPojos.size(); i++) {
                             if (nationality.equalsIgnoreCase(modeWisecountryListPojos.get(i).getCountryShortName())) {
-                                countryTextViewAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
+                                countryEditTextAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
                                 break;
 
                             }
@@ -896,7 +896,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 //            checkFlag = false;
 //        }
 
-        else if (countryTextViewAddBeneficiary.getText().toString().length() == 0) {
+        else if (countryEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Country");
             checkFlag = false;
         } else if (stateId == 0) {
@@ -1539,7 +1539,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     }
 
     public void updateCountrySelection(List<ModeWiseCountryListJsonPojo.Data> countryListPojosupdated, int position) {
-        countryTextViewAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
+        countryEditTextAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
         if (SugarRecord.count(CountryData.class) > 0) {
             countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
         }
@@ -1616,16 +1616,16 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                         relationListPojos.addAll(response.body().get(0).getData());
                         for (int i = 0; i < relationListPojos.size(); i++) {
                             relationList.add(relationListPojos.get(i).getRelationName());
-
+                        }
+                        for (int i = 0; i < relationListPojos.size(); i++) {
                             if (customerRelation.equalsIgnoreCase(relationListPojos.get(i).getRelationName())) {
                                 relationId = relationListPojos.get(i).getRelationID();
                                 relationName = relationListPojos.get(i).getRelationName();
-                                customerRelationShipSpinnerAddBeneficiary.setSelection(i+1);
+                                customerRelationShipSpinnerAddBeneficiary.setSelection(i + 1);
                                 break;
                             }
-
-
                         }
+
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(SelectBeneficiaryViewActivity.this, android.R.layout.simple_spinner_item, relationList);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         customerRelationShipSpinnerAddBeneficiary.setAdapter(adapter);

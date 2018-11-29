@@ -95,16 +95,20 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
             holder.uploadStatusTextView.setVisibility(View.GONE);
             holder.approvedStatusTextView.setText("Please submit the documents with your registered agent");
             Constants.Updateflag = false;
+            holder.removeSignImageView.setVisibility(View.INVISIBLE);
+            holder.closeiconimageview.setVisibility(View.GONE);
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Pending")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
+            holder.closeiconimageview.setVisibility(View.VISIBLE);
             holder.textviewupload.setText("Reupload");
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
             Constants.Updateflag = true;
         } else if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Rejected")) {
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.removeSignImageView.setVisibility(View.VISIBLE);
+            holder.closeiconimageview.setVisibility(View.VISIBLE);
             holder.textviewupload.setText("Reupload");
             Constants.Updateflag = true;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
@@ -112,10 +116,12 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.textviewupload.setText("Reupload");
             holder.removeSignImageView.setVisibility(View.VISIBLE);
+            holder.closeiconimageview.setVisibility(View.VISIBLE);
             Constants.Updateflag = true;
             holder.uploadStatusTextView.setText(kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus());
         } else {
             holder.removeSignImageView.setVisibility(View.INVISIBLE);
+            holder.closeiconimageview.setVisibility(View.VISIBLE);
             holder.uploadStatusTextView.setText("");
             holder.uploadSignImageView.setVisibility(View.VISIBLE);
             holder.textviewupload.setText(datumLable_languages.getUpload());
@@ -129,7 +135,12 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
         else
         {
             holder.mainlinearlayoutadapter.setVisibility(View.VISIBLE);
-            holder.closeiconimageview.setVisibility(View.VISIBLE);
+            if (kycUploadedDocumentListJsonPojos.get(position).getUserkycStatus().equalsIgnoreCase("Approved")) {
+                holder.closeiconimageview.setVisibility(View.GONE);
+            }
+            else {
+                holder.closeiconimageview.setVisibility(View.VISIBLE);
+            }
         }
 
         holder.removeSignImageView.setOnClickListener(new View.OnClickListener() {
