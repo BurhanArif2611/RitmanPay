@@ -489,6 +489,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             jsonObject.put("userID", getUserData().getUserID());
             jsonObject.put("benificaryState", beneficiaryinfoPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryinfoPojo.getCity());
+            jsonObject.put("benificaryIDTypeIssueDate",beneficiaryinfoPojo.getIdIssueDate());
+            jsonObject.put("benificaryIDTypeExpiryDate",beneficiaryinfoPojo.getIdExpireyDate());
             if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13"))
             {
                 jsonObject.put("benificaryPurposeDescription", otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString());

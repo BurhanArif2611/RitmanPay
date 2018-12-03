@@ -157,7 +157,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String idType;
     private String idTypeDescription;
     private String comeFrom, Customerno;
-    private String dateOfBirth,idissuedate,idexpireydate, type;
+    private String dateOfBirth,idissuedate,idexpireydate="", type;
     private Intent mIntent;
     private int stateId = 0;
     private String relationId = "";
@@ -575,7 +575,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
         idIssueDateEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
 
-        idissuedate = Constants.formatDate(idIssueDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        idissuedate = Constants.formatDate(idIssueDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy");
         idExpireyDateEditTextAddBeneficiary.setText("");
 
     }
@@ -585,7 +585,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
         idExpireyDateEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
 
-        idexpireydate = Constants.formatDate(idExpireyDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        idexpireydate = Constants.formatDate(idExpireyDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy");
 
     }
 
@@ -612,14 +612,25 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 DataPickerDialog1();
                 break;
             case R.id.idIssueDateEditTextAddBeneficiary:
-                Constants.hideKeyboard(AddBeneficiaryActivity.this);
+                if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, dateofbirthmsg);
+                } else {
+                    Constants.hideKeyboard(AddBeneficiaryActivity.this);
 //                dateOfBirthDialog();
-                DataPickerDialogIdIssueDate();
+                    DataPickerDialogIdIssueDate();
+                }
                 break;
             case R.id.idExpireyDateEditTextAddBeneficiary:
-                Constants.hideKeyboard(AddBeneficiaryActivity.this);
+                if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, dateofbirthmsg);
+                } else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Issue Date");
+
+                } else {
+                    Constants.hideKeyboard(AddBeneficiaryActivity.this);
 //                dateOfBirthDialog();
-                DataPickerDialogIdExpireyDate();
+                    DataPickerDialogIdExpireyDate();
+                }
                 break;
             case R.id.countryEditTextAddBeneficiary:
                 CountryBeneficiarySelection countrySelectionBottomSheet = new CountryBeneficiarySelection();
@@ -886,10 +897,10 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Issue Date");
             checkFlag = false;
         }
-        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Expirey Date");
-            checkFlag = false;
-        }
+//        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Expirey Date");
+//            checkFlag = false;
+//        }
         else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
             checkFlag = false;

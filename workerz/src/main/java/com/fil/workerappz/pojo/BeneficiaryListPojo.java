@@ -71,6 +71,12 @@ public class BeneficiaryListPojo implements Serializable {
         @SerializedName("benificaryCity")
         private String benificaryCity;
         @Expose
+        @SerializedName("benificaryIDTypeIssueDate")
+        private String benificaryIDTypeIssueDate;
+        @Expose
+        @SerializedName("benificaryIDTypeExpiryDate")
+        private String benificaryIDTypeExpiryDate;
+        @Expose
         @SerializedName("benificaryPayoutCountryCode")
         private String benificaryPayoutCountryCode;
         @Expose
@@ -213,9 +219,21 @@ public class BeneficiaryListPojo implements Serializable {
         public String getBenificaryBankBranch() {
             return benificaryBankBranch;
         }
+        public String getBenificaryIDTypeExpiryDate() {
+            return benificaryIDTypeExpiryDate;
+        }
+        public String getBenificaryIDTypeIssueDate() {
+            return benificaryIDTypeIssueDate;
+        }
 
         public void setBenificaryBankBranch(String benificaryBankBranch) {
             this.benificaryBankBranch = benificaryBankBranch;
+        }
+        public void setBenificaryIDTypeExpiryDate(String benificaryIDTypeExpiryDate) {
+            this.benificaryIDTypeExpiryDate = benificaryIDTypeExpiryDate;
+        }
+        public void setBenificaryIDTypeIssueDate(String benificaryIDTypeIssueDate) {
+            this.benificaryIDTypeIssueDate = benificaryIDTypeIssueDate;
         }
 
         public String getBenificaryCreatedDate() {
