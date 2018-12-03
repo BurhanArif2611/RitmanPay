@@ -121,6 +121,26 @@ public class BeneficiaryInfoListPojo implements Serializable {
     private String ZipCode="";
     private String EmailID="";
     private String DateOfBirth="";
+
+    public String getIdExpireyDate() {
+        return IdExpireyDate;
+    }
+
+    public void setIdExpireyDate(String idExpireyDate) {
+        IdExpireyDate = idExpireyDate;
+    }
+
+    private String IdExpireyDate="";
+
+    public String getIdIssueDate() {
+        return IdIssueDate;
+    }
+
+    public void setIdIssueDate(String idIssueDate) {
+        IdIssueDate = idIssueDate;
+    }
+
+    private String IdIssueDate="";
     private String Telephone="";
     private String Nationality="";
     private String IDNumber="";

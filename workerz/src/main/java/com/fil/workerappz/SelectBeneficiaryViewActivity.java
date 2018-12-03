@@ -57,9 +57,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -144,13 +146,21 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     TextView countryTextViewAddBeneficiary;
     @BindView(R.id.customerRelationShipSpinnerAddBeneficiary)
     MaterialSpinner customerRelationShipSpinnerAddBeneficiary;
+    @BindView(R.id.idIssueDateEditTextAddBeneficiary)
+    MaterialEditText idIssueDateEditTextAddBeneficiary;
+    @BindView(R.id.idIssueDateTextViewAddBeneficiary)
+    TextView idIssueDateTextViewAddBeneficiary;
+    @BindView(R.id.idExpireyDateEditTextAddBeneficiary)
+    MaterialEditText idExpireyDateEditTextAddBeneficiary;
+    @BindView(R.id.idExpireyDateTextViewAddBeneficiary)
+    TextView idExpireyDateTextViewAddBeneficiary;
     private String countryCode;
     private String countryshortcode;
     private String activitytype;
     private int countryId;
     private String idtypeId;
     private String IDtype_Description;
-    private String dateofbirth;
+    private String dateofbirth,idissuedate,idexpireydate;
     private String nationality;
     private String idType;
     private int stateId = 0;
@@ -291,6 +301,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
 
         }
+        idIssueDateEditTextAddBeneficiary.setHint(getResources().getString(R.string.id_issue_date));
+        idIssueDateEditTextAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.id_issue_date));
+        idExpireyDateEditTextAddBeneficiary.setHint(getResources().getString(R.string.id_expirey_date));
+        idExpireyDateEditTextAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.id_expirey_date));
 
         if (activitytype.equalsIgnoreCase("bank")) {
             bankbenefiardata = (BeneficiaryListPojo.Data) getIntent().getSerializableExtra("beneficiary_object");
@@ -304,7 +318,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             zipcodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryZipCode());
             emailEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryEmailID());
             mobileNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());
-            dateOfBirthEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryDateOfBirth());
+            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryIDNumber());
             nationality = bankbenefiardata.getBenificaryNationality();
             idType = bankbenefiardata.getBenificaryIDType();
@@ -323,7 +337,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             zipcodeEditTextAddBeneficiary.setText(quickPayData.getBenificaryZipCode());
             emailEditTextAddBeneficiary.setText(quickPayData.getBenificaryEmailID());
             mobileNumberEditTextAddBeneficiary.setText(quickPayData.getBenificaryTelephone());
-            dateOfBirthEditTextAddBeneficiary.setText(quickPayData.getBenificaryDateOfBirth());
+            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(quickPayData.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idNumberEditTextAddBeneficiary.setText(quickPayData.getBenificaryIDNumber());
             nationality = quickPayData.getBenificaryNationality();
             customerRelation = quickPayData.getBenificaryCustomerRelation();
@@ -744,11 +758,13 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         dateOfBirthEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
 
         dateofbirth = Constants.formatDate(dateOfBirthEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        idIssueDateEditTextAddBeneficiary.setText("");
+        idExpireyDateEditTextAddBeneficiary.setText("");
 
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary})
+    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -762,6 +778,22 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             case R.id.dateOfBirthEditTextAddBeneficiary:
                 InputMethodManager inputMethodManager = (InputMethodManager) SelectBeneficiaryViewActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(SelectBeneficiaryViewActivity.this.getCurrentFocus().getWindowToken(), 0);
+                break;
+            case R.id.idIssueDateEditTextAddBeneficiary:
+                Constants.hideKeyboard(SelectBeneficiaryViewActivity.this);
+//                dateOfBirthDialog();
+                DataPickerDialogIdIssueDate();
+                break;
+            case R.id.idExpireyDateEditTextAddBeneficiary:
+                  if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+                Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
+
+            }
+            else {
+                      Constants.hideKeyboard(SelectBeneficiaryViewActivity.this);
+//                dateOfBirthDialog();
+                      DataPickerDialogIdExpireyDate();
+                  }
                 break;
 //            case R.id.addressTextViewAddBeneficiary:
 //                openAutocompleteActivity();
@@ -788,6 +820,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setZipCode(zipcodeEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setEmailID(emailEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setDateOfBirth(dateofbirth);
+                    beneficiaryInfoListPojo.setIdExpireyDate(idexpireydate);
+                    beneficiaryInfoListPojo.setIdIssueDate(idissuedate);
                     beneficiaryInfoListPojo.setCountryFlagImage(countryFlagImage);
                     beneficiaryInfoListPojo.setTelephone(mobileNumberEditTextAddBeneficiary.getText().toString());
                     beneficiaryInfoListPojo.setIDType(idtypeId);
@@ -800,7 +834,6 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                     beneficiaryInfoListPojo.setState(new String(Base64.decode(stateName.trim().getBytes(), Base64.DEFAULT)));
                     beneficiaryInfoListPojo.setCity(cityname);
                     beneficiaryInfoListPojo.setRelation(relationName);
-
 
 
                     if (activitytype.equalsIgnoreCase("bank")) {
@@ -854,7 +887,112 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 break;
         }
     }
+    private void updateLabelIdIssueDate() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
+        idIssueDateEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
+
+        idissuedate = Constants.formatDate(idIssueDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        idExpireyDateEditTextAddBeneficiary.setText("");
+
+    }
+    private void updateLabelIdExpireyDate() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        idExpireyDateEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
+
+        idexpireydate = Constants.formatDate(idExpireyDateEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+
+    }
+
+    private void DataPickerDialogIdIssueDate() {
+
+        String getfromdate = dateOfBirthEditTextAddBeneficiary.getText().toString().trim();
+        String getfrom[] = getfromdate.split("/");
+
+
+        final Calendar myCalendar = Calendar.getInstance();
+        final int mYear = Integer.parseInt(getfrom[2]);
+        final int mMonth =Integer.parseInt(getfrom[1]);
+        final int mDay =Integer.parseInt(getfrom[0]);
+
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth-1, mDay);
+
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(SelectBeneficiaryViewActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+//                Calendar minAdultAge = new GregorianCalendar();
+//                minAdultAge.add(Calendar.YEAR, mYear);
+//                minAdultAge.add(Calendar.MONTH, mMonth-1);
+//                minAdultAge.add(Calendar.DAY_OF_MONTH, mDay);
+//                if (minAdultAge.before(myCalendar)) {
+//                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please Enter Valid Date");
+//                } else {
+                    myCalendar1 = myCalendar;
+                    updateLabelIdIssueDate();
+//                }
+            }
+        }, mYear, mMonth-1, mDay);
+
+        dpd.getDatePicker().setMinDate(mincalendar.getTimeInMillis());
+
+        dpd.show();
+
+    }
+    private void DataPickerDialogIdExpireyDate() {
+
+        String getfromdate = idIssueDateEditTextAddBeneficiary.getText().toString().trim();
+        String getfrom[] = getfromdate.split("/");
+
+
+        final Calendar myCalendar = Calendar.getInstance();
+        final int mYear = Integer.parseInt(getfrom[2]);
+        final int mMonth =Integer.parseInt(getfrom[1]);
+        final int mDay =Integer.parseInt(getfrom[0]);
+
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth-1, mDay);
+        int themeResId = 2;
+
+
+        DatePickerDialog dpd = new DatePickerDialog(SelectBeneficiaryViewActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+//                Calendar minAdultAge = new GregorianCalendar();
+//                minAdultAge.add(Calendar.YEAR, mYear);
+//                minAdultAge.add(Calendar.MONTH, mMonth-1);
+//                minAdultAge.add(Calendar.DAY_OF_MONTH, mDay);
+////                minAdultAge.add(Calendar.YEAR, -18);
+//                if (minAdultAge.before(myCalendar)) {
+//                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please Enter Valid Date");
+//                } else {
+                    myCalendar1 = myCalendar;
+                    updateLabelIdExpireyDate();
+//                }
+            }
+        }, mYear, mMonth-1, mDay);
+
+        dpd.getDatePicker().setMinDate(mincalendar.getTimeInMillis());
+
+        dpd.show();
+
+    }
     private boolean checkValidation() {
         boolean checkFlag = true;
         String name = null;
@@ -923,7 +1061,14 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
             checkFlag = false;
         }
-        else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+        else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
+            checkFlag = false;
+        }
+        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
+            checkFlag = false;
+        }else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select any one customer Relation");
             checkFlag = false;
         } else if (customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
