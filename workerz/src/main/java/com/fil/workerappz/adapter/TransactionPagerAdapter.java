@@ -41,7 +41,8 @@ public class TransactionPagerAdapter extends FragmentStatePagerAdapter {
                     transactionHistoryFragment.newInstance();
                 }
                 if (flag == false) {
-                    Constants.filter = stringArrayList.get(0);
+//                    Constants.filter = stringArrayList.get(0);
+                    Constants.filter = "";
                 }
                 transactionHistoryFragment.getTransactionHistory(position, userId, activity);
                 break;
@@ -51,7 +52,8 @@ public class TransactionPagerAdapter extends FragmentStatePagerAdapter {
                     transactionHistoryFragment1.newInstance();
                 }
                 if (flag == false) {
-                    Constants.filter = stringArrayList.get(1);
+//                    Constants.filter = stringArrayList.get(1);
+                    Constants.filter ="paid";
                 }
                 transactionHistoryFragment1.getTransactionHistory(position, userId, activity);
                 break;
@@ -61,7 +63,8 @@ public class TransactionPagerAdapter extends FragmentStatePagerAdapter {
                     transactionHistoryFragment2.newInstance();
                 }
                 if (flag == false) {
-                    Constants.filter = stringArrayList.get(2);
+//                    Constants.filter = stringArrayList.get(2);
+                    Constants.filter = "received";
                 }
                 transactionHistoryFragment2.getTransactionHistory(position, userId, activity);
                 break;

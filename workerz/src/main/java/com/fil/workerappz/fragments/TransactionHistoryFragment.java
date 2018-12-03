@@ -94,6 +94,7 @@ public class TransactionHistoryFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(activity);
         sessionManager = new SessionManager(getActivity());
         transactionHistoryRecyclerView.setLayoutManager(layoutManager);
+
         try {
 
             datumLable_languages = sessionManager.getAppLanguageLabel();

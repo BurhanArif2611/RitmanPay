@@ -1,5 +1,6 @@
 package com.fil.workerappz.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fil.workerappz.ActionBarActivity;
 import com.fil.workerappz.AddBeneficiaryActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryActivity;
@@ -35,6 +37,7 @@ public class BankTabFragment extends BaseFragment {
     private Intent mIntent;
     private LabelListData datumLable_languages = new LabelListData();
     private SessionManager sessionManager;
+    private ActionBarActivity activity;
 
     public BankTabFragment() {
 
@@ -46,7 +49,9 @@ public class BankTabFragment extends BaseFragment {
     }
     @Override
     public void onResume() {
+
         super.onResume();
+        activity.onUserInteraction();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,14 +71,14 @@ sessionManager=new SessionManager(getActivity());
 
             if (datumLable_languages != null) {
 
-                addBeneficiaryTextView.setHint(datumLable_languages.getAddBeneficiary());
-                selectBeneficiaryTextView.setHint(datumLable_languages.getSelectBeneficiary());
+                addBeneficiaryTextView.setText(datumLable_languages.getAddBeneficiary());
+                selectBeneficiaryTextView.setText(datumLable_languages.getSelectBeneficiary());
 
             }
             else
             {
-                addBeneficiaryTextView.setHint(getResources().getString(R.string.add_beneficiary));
-                selectBeneficiaryTextView.setHint(getResources().getString(R.string.select_beneficiary));
+                addBeneficiaryTextView.setText(getResources().getString(R.string.add_beneficiary));
+                selectBeneficiaryTextView.setText(getResources().getString(R.string.select_beneficiary));
 
             }
         }
@@ -111,5 +116,11 @@ sessionManager=new SessionManager(getActivity());
                 startActivity(mIntent);
                 break;
         }
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (ActionBarActivity) context;
+
     }
 }

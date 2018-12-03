@@ -49,27 +49,95 @@ public class IdTypeListJsonPojo implements Serializable {
     }
 
     public static class Data {
-        @Expose
-        @SerializedName("IDType")
-        private String IDType;
-        @Expose
+
         @SerializedName("IDType_ID")
-        private String IDType_ID;
+        @Expose
+        private String iDTypeID;
+        @SerializedName("IDType")
+        @Expose
+        private String iDType;
+        @SerializedName("MinLength")
+        @Expose
+        private String minLength;
+        @SerializedName("MaxLength")
+        @Expose
+        private String maxLength;
+        @SerializedName("IsNumeric")
+        @Expose
+        private String isNumeric;
+        @SerializedName("IsAlphaNumeric")
+        @Expose
+        private String isAlphaNumeric;
+        @SerializedName("IsAddProof")
+        @Expose
+        private String isAddProof;
+        @SerializedName("IsIDProof")
+        @Expose
+        private String isIDProof;
+
+        public String getIDTypeID() {
+            return iDTypeID;
+        }
+
+        public void setIDTypeID(String iDTypeID) {
+            this.iDTypeID = iDTypeID;
+        }
 
         public String getIDType() {
-            return IDType;
+            return iDType;
         }
 
-        public void setIDType(String IDType) {
-            this.IDType = IDType;
+        public void setIDType(String iDType) {
+            this.iDType = iDType;
         }
 
-        public String getIDType_ID() {
-            return IDType_ID;
+        public String getMinLength() {
+            return minLength;
         }
 
-        public void setIDType_ID(String IDType_ID) {
-            this.IDType_ID = IDType_ID;
+        public void setMinLength(String minLength) {
+            this.minLength = minLength;
         }
+
+        public String getMaxLength() {
+            return maxLength;
+        }
+
+        public void setMaxLength(String maxLength) {
+            this.maxLength = maxLength;
+        }
+
+        public String getIsNumeric() {
+            return isNumeric;
+        }
+
+        public void setIsNumeric(String isNumeric) {
+            this.isNumeric = isNumeric;
+        }
+
+        public String getIsAlphaNumeric() {
+            return isAlphaNumeric;
+        }
+
+        public void setIsAlphaNumeric(String isAlphaNumeric) {
+            this.isAlphaNumeric = isAlphaNumeric;
+        }
+
+        public String getIsAddProof() {
+            return isAddProof;
+        }
+
+        public void setIsAddProof(String isAddProof) {
+            this.isAddProof = isAddProof;
+        }
+
+        public String getIsIDProof() {
+            return isIDProof;
+        }
+
+        public void setIsIDProof(String isIDProof) {
+            this.isIDProof = isIDProof;
+        }
+
     }
 }

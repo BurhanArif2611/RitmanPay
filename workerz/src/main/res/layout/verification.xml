@@ -11,126 +11,142 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/verificationCodeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:gravity="center"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:text="@string/please_type_the_verification_code_sent_to_your_mobile_number"
-        android:textColor="@color/colorGrey"
-        android:textSize="@dimen/_12ssp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:text="@string/verification_code"
-        android:id="@+id/textviewVerificationCode"
-        android:textColor="@color/colorGrey"
-        android:textSize="@dimen/_12ssp" />
-
-    <com.fil.workerappz.pinedittext.VerificationCodeEditText
-        android:id="@+id/exitTextVerification"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_20sdp"
-        android:inputType="number"
-        android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_20ssp"
-        app:bottomLineHeight="@dimen/_1sdp"
-        app:bottomLineNormalColor="@color/colorGrey"
-        app:bottomLineSelectedColor="@color/colorAccent"
-        app:figures="4"
-        app:selectedBackgroundColor="@color/colorLightGrey"
-        app:verCodeMargin="@dimen/_25sdp" />
+        android:orientation="vertical">
 
-    <!--<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:orientation="horizontal">
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/exitTextVerification1"
-            android:layout_width="@dimen/_60sdp"
+        <TextView
+            android:id="@+id/verificationCodeTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_30sdp"
             android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
+            android:layout_gravity="center"
             android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp"
-            app:met_baseColor="@color/colorBlack"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="@dimen/_10ssp"
-            app:met_primaryColor="@color/colorGreen"
-            app:met_singleLineEllipsis="false" />
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_12ssp" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/exitTextVerification2"
-            android:layout_width="@dimen/_60sdp"
+        <TextView
+            android:id="@+id/textviewVerificationCode"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp"
-            app:met_baseColor="@color/colorBlack"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="@dimen/_10ssp"
-            app:met_primaryColor="@color/colorGreen"
-            app:met_singleLineEllipsis="false" />
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:text="@string/verification_code"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_12ssp" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/exitTextVerification3"
-            android:layout_width="@dimen/_60sdp"
+        <com.fil.workerappz.pinedittext.VerificationCodeEditText
+            android:id="@+id/exitTextVerification"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:gravity="center"
+            android:layout_margin="@dimen/_20sdp"
             android:inputType="number"
-            android:maxLength="1"
             android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp"
-            app:met_baseColor="@color/colorBlack"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="@dimen/_10ssp"
-            app:met_primaryColor="@color/colorGreen"
-            app:met_singleLineEllipsis="false" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_20ssp"
+            app:bottomLineHeight="@dimen/_1sdp"
+            app:bottomLineNormalColor="@color/colorGrey"
+            app:bottomLineSelectedColor="@color/colorAccent"
+            app:figures="4"
+            app:selectedBackgroundColor="@color/colorLightGrey"
+            app:verCodeMargin="@dimen/_25sdp" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/exitTextVerification4"
-            android:layout_width="@dimen/_60sdp"
+        <!--<LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:text=""
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12ssp"
-            app:met_baseColor="@color/colorBlack"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextSize="@dimen/_10ssp"
-            app:met_primaryColor="@color/colorGreen"
-            app:met_singleLineEllipsis="false" />
-    </LinearLayout>-->
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/submitTextViewVerification"
-        style="@style/CustomButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:background="@drawable/yellow_btn"
-        android:text="@string/submit" />
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/exitTextVerification1"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/exitTextVerification2"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/exitTextVerification3"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/exitTextVerification4"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+        </LinearLayout>-->
+
+
+
+        <TextView
+            android:id="@+id/submitTextViewVerification"
+            style="@style/CustomButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:background="@drawable/yellow_btn"
+            android:text="@string/submit" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/didn_t_receive_otp"
+            android:textColor="@color/colorGrey"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:id="@+id/resendOtp"/>
+    </LinearLayout>
 </LinearLayout>

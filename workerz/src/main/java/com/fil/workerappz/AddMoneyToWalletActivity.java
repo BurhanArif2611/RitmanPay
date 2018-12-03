@@ -69,6 +69,8 @@ public class AddMoneyToWalletActivity extends ActionBarActivity {
     TextView textviewbalnce;
     @BindView(R.id.textviewpoints)
     TextView textviewpoints;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
 
     private Intent mIntent;
     private SessionManager sessionManager;
@@ -117,6 +119,7 @@ public class AddMoneyToWalletActivity extends ActionBarActivity {
                 textviewbalnce.setText(datumLable_languages.getBalance() + ":");
                 textviewpoints.setText(datumLable_languages.getPoints() + ":");
                 addMoneyAmountEditText.setHint(datumLable_languages.getEnterAmount());
+                addMoneyAmountEditText.setFloatingLabelText(datumLable_languages.getEnterAmount());
                 addMoneyTextViewToWallet.setText(datumLable_languages.getAddMoney());
                 titleTextViewViewHeader.setText(datumLable_languages.getAddMoneyToWallet());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
@@ -156,14 +159,20 @@ public class AddMoneyToWalletActivity extends ActionBarActivity {
                 .into(imageSenderflagLoadMoney);
         Constants.closeProgress();
         textSenderCountryNameLoadMoney.setText(getUserData().getCountryCurrencySymbol());
-
+        appImageViewHeader1.setVisibility(View.VISIBLE);
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.addMoneyTextViewToWallet})
+    @OnClick({R.id.backImageViewHeader, R.id.addMoneyTextViewToWallet, R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
+                finish();
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(AddMoneyToWalletActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
                 finish();
                 break;
             case R.id.addMoneyTextViewToWallet:
@@ -224,21 +233,18 @@ public class AddMoneyToWalletActivity extends ActionBarActivity {
 
                         float balanceold = Float.parseFloat(String.valueOf(getWalletBalance()));
                         float updatedBalance = Float.parseFloat(new DecimalFormat("##.##").format(Constants.findNumericValue(String.valueOf(balanceold + balance))));
-                        if ((addWalletListJsonPojos.get(0).getInfo().toString()).equalsIgnoreCase("TOPUP_SUCCESS"))
-                        {
+                        if ((addWalletListJsonPojos.get(0).getInfo().toString()).equalsIgnoreCase("TOPUP_SUCCESS")) {
                             String test = datumLable_languages_msg.getMessage(addWalletListJsonPojos.get(0).getInfo().toString());
                             String lastWord = test.substring(test.lastIndexOf(" ") + 1);
 
                             Log.d("System out", "text" + String.valueOf(lastWord));
                             String finalmsg = test.replace(lastWord, String.valueOf(updatedBalance));
                             Constants.showMessage(mainAddMoneyToWalletLinearLayout, AddMoneyToWalletActivity.this, finalmsg);
-                        }
-                        else
-                        {
+                        } else {
                             Constants.showMessage(mainAddMoneyToWalletLinearLayout, AddMoneyToWalletActivity.this, datumLable_languages_msg.getMessage(addWalletListJsonPojos.get(0).getInfo().toString()));
                         }
                         sessionManager.setWalletBalance(updatedBalance);
-                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" +" "+ sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
+                        DrawerMenu.accountBalanceTextViewDrawerMenu.setText(datumLable_languages.getBalance() + ":" + " " + sessionManager.userProfileData().getCountryCurrencySymbol() + " " + sessionManager.getWalletBalance());
                         accountBalanceTextViewAddMoney.setText(sessionManager.userProfileData().getCountryCurrencySymbol() + " " + getWalletBalance());
                         addMoneyAmountEditText.setText("");
 

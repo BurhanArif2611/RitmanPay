@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
+import com.fil.workerappz.fragments.DingCountryBottomSheet;
 import com.fil.workerappz.pojo.DingTransferPayJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
@@ -41,6 +42,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,8 +67,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     ImageView filterImageViewHeader2;
     @BindView(R.id.mobileNumberEditTextRecharge)
     MaterialEditText mobileNumberEditTextRecharge;
-    @BindView(R.id.serviceProviderEditTextMobileTopUp)
-    EditText ServiceProviderEditTextMobileTopUp;
+
     @BindView(R.id.browserPlansEditTextMobileTopUp)
     MaterialEditText BrowserPlansEditTextMobileTopUp;
     @BindView(R.id.submit_textview)
@@ -84,20 +85,34 @@ public class MobileTopUpActivity extends ActionBarActivity {
     @BindView(R.id.mobileTopUpProductDetailLinearLayout)
     LinearLayout mobileTopUpProductDetailLinearLayout;
 
-    private final ArrayList<GetCountryList> dingCountryListJsonPojos = new ArrayList<>();
+    private final ArrayList<GetCountryList.Data> dingCountryListJsonPojos = new ArrayList<>();
     private final ArrayList<GetProvidersList> serviceProviderJsonPojos = new ArrayList<>();
-    @BindView(R.id.textcontrycode)
-    TextView textcontrycode;
-    @BindView(R.id.countrySpinnerMobileTopUpSpinner)
-    Spinner countrySpinnerMobileTopUpSpinner;
-    @BindView(R.id.linearspinner)
-    LinearLayout linearspinner;
+//    @BindView(R.id.textcontrycode)
+//    TextView textcontrycode;
+//    @BindView(R.id.countrySpinnerMobileTopUpSpinner)
+//    Spinner countrySpinnerMobileTopUpSpinner;
+//    @BindView(R.id.linearspinner)
+//    LinearLayout linearspinner;
+
     @BindView(R.id.validityTextview)
     TextView validityTextview;
     @BindView(R.id.chargetextview)
     TextView chargetextview;
     @BindView(R.id.receivevaluetextview)
     TextView receivevaluetextview;
+    @BindView(R.id.serviceProviderEditTextMobileTopUp)
+    EditText serviceProviderEditTextMobileTopUp;
+
+    @BindView(R.id.walletBalance)
+    TextView walletBalance;
+    @BindView(R.id.serviceProviderSpinnerMobileTopup)
+    MaterialSpinner serviceProviderSpinnerMobileTopup;
+    @BindView(R.id.countryCodeTextViewMobileTopUp)
+    TextView countryCodeTextViewMobileTopUp;
+    @BindView(R.id.countrySpinnerMobileTopUp)
+    LinearLayout countrySpinnerMobileTopUp;
+
+
     //        @BindView(R.id.imagecountrycode)
 //    ImageView imagecountrycode;
     private String countryIso = "";
@@ -112,7 +127,8 @@ public class MobileTopUpActivity extends ActionBarActivity {
     private String selectcountry, selectplanmsg, nointernetmsg, nodatafound;
     private String mobilenumber;
     private String validmobilenumber;
-
+    private int selctedProviderposition = -1;
+    private String comeFrom = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,9 +149,10 @@ public class MobileTopUpActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getMobileTopup());
-                textcontrycode.setText(datumLable_languages.getCountry());
+                countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry());
                 mobileNumberEditTextRecharge.setHint(datumLable_languages.getRechargePhoneNumber());
-                ServiceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
+                mobileNumberEditTextRecharge.setFloatingLabelText(datumLable_languages.getRechargePhoneNumber());
+                serviceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
                 BrowserPlansEditTextMobileTopUp.setHint(datumLable_languages.getBrowsePlans());
                 validityTextview.setText(datumLable_languages.getValidity());
                 receivevaluetextview.setText(datumLable_languages.getReceiveValue());
@@ -147,15 +164,16 @@ public class MobileTopUpActivity extends ActionBarActivity {
             } else {
 
                 titleTextViewViewHeader2.setText(getResources().getString(R.string.mobile_recharge));
-                textcontrycode.setText(getResources().getString(R.string.country));
+                countryCodeTextViewMobileTopUp.setText(getResources().getString(R.string.country));
                 mobileNumberEditTextRecharge.setHint(getResources().getString(R.string.recharge_phone_number));
-                ServiceProviderEditTextMobileTopUp.setText(getResources().getString(R.string.service_provider));
+                serviceProviderEditTextMobileTopUp.setHint(getResources().getString(R.string.service_provider));
                 BrowserPlansEditTextMobileTopUp.setHint(getResources().getString(R.string.browse_plans));
                 validityTextview.setText(getResources().getString(R.string.validity));
                 receivevaluetextview.setText(getResources().getString(R.string.receive_value));
                 chargetextview.setText(getResources().getString(R.string.charge));
                 submitTextview.setText(getResources().getString(R.string.proceed_to_pay));
                 nointernetmsg = getResources().getString(R.string.no_internet);
+                nodatafound = getResources().getString(R.string.no_record_found);
 
             }
         } catch (Exception e) {
@@ -181,36 +199,82 @@ public class MobileTopUpActivity extends ActionBarActivity {
         } else {
             Constants.showMessage(mainMobileTopUpLinearLayout, this, nointernetmsg);
         }
-        mobileNumberEditTextRecharge.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Constants.hideKeyboard(MobileTopUpActivity.this);
-                    ServiceProviderEditTextMobileTopUp.setText("");
-                    mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
-//                    linearbrowserplans.setVisibility(View.GONE);
-                    BrowserPlansEditTextMobileTopUp.setText("");
-                    if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
-                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
-                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                    } else {
-                        if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
-                            serviceProviderJsonCall();
-                        } else {
-                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
-                        }
-                    }
+        walletBalance.setText(datumLable_languages.getBALANCE() + ": " + getWalletBalance());
 
-                    return true;
+        mobileNumberEditTextRecharge.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                /* When focus is lost check that the text field
+                 * has valid values.
+                 */
+                if (!hasFocus) {
+
                 }
-                return false;
             }
         });
+        mIntent = getIntent();
+        if (mIntent != null) {
+            comeFrom = mIntent.getStringExtra("come_from");
 
+
+        }
+        if (comeFrom.equalsIgnoreCase("")) {
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+
+
+        } else {
+        }
+
+        mobileNumberEditTextRecharge.addTextChangedListener(new TextWatcher() {
+
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                if (c.length() >= 7) {
+                    serviceProviderJsonCall();
+                }
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+                // this one too
+            }
+        });
     }
+//        mobileNumberEditTextRecharge.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    Constants.hideKeyboard(MobileTopUpActivity.this);
+//                    serviceProviderEditTextMobileTopUp.setText("");
+//                    mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
+////                    linearbrowserplans.setVisibility(View.GONE);
+//                    BrowserPlansEditTextMobileTopUp.setText("");
+//                    if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                    } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                    } else {
+//                        if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
+//                            serviceProviderJsonCall();
+//                        } else {
+//                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
+//                        }
+//                    }
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
 
     private void dingCountryListJsonCall() {
         Constants.showProgress(MobileTopUpActivity.this);
@@ -221,40 +285,44 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     dingCountryListJsonPojos.clear();
-                    dingCountryListJsonPojos.addAll(response.body());
-                    if (dingCountryListJsonPojos.get(0).getStatus() == true) {
+                    dingCountryListJsonPojos.addAll(response.body().get(0).getData());
+                    if (response.body().get(0).getStatus() == true) {
                         final ArrayList<String> countryList = new ArrayList<>();
-                        for (int i = 0; i < dingCountryListJsonPojos.get(0).getData().size(); i++) {
+//                        for (int i = 0; i < dingCountryListJsonPojos.get(0).getData().size(); i++) {
+////                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
 //                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
-                            countryList.add(dingCountryListJsonPojos.get(0).getData().get(i).getCountryName());
-                        }
-                        final ArrayAdapter<String> adapterCountryName = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, countryList);
-                        adapterCountryName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        countrySpinnerMobileTopUpSpinner.setAdapter(adapterCountryName);
-                        countrySpinnerMobileTopUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-
-                                    parent.getChildAt(0).setVisibility(View.GONE);
-
-                                    textcontrycode.setVisibility(View.VISIBLE);
-//                                    imagecountrycode.setVisibility(View.VISIBLE);
-                                    if (dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().size() > 0) {
-                                        textcontrycode.setText("+" + dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix());
-                                        countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
-                                        countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
-                                    } else {
-                                        textcontrycode.setText(" ");
-//                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-                            }
-                        });
+//                        }
+//                        final ArrayAdapter<String> adapterCountryName = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, countryList);
+//                        adapterCountryName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        countrySpinnerMobileTopUpSpinner.setAdapter(adapterCountryName);
+//
+//
+//                        countrySpinnerMobileTopUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                            @Override
+//                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                if (position != -1) {
+//
+//                                    parent.getChildAt(0).setVisibility(View.GONE);
+//
+//                                    textcontrycode.setVisibility(View.VISIBLE);
+////                                    imagecountrycode.setVisibility(View.VISIBLE);
+//                                    if (dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().size() > 0) {
+//                                        textcontrycode.setText("+" + dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix());
+//                                        countryPrefix = dingCountryListJsonPojos.get(0).getData().get(position).getInternationalDialingInformation().get(0).getPrefix();
+//                                        countryIso = dingCountryListJsonPojos.get(0).getData().get(position).getCountryIso();
+//                                        serviceProviderJsonCall();
+//                                    } else {
+//                                        textcontrycode.setText(datumLable_languages.getCountry());
+//
+////                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onNothingSelected(AdapterView<?> parent) {
+//                            }
+//                        });
                     }
                 }
             }
@@ -266,14 +334,26 @@ public class MobileTopUpActivity extends ActionBarActivity {
         });
     }
 
+    public void updateCountrySelection(List<GetCountryList.Data> countryListPojosupdated, int position) {
+        if (countryListPojosupdated.get(position).getInternationalDialingInformation().size() > 0) {
+            countryCodeTextViewMobileTopUp.setText("+" + countryListPojosupdated.get(position).getInternationalDialingInformation().get(0).getPrefix());
+            countryPrefix = countryListPojosupdated.get(position).getInternationalDialingInformation().get(0).getPrefix();
+            countryIso = countryListPojosupdated.get(position).getCountryIso();
+            serviceProviderJsonCall();
+        } else {
+            countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry());
+//                                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nodatafound);
+        }
+    }
+
     private void serviceProviderJsonCall() {
         JSONObject jsonObject = new JSONObject();
-        Constants.showProgress(MobileTopUpActivity.this);
+//        Constants.showProgress(MobileTopUpActivity.this);
         try {
             jsonObject.put("countryIsos", countryIso);
             jsonObject.put("regionCodes", "");
 
-            jsonObject.put("mobNo", String.valueOf(countryPrefix + mobileNumberEditTextRecharge.getText().toString()));
+            jsonObject.put("mobNo", String.valueOf(countryPrefix + mobileNumberEditTextRecharge.getText().toString().trim()));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -288,16 +368,51 @@ public class MobileTopUpActivity extends ActionBarActivity {
 
             @Override
             public void onResponse(Call<List<GetProvidersList>> call, Response<List<GetProvidersList>> response) {
-                Constants.closeProgress();
-                serviceProviderJsonPojos.clear();
+//                Constants.closeProgress();
                 if (response.body() != null && response.body() instanceof ArrayList) {
+                    ArrayList<String> cityList = new ArrayList<>();
+                    cityList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, cityList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    serviceProviderSpinnerMobileTopup.setAdapter(adapter);
+                    serviceProviderJsonPojos.clear();
                     serviceProviderJsonPojos.addAll(response.body());
                     if (serviceProviderJsonPojos.get(0).getStatus() == true) {
                         if (serviceProviderJsonPojos.get(0).getData().size() != 0) {
-                            ServiceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
+//                            serviceProviderEditTextMobileTopUp.setText(serviceProviderJsonPojos.get(0).getData().get(0).getName());
+                            for (int i = 0; i < serviceProviderJsonPojos.get(0).getData().size(); i++) {
+                                cityList.add(serviceProviderJsonPojos.get(0).getData().get(i).getName());
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(cityListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = cityListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                            }
+                            adapter = new ArrayAdapter<>(MobileTopUpActivity.this, android.R.layout.simple_spinner_item, cityList);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            serviceProviderSpinnerMobileTopup.setAdapter(adapter);
+
+                            serviceProviderSpinnerMobileTopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position != -1) {
+                                        selctedProviderposition = position;
+
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
                         } else {
-                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
+//                            Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
                         }
+
+
                     } else {
                         Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages_msg.getMessage(serviceProviderJsonPojos.get(0).getInfo().toString()));
                     }
@@ -310,22 +425,58 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 t.printStackTrace();
             }
         });
+
+
     }
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.serviceProviderEditTextMobileTopUp, R.id.browserPlansEditTextMobileTopUp, R.id.submit_textview, R.id.appImageViewHeader2, R.id.linearspinner})
+    @OnClick({R.id.menuImageViewHeader2, R.id.serviceProviderEditTextMobileTopUp, R.id.browserPlansEditTextMobileTopUp, R.id.submit_textview, R.id.appImageViewHeader2,R.id.countrySpinnerMobileTopUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderMobileTopUp.toggle();
+                if (comeFrom.equalsIgnoreCase("")) {
+                    finish();
+                } else {
+                    slideHolderMobileTopUp.toggle();
+                }
                 break;
             case R.id.serviceProviderEditTextMobileTopUp:
+                break;
+            case R.id.countrySpinnerMobileTopUp:
+                DingCountryBottomSheet countrySelectionBottomSheet = new DingCountryBottomSheet();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("country_list", dingCountryListJsonPojos);
+                countrySelectionBottomSheet.setArguments(bundle);
+                countrySelectionBottomSheet.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
 //            case R.id.textcontrycode:
 //                countrySpinnerMobileTopUpSpinner.performClick();
 //                break;
-            case R.id.linearspinner:
-                countrySpinnerMobileTopUpSpinner.performClick();
-                break;
+//            case R.id.linearspinner:
+//                countrySpinnerMobileTopUpSpinner.performClick();
+//                break;
+
+//            case R.id.linearspinnerServiceProvider:
+//                serviceProviderEditTextMobileTopUp.setText("");
+//                mobileTopUpProductDetailLinearLayout.setVisibility(View.GONE);
+////                    linearbrowserplans.setVisibility(View.GONE);
+//                BrowserPlansEditTextMobileTopUp.setText("");
+//                if (textcontrycode.getText().toString().equals(datumLable_languages.getCountry())) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().length() < 7) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+//                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+//                } else {
+//                    if (IsNetworkConnection.checkNetworkConnection(MobileTopUpActivity.this)) {
+//                        serviceProviderJsonCall();
+//                    } else {
+//                        Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, nointernetmsg);
+//                    }
+//                }
+//
+//                break;
 //            case R.id.imagecountrycode:
 //                countrySpinnerMobileTopUpSpinner.performClick();
 //                break;
@@ -335,20 +486,28 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 break;
             case R.id.browserPlansEditTextMobileTopUp:
-                Constants.hideKeyboard(MobileTopUpActivity.this
-                );
-                if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
+                Constants.hideKeyboard(MobileTopUpActivity.this);
+                String serviceprovider="";
+                try {
+                    serviceprovider = serviceProviderSpinnerMobileTopup.getSelectedItem().toString();
+                } catch (Exception e) {
+                    serviceprovider = "";
+                    e.printStackTrace();
+                }
+
+                if (countryCodeTextViewMobileTopUp.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() < 10) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
-                } else if (ServiceProviderEditTextMobileTopUp.getText().toString().length() == 0) {
-                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, datumLable_languages.getNoRecordFound());
+                } else if (mobileNumberEditTextRecharge.getText().toString().startsWith("0")) {
+                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, validmobilenumber);
+                } else if (serviceprovider.length() == 0) {
+                    Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectplanmsg);
                 } else {
-
                     mIntent = new Intent(MobileTopUpActivity.this, BrowsePlansActivity.class);
-                    mIntent.putExtra("provider", serviceProviderJsonPojos.get(0).getData().get(0));
+                    mIntent.putExtra("provider", serviceProviderJsonPojos.get(0).getData().get(selctedProviderposition));
                     mIntent.putExtra("mobile_no", countryPrefix + mobileNumberEditTextRecharge.getText().toString().trim());
                     mIntent.putExtra("country_iso", countryIso);
                     startActivity(mIntent);
@@ -356,7 +515,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.submit_textview:
-                if (countrySpinnerMobileTopUpSpinner.getSelectedItem() == null) {
+                if (countryCodeTextViewMobileTopUp.getText().toString().equals(datumLable_languages.getCountry())) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, selectcountry);
                 } else if (mobileNumberEditTextRecharge.getText().toString().length() == 0) {
                     Constants.showMessage(mainMobileTopUpLinearLayout, MobileTopUpActivity.this, mobilenumber);
@@ -376,7 +535,7 @@ public class MobileTopUpActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (Constants.productListData != null) {
@@ -469,4 +628,6 @@ public class MobileTopUpActivity extends ActionBarActivity {
             }
         });
     }
+
+
 }

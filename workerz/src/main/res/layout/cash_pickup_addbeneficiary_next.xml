@@ -24,10 +24,11 @@
 
       <FrameLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:visibility="gone">
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/destinationAddressEditTextAddBeneficiaryNext"
+            android:id="@+id/destinationAddressEditTextAddBeneficiaryNext1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -54,15 +55,29 @@
             android:padding="@dimen/_5sdp"
             android:paddingLeft="@dimen/_5sdp" />
       </FrameLayout>
-
+      <com.rengwuxian.materialedittext.MaterialEditText
+          android:id="@+id/destinationAddressEditTextAddBeneficiaryNext"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_10sdp"
+          android:hint="@string/dest_add"
+          android:inputType="text"
+          android:paddingLeft="@dimen/_5sdp"
+          android:text=""
+          android:textColor="@color/colorBlack"
+          android:textSize="@dimen/_11ssp"
+          app:met_baseColor="@color/colorBlack"
+          app:met_floatingLabel="highlight"
+          app:met_floatingLabelTextSize="@dimen/_10ssp"
+          app:met_primaryColor="@color/colorGreen"
+          app:met_singleLineEllipsis="false" />
       <com.rengwuxian.materialedittext.MaterialEditText
           android:id="@+id/destinationLandmarkEditTextAddBeneficiary"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/_10sdp"
           android:hint="@string/dest_land"
-          android:inputType="none"
-          android:editable="false"
+          android:inputType="text"
           android:paddingLeft="@dimen/_5sdp"
           android:text=""
           android:textColor="@color/colorBlack"
@@ -80,8 +95,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/_10sdp"
           android:hint="@string/dest_zip"
-          android:inputType="none"
-          android:editable="false"
+          android:inputType="text"
           android:paddingLeft="@dimen/_5sdp"
           android:text=""
           android:textColor="@color/colorBlack"
@@ -105,7 +119,7 @@
           app:ms_arrowSize="@dimen/_12sdp"
           app:ms_baseColor="@color/colorSpinner"
           app:ms_enableErrorLabel="false"
-          app:ms_enableFloatingLabel="false"
+          app:ms_enableFloatingLabel="true"
           app:ms_floatingLabelColor="@color/colorSpinnerText"
           app:ms_floatingLabelText="@string/availiable_agents"
           app:ms_highlightColor="@color/colorGreen"
@@ -127,7 +141,7 @@
           app:ms_arrowSize="@dimen/_12sdp"
           app:ms_baseColor="@color/colorSpinner"
           app:ms_enableErrorLabel="false"
-          app:ms_enableFloatingLabel="false"
+          app:ms_enableFloatingLabel="true"
           app:ms_floatingLabelColor="@color/colorSpinnerText"
           app:ms_floatingLabelText="@string/purpose_of_transfer"
           app:ms_highlightColor="@color/colorGreen"
@@ -136,6 +150,24 @@
           app:ms_hintTextSize="@dimen/_10ssp"
           app:ms_multiline="false"
           app:ms_thickness="0.5dp" />
+      <com.rengwuxian.materialedittext.MaterialEditText
+          android:id="@+id/otherPurposeOfTransferEditTextCashAddBeneficiary"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_10sdp"
+          android:hint="@string/phone_number"
+          android:inputType="text"
+          android:maxLength="10"
+          android:paddingLeft="@dimen/_5sdp"
+          android:text=""
+          android:visibility="gone"
+          android:textColor="@color/colorBlack"
+          android:textSize="@dimen/_11ssp"
+          app:met_baseColor="@color/colorBlack"
+          app:met_floatingLabel="highlight"
+          app:met_floatingLabelTextSize="@dimen/_10ssp"
+          app:met_primaryColor="@color/colorGreen"
+          app:met_singleLineEllipsis="false" />
 
       <TextView
           android:id="@+id/addTextViewAddBeneficiary"

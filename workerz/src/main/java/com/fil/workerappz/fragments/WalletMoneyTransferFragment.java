@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.ActionBarActivity;
 import com.fil.workerappz.AddMoneyToWalletActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.WalletActivity;
@@ -69,6 +71,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     TextView sendNowWalletMoneyTransfer;
 
     private Context mContext;
+    private ActionBarActivity activity;
     private int userId;
     private QuickPayDataPojo quickPayData = new QuickPayDataPojo();
     private int receiverId;
@@ -79,7 +82,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     ArrayList<String> stringArrayList = new ArrayList<>();
     ArrayList<String> stringArrayListname = new ArrayList<>();
     private SessionManager sessionManager;
-    private String amountsendmsg,vaildamountmsg,largeramountmsg,mobilenumber,mobilenumbernotregisteredmsg;
+    private String amountsendmsg, vaildamountmsg, largeramountmsg, mobilenumber, mobilenumbernotregisteredmsg,number, name;
 
     public WalletMoneyTransferFragment() {
 
@@ -88,6 +91,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        activity.onUserInteraction();
         amountSendMoneyEditText.getText().clear();
         mobileNoSendMoneyEditText.getText().clear();
         walletNameSendMoneyEditText.getText().clear();
@@ -106,7 +110,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        activity = (ActionBarActivity) context;
         mContext = context;
     }
 
@@ -134,36 +138,38 @@ public class WalletMoneyTransferFragment extends BaseFragment {
 
             if (datumLable_languages != null) {
                 amountSendMoneyEditText.setHint(datumLable_languages.getAmount());
+                amountSendMoneyEditText.setFloatingLabelText(datumLable_languages.getAmount());
                 mobileNoSendMoneyEditText.setHint(datumLable_languages.getMobileNumber());
                 walletNameSendMoneyEditText.setHint(datumLable_languages.getWalletName());
+                walletNameSendMoneyEditText.setFloatingLabelText(datumLable_languages.getWalletName());
                 descriptionSendMoneyEditText.setHint(datumLable_languages.getDescription());
-                sendNowWalletMoneyTransfer.setHint(datumLable_languages.getSendNow());
+                descriptionSendMoneyEditText.setFloatingLabelText(datumLable_languages.getDescription());
+                sendNowWalletMoneyTransfer.setText(datumLable_languages.getSendNow());
 
             } else {
                 amountSendMoneyEditText.setHint(getResources().getString(R.string.amount));
                 mobileNoSendMoneyEditText.setHint(getResources().getString(R.string.mobile_number));
                 walletNameSendMoneyEditText.setHint(getResources().getString(R.string.wallet_name));
                 descriptionSendMoneyEditText.setHint(getResources().getString(R.string.description));
-                sendNowWalletMoneyTransfer.setHint(getResources().getString(R.string.send_now));
+                sendNowWalletMoneyTransfer.setText(getResources().getString(R.string.send_now));
 
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            amountsendmsg=datumLable_languages_msg.getEnterAmount();
-            vaildamountmsg=datumLable_languages_msg.getEnterValidAmount();
-            largeramountmsg=datumLable_languages_msg.getAmountIsLargerThanYourBalance();
-            mobilenumber=datumLable_languages_msg.getEnterMobileNumber();
-            mobilenumbernotregisteredmsg=datumLable_languages_msg.getMobileNumberIsNotRegistered();
+            amountsendmsg = datumLable_languages_msg.getEnterAmount();
+            vaildamountmsg = datumLable_languages_msg.getEnterValidAmount();
+            largeramountmsg = datumLable_languages_msg.getAmountIsLargerThanYourBalance();
+            mobilenumber = datumLable_languages_msg.getEnterMobileNumber();
+            mobilenumbernotregisteredmsg = datumLable_languages_msg.getMobileNumberIsNotRegistered();
         } else {
 
-            amountsendmsg=getResources().getString(R.string.Please_Enter_amount);
-            vaildamountmsg=getResources().getString(R.string.Please_Enter_valid_amount);
-            largeramountmsg=getResources().getString(R.string.Amount_larger_your_balance);
-            mobilenumber=getResources().getString(R.string.Please_Enter_Mobile_number);
-            mobilenumbernotregisteredmsg=getResources().getString(R.string.Mobile_not_registerd_us);
+            amountsendmsg = getResources().getString(R.string.Please_Enter_amount);
+            vaildamountmsg = getResources().getString(R.string.Please_Enter_valid_amount);
+            largeramountmsg = getResources().getString(R.string.Amount_larger_your_balance);
+            mobilenumber = getResources().getString(R.string.Please_Enter_Mobile_number);
+            mobilenumbernotregisteredmsg = getResources().getString(R.string.Mobile_not_registerd_us);
 
 
         }
@@ -196,8 +202,12 @@ public class WalletMoneyTransferFragment extends BaseFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String str = mobileNoSendMoneyEditText.getText().toString().trim();
                 if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
-                    if (str.length() > 1)
+                    if (str.length() > 1) {
                         getWalletSuggestionJsonCall(str);
+                    } else if (str.length() == 0) {
+                        walletNameSendMoneyEditText.setText("");
+                        receiverId = 0;
+                    }
                 }
             }
 
@@ -214,8 +224,15 @@ public class WalletMoneyTransferFragment extends BaseFragment {
         mobileNoSendMoneyEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                walletNameSendMoneyEditText.setText(walletSuggestionListPojos.get(0).getData().get(0).getUserFirstName());
-                receiverId = walletSuggestionListPojos.get(0).getData().get(0).getUserID();
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Log.d("System out", selectedItem);
+
+                int index = stringArrayList.indexOf(mobileNoSendMoneyEditText.getText().toString());
+                Log.d("System out", String.valueOf(index));
+                walletNameSendMoneyEditText.setText(walletSuggestionListPojos.get(0).getData().get(index).getUserFirstName());
+             number=walletSuggestionListPojos.get(0).getData().get(index).getUserMobile();
+               name=walletSuggestionListPojos.get(0).getData().get(index).getUserFirstName();
+                receiverId = walletSuggestionListPojos.get(0).getData().get(index).getUserID();
             }
         });
 
@@ -225,13 +242,13 @@ public class WalletMoneyTransferFragment extends BaseFragment {
     private boolean checkValidation() {
         boolean checkFlag = true;
         if (amountSendMoneyEditText.getText().toString().trim().length() == 0) {
-            Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext,amountsendmsg );
+            Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, amountsendmsg);
             checkFlag = false;
-        } else if (Constants.findNumericValue(amountSendMoneyEditText.getText().toString().trim()) <= 0 || Constants.findNumericValue(amountSendMoneyEditText.getText().toString().trim()) <= 0 || amountSendMoneyEditText.getText().toString().trim().equalsIgnoreCase(".") || amountSendMoneyEditText.getText().toString().trim().equalsIgnoreCase("0") || amountSendMoneyEditText.getText().toString().startsWith(".") ) {
+        } else if (Constants.findNumericValue(amountSendMoneyEditText.getText().toString().trim()) <= 0 || Constants.findNumericValue(amountSendMoneyEditText.getText().toString().trim()) <= 0 || amountSendMoneyEditText.getText().toString().trim().equalsIgnoreCase(".") || amountSendMoneyEditText.getText().toString().trim().equalsIgnoreCase("0") || amountSendMoneyEditText.getText().toString().startsWith(".")) {
             Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, vaildamountmsg);
             return false;
         } else if (Constants.findNumericValue(amountSendMoneyEditText.getText().toString().trim()) > sessionManager.getWalletBalance()) {
-            Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext,largeramountmsg);
+            Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, largeramountmsg);
             return false;
         } else if (mobileNoSendMoneyEditText.getText().toString().trim().length() == 0) {
             Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, mobilenumber);
@@ -271,7 +288,8 @@ public class WalletMoneyTransferFragment extends BaseFragment {
                     walletSuggestionListPojos.addAll(response.body());
                     if (walletSuggestionListPojos.get(0).getStatus() == true) {
                         if (walletSuggestionListPojos.get(0).getData() != null) {
-
+                            stringArrayList.clear();
+                            stringArrayListname.clear();
                             for (int i = 0; i < walletSuggestionListPojos.get(0).getData().size(); i++) {
                                 stringArrayList.add(walletSuggestionListPojos.get(0).getData().get(i).getUserMobile());
                                 stringArrayListname.add(walletSuggestionListPojos.get(0).getData().get(i).getUserFirstName());
@@ -307,22 +325,30 @@ public class WalletMoneyTransferFragment extends BaseFragment {
                     flag = true;
 
                 }
-                if (walletNameSendMoneyEditText.getText().toString().equalsIgnoreCase(stringArrayListname.get(i))) {
+              if (walletNameSendMoneyEditText.getText().toString().equalsIgnoreCase(stringArrayListname.get(i))) {
                     flagname = true;
 
                 }
             }
+
+
             if (flag == true && flagname == true) {
                 mIntent = new Intent(getActivity(), WalletActivity.class);
                 mIntent.putExtra("amount", amountSendMoneyEditText.getText().toString().trim());
                 mIntent.putExtra("receiverWalletUserID", receiverId);
-                mIntent.putExtra("receiverWalletname",walletNameSendMoneyEditText.getText().toString().trim());
+                mIntent.putExtra("receiverWalletname", walletNameSendMoneyEditText.getText().toString().trim());
                 startActivity(mIntent);
             } else if (!flag) {
-                Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext,mobilenumbernotregisteredmsg);
+                Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, mobilenumbernotregisteredmsg);
             } else if (!flagname) {
                 Constants.showMessage(mainWalletSummaryTransferLinearLayout, mContext, "Wallet Name not Registered With Us.");
             }
+//
+//            mIntent = new Intent(getActivity(), WalletActivity.class);
+//                mIntent.putExtra("amount", amountSendMoneyEditText.getText().toString().trim());
+//                mIntent.putExtra("receiverWalletUserID", receiverId);
+//                mIntent.putExtra("receiverWalletname",walletNameSendMoneyEditText.getText().toString().trim());
+//                startActivity(mIntent);
         }
     }
 }

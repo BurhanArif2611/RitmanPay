@@ -3,19 +3,26 @@ package com.fil.workerappz;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.adapter.SecurityQuestionListAdapter;
 import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.CountryData;
+import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.JsonListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.VerifySecurityListPojo;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
@@ -34,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,8 +73,17 @@ public class ForgotPinActivity extends ActionBarActivity {
     LinearLayout countrySpinnerForgot;
 
     private final ArrayList<JsonListPojo> jsonListPojos = new ArrayList<>();
+    private final ArrayList<VerifySecurityListPojo> verifyListPojo = new ArrayList<>();
     @BindView(R.id.dontwrrytextview)
     TextView dontwrrytextview;
+//    @BindView(R.id.securityQuestionsRecyclerView)
+//    RecyclerView securityQuestionsRecyclerView;
+    @BindView(R.id.securityLinearLayout)
+    LinearLayout securityLinearLayout;
+    @BindView(R.id.securityQuestionsSpinnerForgotPin)
+    MaterialSpinner securityQuestionsSpinnerForgotPin;
+    @BindView(R.id.securityQuestionsEditTextForgotPin)
+    MaterialEditText securityQuestionsEditTextForgotPin;
     private boolean inputType = false;
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
     private String locale = "IND";
@@ -74,12 +91,17 @@ public class ForgotPinActivity extends ActionBarActivity {
     private String signInWith = "Email";
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
-    private MessagelistData datumLable_languages_msg=new MessagelistData();
+    private MessagelistData datumLable_languages_msg = new MessagelistData();
     private String emailmobilemsg;
     private String validemail;
     private String validmobilenumber;
     private String nointernetmsg;
     private String validemailormobile;
+    private LinearLayoutManager layoutManager;
+    private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
+    private SecurityQuestionListAdapter securityQuestionListAdapter;
+    private String answerId = "";
+    private String answer = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,32 +134,36 @@ public class ForgotPinActivity extends ActionBarActivity {
                 titleTextViewViewHeader.setText(datumLable_languages.getForgotPIN());
                 dontwrrytextview.setText(datumLable_languages.getResetYourPIN());
                 emailMobileNoEditTextForgotPinActivity.setHint(datumLable_languages.getEmailMobileNo());
+                emailMobileNoEditTextForgotPinActivity.setFloatingLabelText(datumLable_languages.getEmailMobileNo());
                 sendTextViewForgotPinActivity.setText(datumLable_languages.getSend());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
                 titleTextViewViewHeader.setText(getResources().getString(R.string.forgot_pin_));
                 dontwrrytextview.setText(getResources().getString(R.string.don_t_worry_just_fill_in_your_email_mobile_no_and_we_ll_help_your_reset_your_pin));
                 emailMobileNoEditTextForgotPinActivity.setHint(getResources().getString(R.string.email_mobile_no));
                 sendTextViewForgotPinActivity.setText(getResources().getString(R.string.send));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            emailmobilemsg=datumLable_languages_msg.getEnterEmailOrMobileNumber();
-            validemail=datumLable_languages_msg.getEnterValidEmail();
-            validmobilenumber=datumLable_languages_msg.getEnterValidMobileNumber();
-            validemailormobile=datumLable_languages_msg.getEnterValidEmailOrMobileNumber();
+            emailmobilemsg = datumLable_languages_msg.getEnterEmailOrMobileNumber();
+            validemail = datumLable_languages_msg.getEnterValidEmail();
+            validmobilenumber = datumLable_languages_msg.getEnterValidMobileNumber();
+            validemailormobile = datumLable_languages_msg.getEnterValidEmailOrMobileNumber();
 
 
         } else {
-            emailmobilemsg=getResources().getString(R.string.Please_Enter_Email_mobile_number);
-            validemail=getResources().getString(R.string.Please_Enter_vaild_email);
-            validmobilenumber=getResources().getString(R.string.Please_Enter_valid_Mobile_number);
+            emailmobilemsg = getResources().getString(R.string.Please_Enter_Email_mobile_number);
+            validemail = getResources().getString(R.string.Please_Enter_vaild_email);
+            validmobilenumber = getResources().getString(R.string.Please_Enter_valid_Mobile_number);
 
         }
+//        layoutManager = new LinearLayoutManager(ForgotPinActivity.this);
+//        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+
         emailMobileNoEditTextForgotPinActivity.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -145,7 +171,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                 boolean inputTypevalidation = false;
                 inputTypevalidation = emailMobileNoEditTextForgotPinActivity.getText().toString().trim().matches("^[0-9]+$");
                 if (inputTypevalidation == true) {
-                    emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
+                    emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
                 } else {
                     emailMobileNoEditTextForgotPinActivity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)});
                 }
@@ -163,6 +189,30 @@ public class ForgotPinActivity extends ActionBarActivity {
             }
         });
 
+        securityQuestionsEditTextForgotPin.addTextChangedListener(new TextWatcher() {
+
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+
+                int main_length = securityQuestionsEditTextForgotPin.getText().toString().length();
+
+                if (main_length>0)
+                {
+
+                    answer = String.valueOf(c);
+                }
+
+            }
+        });
+        questionListJsonCall();
 
     }
 
@@ -176,7 +226,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                 Constants.hideKeyboard(ForgotPinActivity.this);
                 if (checkValidation() == true) {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
-                        getForgotPIN();
+                        VerifySecurityDetailsPIN();
                     } else {
                         Constants.showMessage(mainLinearLayoutForgotPIN, this, nointernetmsg);
                     }
@@ -192,10 +242,80 @@ public class ForgotPinActivity extends ActionBarActivity {
         }
     }
 
-    public void updateCountrySelection(int position) {
-        countryCodeTextViewForgot.setText(countryListPojos.get(position).getCountryDialCode());
-        countryCode = countryListPojos.get(position).getCountryDialCode();
-        Picasso.with(ForgotPinActivity.this).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(countryCodeImageViewForgot);
+    public void updateCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryCodeTextViewForgot.setText(countryListPojosupdated.get(position).getCountryDialCode());
+        countryCode = countryListPojosupdated.get(position).getCountryDialCode();
+        Picasso.with(ForgotPinActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageViewForgot);
+    }
+
+    private void questionListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+
+//                jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("userMobile", "0");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ForgotPinActivity.this);
+        CustomLog.d("System out", "question list json " + json);
+        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+
+        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    SequrityQuestionListPojos.clear();
+                    if (response.body().get(0).getStatus() == true) {
+                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+                        securityLinearLayout.setVisibility(View.VISIBLE);
+
+
+                        ArrayList<String> questionList = new ArrayList<>();
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            questionList.add(SequrityQuestionListPojos.get(i).getSecQuestion().trim());
+                        }
+
+//
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(ForgotPinActivity.this, android.R.layout.simple_spinner_item, questionList);
+                        adapter.setDropDownViewResource(R.layout.custom_questions_layout);
+                        securityQuestionsSpinnerForgotPin.setAdapter(adapter);
+
+                        securityQuestionsSpinnerForgotPin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    securityQuestionsEditTextForgotPin.setVisibility(View.VISIBLE);
+                                    securityQuestionsEditTextForgotPin.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTextForgotPin.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    answerId = SequrityQuestionListPojos.get(position).getSecID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else
+
+                    {
+                        securityLinearLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
     }
 
     private void getForgotPIN() {
@@ -229,6 +349,7 @@ public class ForgotPinActivity extends ActionBarActivity {
                     jsonListPojos.addAll(response.body());
                     if (jsonListPojos != null) {
                         if (jsonListPojos.get(0).getStatus() == true) {
+                            answerId = "";
                             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, datumLable_languages_msg.getMessage(jsonListPojos.get(0).getInfo()));
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -259,14 +380,19 @@ public class ForgotPinActivity extends ActionBarActivity {
         if (emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() == 0) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, emailmobilemsg);
             checkFlag = false;
-        } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() < 10) {
+        } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().trim().length() < 7) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validemailormobile);
             checkFlag = false;
         } else if (inputType == false && Constants.validateEmail(emailMobileNoEditTextForgotPinActivity.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validemailormobile);
             checkFlag = false;
+        } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().startsWith("0")) {
+            Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validmobilenumber);
+            checkFlag = false;
+        } else if (answer.equals("")) {
+            Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, "Please select any one sequrity answer");
+            checkFlag = false;
         }
-
         if (inputType == true) {
             signInWith = "Mobile";
         } else {
@@ -275,4 +401,47 @@ public class ForgotPinActivity extends ActionBarActivity {
 
         return checkFlag;
     }
+
+    private void VerifySecurityDetailsPIN() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userMobile", emailMobileNoEditTextForgotPinActivity.getText().toString().trim());
+            jsonObject.put("secID", answerId);
+            jsonObject.put("userSecurityAnswer", answer);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+
+        CustomLog.d("System out", "verify sequrity json " + json);
+
+        Constants.showProgress(ForgotPinActivity.this);
+        Call<List<VerifySecurityListPojo>> call = RestClient.get().verifySecurityQuestionJsonCall(json);
+
+        call.enqueue(new Callback<List<VerifySecurityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<VerifySecurityListPojo>> call, Response<List<VerifySecurityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    verifyListPojo.clear();
+                    verifyListPojo.addAll(response.body());
+                    if (verifyListPojo != null) {
+                        if (verifyListPojo.get(0).getStatus() == true) {
+                            answer = "";
+                            getForgotPIN();
+                        } else {
+                            Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, datumLable_languages_msg.getMessage(verifyListPojo.get(0).getInfo()));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VerifySecurityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
 }

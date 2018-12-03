@@ -3,7 +3,6 @@ package com.fil.workerappz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,6 +56,8 @@ public class ChangePinActivity extends ActionBarActivity {
     MaterialEditText repeatPinEditText;
     @BindView(R.id.savePinTextView)
     TextView savePinTextView;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
@@ -80,9 +81,12 @@ public class ChangePinActivity extends ActionBarActivity {
 
                 titleTextViewViewHeader.setText(datumLable_languages.getChangePIN());
                 oldPinEditText.setHint(datumLable_languages.getOldWalletPIN());
+                oldPinEditText.setFloatingLabelText(datumLable_languages.getOldWalletPIN());
                 newPinEditText.setHint(datumLable_languages.getNewWalletPIN());
+                newPinEditText.setFloatingLabelText(datumLable_languages.getNewWalletPIN());
                 repeatPinEditText.setHint(datumLable_languages.getRepeatNewWalletPIN());
-                savePinTextView.setHint(datumLable_languages.getSave());
+                repeatPinEditText.setFloatingLabelText(datumLable_languages.getRepeatNewWalletPIN());
+                savePinTextView.setText(datumLable_languages.getSave());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
@@ -91,7 +95,7 @@ public class ChangePinActivity extends ActionBarActivity {
                 oldPinEditText.setHint(getResources().getString(R.string.old_wallet_pin));
                 newPinEditText.setHint(getResources().getString(R.string.new_wallet_pin));
                 repeatPinEditText.setHint(getResources().getString(R.string.repeat_new_wallet_pin));
-                savePinTextView.setHint(getResources().getString(R.string.save));
+                savePinTextView.setText(getResources().getString(R.string.save));
                 nointernetmsg = getResources().getString(R.string.no_internet);
 
             }
@@ -114,7 +118,13 @@ public class ChangePinActivity extends ActionBarActivity {
             pinnotmatch = getResources().getString(R.string.Pin_does_not_match);
 
         }
-
+        oldPinEditText.setHint("Old PIN");
+        oldPinEditText.setFloatingLabelText("Old PIN");
+        newPinEditText.setHint("New PIN");
+        newPinEditText.setFloatingLabelText("New PIN");
+        repeatPinEditText.setHint("Repeat New PIN");
+        repeatPinEditText.setFloatingLabelText("Repeat New PIN");
+        appImageViewHeader1.setVisibility(View.VISIBLE);
 
     }
 
@@ -145,10 +155,16 @@ public class ChangePinActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.savePinTextView})
+    @OnClick({R.id.backImageViewHeader, R.id.savePinTextView, R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
+                finish();
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(ChangePinActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
                 finish();
                 break;
             case R.id.savePinTextView:
@@ -201,7 +217,7 @@ public class ChangePinActivity extends ActionBarActivity {
                                 handler.removeCallbacks(this);
                                 finish();
 
-                        }
+                            }
                         }, 2000);
                     } else {
                         Constants.closeProgress();

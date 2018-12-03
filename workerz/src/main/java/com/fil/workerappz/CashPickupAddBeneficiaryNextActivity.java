@@ -83,7 +83,13 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     TextView addressTextViewAddBeneficiary;
     @BindView(R.id.mainAddBeneficiaryCashNextActivityLinearLayout)
     LinearLayout addBeneficiaryCashNextActivityLinearLayout;
-    private String countryCode, purposeCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode,customerNumber;
+    @BindView(R.id.skipTextViewViewHeader2)
+    TextView skipTextViewViewHeader2;
+    @BindView(R.id.destinationAddressEditTextAddBeneficiaryNext1)
+    MaterialEditText destinationAddressEditTextAddBeneficiaryNext1;
+    @BindView(R.id.otherPurposeOfTransferEditTextCashAddBeneficiary)
+    MaterialEditText otherPurposeOfTransferEditTextCashAddBeneficiary;
+    private String countryCode, purposeCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode, customerNumber;
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
     private final ArrayList<PurposeOfTransferListPojo> purposeOfTransferListPojos = new ArrayList<>();
     private final ArrayList<CashNetworkListJsonPojo> cashNetworkListJsonPojos = new ArrayList<>();
@@ -95,7 +101,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     private SessionManager sessionManager;
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String purposetransfermsg, agentmsg,zipcodemsg,landmarkmsg,destinationmsg;
+    private String purposetransfermsg, agentmsg, zipcodemsg, landmarkmsg, destinationmsg;
     private String nointernetmsg;
 
     @Override
@@ -113,27 +119,30 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
 
         try {
-            sessionManager=new SessionManager(CashPickupAddBeneficiaryNextActivity.this);
+            sessionManager = new SessionManager(CashPickupAddBeneficiaryNextActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
             if (datumLable_languages != null) {
 
                 destinationAddressEditTextAddBeneficiaryNext.setHint(datumLable_languages.getDestinationAddress());
+                destinationAddressEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getDestinationAddress());
                 destinationLandmarkEditTextAddBeneficiary.setHint(datumLable_languages.getDestinationLandmark());
+                destinationLandmarkEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDestinationLandmark());
                 destinationZipCodeEditTextAddBeneficiary.setHint(datumLable_languages.getDestinationZipcode());
+                destinationZipCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDestinationZipcode());
                 agentsSpinnerAddBeneficiary.setHint(datumLable_languages.getAvailableAgents());
                 agentsSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getSelectAvailableAgent());
 
                 purposeOfTransferSpinnerCashAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer());
+                purposeOfTransferSpinnerCashAddBeneficiary.setFloatingLabelText(datumLable_languages.getPurposeOfTransfer());
 
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 //                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.get());
 
-            }
-            else {
+            } else {
                 titleTextViewViewHeader2.setText("Beneficiary Info");
                 destinationAddressEditTextAddBeneficiaryNext.setHint(getResources().getString(R.string.dest_add));
                 destinationLandmarkEditTextAddBeneficiary.setHint(getResources().getString(R.string.dest_land));
@@ -141,27 +150,25 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 agentsSpinnerAddBeneficiary.setHint(getResources().getString(R.string.availiable_agents));
                 purposeOfTransferSpinnerCashAddBeneficiary.setHint(getResources().getString(R.string.purpose_of_transfer));
                 addTextViewAddBeneficiary.setText(getResources().getString(R.string.add));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (datumLable_languages_msg != null) {
-            purposetransfermsg=datumLable_languages_msg.getSelectPurposeOfTransfer();
-            agentmsg =datumLable_languages_msg.getSelectAvailableAgents();
-            zipcodemsg =datumLable_languages_msg.getEnterDestinationZipCode();
-            landmarkmsg =datumLable_languages_msg.getEnterDestinationLandmark();
-            destinationmsg =datumLable_languages_msg.getEnterDestinationAddress();
+            purposetransfermsg = datumLable_languages_msg.getSelectPurposeOfTransfer();
+            agentmsg = datumLable_languages_msg.getSelectAvailableAgents();
+            zipcodemsg = datumLable_languages_msg.getEnterDestinationZipCode();
+            landmarkmsg = datumLable_languages_msg.getEnterDestinationLandmark();
+            destinationmsg = datumLable_languages_msg.getEnterDestinationAddress();
         } else {
-            purposetransfermsg=getResources().getString(R.string.Please_select_purpose_transfer);
-            agentmsg=getResources().getString(R.string.Please_select_agents);
-            zipcodemsg=getResources().getString(R.string.Please_Enter_zip_code);
-            landmarkmsg=getResources().getString(R.string.Please_Enter_landmark);
-            destinationmsg=getResources().getString(R.string.Please_Enter_destination);
+            purposetransfermsg = getResources().getString(R.string.Please_select_purpose_transfer);
+            agentmsg = getResources().getString(R.string.Please_select_agents);
+            zipcodemsg = getResources().getString(R.string.Please_Enter_zip_code);
+            landmarkmsg = getResources().getString(R.string.Please_Enter_landmark);
+            destinationmsg = getResources().getString(R.string.Please_Enter_destination);
 
 
         }
@@ -169,14 +176,14 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             cashAgentNetworkListJsonCall();
             purposeOfTransferJsonCall();
         } else {
-            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this,nointernetmsg);
+            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this, nointernetmsg);
         }
     }
 
     private void purposeOfTransferJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("countryCode", countryCode);
+            jsonObject.put("countryCode", countryShortCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -215,6 +222,13 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                                 if (position != -1) {
                                     purposeCode = purposeOfTransferListPojos.get(0).getData().get(position).getPurposeOfTransferID();
 //                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
+//                                    if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString().equalsIgnoreCase("Others")) {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+//                                    } else {
+//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+//                                    }
                                 }
                             }
 
@@ -237,8 +251,10 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     private void cashAgentNetworkListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-//            jsonObject.put("countryCode", countryCode);
-            jsonObject.put("countryCode", "NPL");
+            jsonObject.put("countryCode", beneficiaryInfoListPojo.getNationality());
+            jsonObject.put("bankName", "");
+            jsonObject.put("branch", "");
+//            jsonObject.put("countryCode", "NPL");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -259,13 +275,16 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     Constants.closeProgress();
                     cashNetworkListJsonPojos.addAll(response.body());
                     if (cashNetworkListJsonPojos.get(0).getStatus() == true) {
-                        ArrayList<String> countryList = new ArrayList<>();
-                        for (int i = 0; i < cashNetworkListJsonPojos.get(0).getData().size(); i++) {
-                            countryList.add(new String(cashNetworkListJsonPojos.get(0).getData().get(i).getPayOutAgent().trim()));
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(CashPickupAddBeneficiaryNextActivity.this, android.R.layout.simple_spinner_item, countryList);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        agentsSpinnerAddBeneficiary.setAdapter(adapter);
+                        if (cashNetworkListJsonPojos.get(0).getInfo().equalsIgnoreCase("NORECORD")) {
+
+                        } else {
+                            ArrayList<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < cashNetworkListJsonPojos.get(0).getData().size(); i++) {
+                                countryList.add(new String(cashNetworkListJsonPojos.get(0).getData().get(i).getPayOutAgent().trim()));
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(CashPickupAddBeneficiaryNextActivity.this, android.R.layout.simple_spinner_item, countryList);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            agentsSpinnerAddBeneficiary.setAdapter(adapter);
 
 //                        for (int i = 0; i < purposeOfTransferListPojos.get(0).getData().size(); i++) {
 //                            if (getUserData().getCountryID() == purposeOfTransferListPojos.get(0).getData().get(i).getCountryID()) {
@@ -276,32 +295,33 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
 //                            }
 //                        }
 
-                        agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != -1) {
-                                    payoutBranchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCountry = cashNetworkListJsonPojos.get(0).getData().get(position).getCountry();
-                                    payoutCountryCode = cashNetworkListJsonPojos.get(0).getData().get(position).getCountryCode();
-                                    branchName = cashNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
-                                    address = cashNetworkListJsonPojos.get(0).getData().get(position).getAddress().toString();
-                                    branchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
-                                    payoutCurrencyCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutCurrencyCode();
-                                    agentName = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutAgent();
+                            agentsSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    if (position != -1) {
+                                        payoutBranchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCountry = cashNetworkListJsonPojos.get(0).getData().get(position).getCountry();
+                                        payoutCountryCode = cashNetworkListJsonPojos.get(0).getData().get(position).getCountryCode();
+                                        branchName = cashNetworkListJsonPojos.get(0).getData().get(position).getBranchName();
+                                        address = cashNetworkListJsonPojos.get(0).getData().get(position).getAddress().toString();
+                                        branchCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutBranchCode();
+                                        payoutCurrencyCode = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutCurrencyCode();
+                                        agentName = cashNetworkListJsonPojos.get(0).getData().get(position).getPayOutAgent();
 //                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
 //                                    if (IsNetworkConnection.checkNetworkConnection(CashPickupAddBeneficiaryNextActivity.this)) {
 //
 //                                    } else {
 //                                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, getResources().getString(R.string.no_internet));
 //                                    }
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -314,7 +334,7 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.addressTextViewAddBeneficiary, R.id.addTextViewAddBeneficiary,R.id.appImageViewHeader2})
+    @OnClick({R.id.menuImageViewHeader2, R.id.addTextViewAddBeneficiary, R.id.appImageViewHeader2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -325,19 +345,21 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
                 break;
-            case R.id.addressTextViewAddBeneficiary:
-                openAutocompleteActivity();
-                break;
+//            case R.id.addressTextViewAddBeneficiary:
+//                openAutocompleteActivity();
+//                break;
             case R.id.addTextViewAddBeneficiary:
                 if (destinationAddressEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, destinationmsg);
-                } else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,landmarkmsg);
-
-                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,zipcodemsg);
-                } else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
-                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,agentmsg);
+                }
+//                else if (destinationLandmarkEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, landmarkmsg);
+//
+//                } else if (destinationZipCodeEditTextAddBeneficiary.getText().toString().length() == 0) {
+//                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, zipcodemsg);
+//                }
+                else if (agentsSpinnerAddBeneficiary == null && agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
+                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
                 } else if (agentsSpinnerAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, agentmsg);
 
@@ -346,13 +368,20 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, purposetransfermsg);
 
-                } else {
+                }
+//                else if (purposeCode.equalsIgnoreCase("12")&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length() == 0) {
+//
+//                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this
+//                                , "Please specify purpose of transfer");
+//
+//                }
+                else {
 //                    Intent intent = new Intent(AddBeneficiaryActivity.this, AddBeneficiaryNextActivity.class);
 //                    startActivity(intent);
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
                         addBeneficiaryJsonCall();
                     } else {
-                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this,nointernetmsg);
+                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, this, nointernetmsg);
                     }
                 }
 
@@ -489,7 +518,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("BankName", agentName);
 //            jsonObject.put("BankCountry", payoutCountry);
             jsonObject.put("BankCountry", countryShortCode);
-            jsonObject.put("CustomerRelation", "0");
+//            jsonObject.put("CustomerRelation", "0");
+            jsonObject.put("CustomerRelation", beneficiaryInfoListPojo.getRelation());
             jsonObject.put("BranchNameAndAddress", address);
             jsonObject.put("BankCode", branchCode);
             jsonObject.put("BankBranch", branchName);
@@ -497,6 +527,8 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("PurposeCode", purposeCode);
             jsonObject.put("PayoutCountryCode", payoutCountryCode);
             jsonObject.put("BeneficiaryNo", "0");
+            jsonObject.put("benificaryState", beneficiaryInfoListPojo.getState());
+            jsonObject.put("benificaryCity", beneficiaryInfoListPojo.getCity());
             jsonObject.put("userID", getUserData().getUserID());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -516,12 +548,10 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                     createBeneficiaryJsonPojos.addAll(response.body());
                     if (createBeneficiaryJsonPojos.get(0).getStatus() == true) {
 
-                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString())!=null) {
+                        if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()) != null) {
                             Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
-                        }
-                        else
-                        {
-                            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,response.body().get(0).getInfo().toString());
+                        } else {
+                            Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, response.body().get(0).getInfo().toString());
                         }
 
                         Constants.cashBenificaryCount++;
@@ -529,14 +559,12 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                         beneficiaryInfoListPojo.setPayoutbranchcode(payoutBranchCode);
                         Intent intent = new Intent(CashPickupAddBeneficiaryNextActivity.this, PinVerificationActivity.class);
                         intent.putExtra("come_from", "selectcashnext");
-                        intent.putExtra("flagimage",beneficiaryInfoListPojo.getCountryFlagImage());
-                        intent.putExtra("countryshortcode",countryShortCode);
+                        intent.putExtra("flagimage", beneficiaryInfoListPojo.getCountryFlagImage());
+                        intent.putExtra("countryshortcode", countryShortCode);
                         intent.putExtra("beneficiary_data", beneficiaryInfoListPojo);
                         startActivity(intent);
-                    }
-                    else
-                    {
-                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this,response.body().get(0).getInfo().toString());
+                    } else {
+                        Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, response.body().get(0).getInfo().toString());
                     }
                 }
             }

@@ -58,6 +58,8 @@ public class WalletActivity extends ActionBarActivity {
     LinearLayout mainWalletLinearLayout;
     @BindView(R.id.walletsuretextview)
     TextView walletsuretextview;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
 
     private Intent mIntent;
     private String amount = "";
@@ -68,7 +70,7 @@ public class WalletActivity extends ActionBarActivity {
     private SessionManager sessionManager;
     private String verifiedpinmsg;
     private String nointernetmsg;
-    private String receivername="";
+    private String receivername = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,15 +88,16 @@ public class WalletActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
                 walletsuretextview.setText(datumLable_languages.getDeductMoneyFromWallet());
                 pinEditTextWallet.setHint(datumLable_languages.getEnterWalletPIN());
+                pinEditTextWallet.setFloatingLabelText(datumLable_languages.getEnterWalletPIN());
                 payNowTextViewWallet.setText(datumLable_languages.getPayNow());
                 titleTextViewViewHeader.setText(datumLable_languages.getWallet());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
             } else {
                 titleTextViewViewHeader.setText(getResources().getString(R.string.wallet));
                 walletsuretextview.setText(getResources().getString(R.string.are_you_sure_want_to_deduct_money_from_wallet));
                 pinEditTextWallet.setHint(getResources().getString(R.string.enter_wallet_pin));
                 payNowTextViewWallet.setText(getResources().getString(R.string.pay_now));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +117,7 @@ public class WalletActivity extends ActionBarActivity {
             currency = Currency.getInstance(getUserData().getCountryCurrencySymbol());
             amountNeedToTransferTextViewWallet.setText(currency.getSymbol() + " " + (amount));
         }
+        appImageViewHeader1.setVisibility(View.VISIBLE);
     }
 
     private void walletToWalletTransferJsonCall() {
@@ -142,22 +146,19 @@ public class WalletActivity extends ActionBarActivity {
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     if (response.body().get(0).getStatus() == true) {
 
-                        if (response.body().get(0).getInfo().toString().equalsIgnoreCase("TRANSFER_SUCCESS"))
-                        {
+                        if (response.body().get(0).getInfo().toString().equalsIgnoreCase("TRANSFER_SUCCESS")) {
                             String test = datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString());
 
                             String str = datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString());
-                            String [] twoStringArray= str.split(",", 2);
-                           Log.d("System out","String befor comma = "+twoStringArray[0]);
+                            String[] twoStringArray = str.split(",", 2);
+                            Log.d("System out", "String befor comma = " + twoStringArray[0]);
 
                             String lastWord = test.substring(test.lastIndexOf(" ") + 1);
 
                             Log.d("System out", "text" + String.valueOf(lastWord));
-                            String finalmsg = test.replace(twoStringArray[0].substring(twoStringArray[0].lastIndexOf(" ")+1),receivername).replace(lastWord, String.valueOf(response.body().get(0).getData().get(0).getBalance()));
+                            String finalmsg = test.replace(twoStringArray[0].substring(twoStringArray[0].lastIndexOf(" ") + 1), receivername).replace(lastWord, String.valueOf(response.body().get(0).getData().get(0).getBalance()));
                             Constants.showMessage(mainWalletLinearLayout, WalletActivity.this, finalmsg);
-                        }
-                        else
-                        {
+                        } else {
                             Constants.showMessage(mainWalletLinearLayout, WalletActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                         }
 
@@ -192,10 +193,16 @@ public class WalletActivity extends ActionBarActivity {
         });
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.payNowTextViewWallet})
+    @OnClick({R.id.backImageViewHeader, R.id.payNowTextViewWallet,R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
+                finish();
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(WalletActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
                 finish();
                 break;
             case R.id.payNowTextViewWallet:
@@ -204,7 +211,7 @@ public class WalletActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(WalletActivity.this)) {
                         verifiedPinJsonCall();
                     } else {
-                        Constants.showMessage(mainWalletLinearLayout, WalletActivity.this,nointernetmsg);
+                        Constants.showMessage(mainWalletLinearLayout, WalletActivity.this, nointernetmsg);
                     }
                 }
                 break;

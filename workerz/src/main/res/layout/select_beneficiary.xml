@@ -24,12 +24,22 @@
                 layout="@layout/my_header2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search Beneficiary.."
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:inputType="text"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/selectBeneficiaryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/_2sdp">
 
             </android.support.v7.widget.RecyclerView>
             <TextView

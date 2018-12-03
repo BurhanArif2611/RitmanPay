@@ -138,9 +138,16 @@ public class SessionManager {
     public boolean getVerify() {
         return pref.getBoolean("is_verify", false);
     }
+    public boolean getLogoutVerify() {
+        return pref.getBoolean("is_logout_verify", false);
+    }
 
     public void setVerify(boolean flag) {
         editor.putBoolean("is_verify", flag);
+        editor.commit();
+    }
+    public void setLogoutVerify(boolean flag) {
+        editor.putBoolean("is_logout_verify", flag);
         editor.commit();
     }
 

@@ -3,7 +3,6 @@ package com.fil.workerappz;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -14,10 +13,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fil.workerappz.adapter.UploadDocumentListAdapter;
 import com.fil.workerappz.pojo.DocumentListCountryWiseJsonPojo;
@@ -39,14 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.zelory.compressor.Compressor;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -113,17 +116,21 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     TextView skipTextViewViewHeader2;
     @BindView(R.id.myFooterUploadDocument)
     LinearLayout myFooterUploadDocument;
+    @BindView(R.id.uploaddocumentsSpinner)
+    MaterialSpinner uploaddocumentsSpinner;
+
     private UserListPojo.Data userListPojo;
-    private final ArrayList<DocumentListCountryWiseJsonPojo.Data> documentListCountryWiseJsonPojos = new ArrayList<>();
-    private final ArrayList<KYCUploadedDocumentListJsonPojo> kycUploadedDocumentListJsonPojos = new ArrayList<>();
-    private final ArrayList<KYCUploadedDocumentListJsonPojo> tempKycUploadedDocumentListJsonPojos = new ArrayList<>();
+    private ArrayList<DocumentListCountryWiseJsonPojo.Data> documentListCountryWiseJsonPojos = new ArrayList<>();
+    private ArrayList<KYCUploadedDocumentListJsonPojo> kycUploadedDocumentListJsonPojos = new ArrayList<>();
+    private ArrayList<KYCUploadedDocumentListJsonPojo> tempKycUploadedDocumentListJsonPojos = new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private UploadDocumentListAdapter uploadDocumentListAdapter;
     private Intent mIntent;
-    private File file;
+    private File file, imgFile;
     private long timeForImageName;
     private String imgName = "";
-    private Uri pictureUri = null;
+    private String imgName1 = "";
+    private Uri pictureUri = null, myUri;
     private final int docNameId = 0;
     private final int uploadDocForPosition = 0;
     private String comeFrom = "";
@@ -132,6 +139,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private SessionManager sessionManager;
     private String nointernetmsg;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,7 +154,12 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
         }
 
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
-        if (comeFrom != null) {
+
+        if (comeFrom.equalsIgnoreCase("upload")) {
+            menuImageViewHeader2.setVisibility(View.VISIBLE);
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+            skipTextViewViewHeader2.setVisibility(View.INVISIBLE);
+        } else if (comeFrom.equalsIgnoreCase("signUp")) {
 //            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
             menuImageViewHeader2.setVisibility(View.INVISIBLE);
             appImageViewHeader2.setVisibility(View.INVISIBLE);
@@ -169,12 +182,12 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getLegalDocuments());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 //                skipTextViewViewHeader2.setText(datumLable_languages.getSkip());
 
             } else {
                 titleTextViewViewHeader2.setText("Upload KYC");
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 //                skipTextViewViewHeader2.setText(getResources().getString(R.string.skip));
             }
         } catch (Exception e) {
@@ -210,9 +223,21 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 
                 break;
             case R.id.skipTextViewViewHeader2:
+//                if (Constants.uploaddocument>3)
+//                {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "You can Upload maximum Three documents");
+//                }
+//                else if (Constants.uploaddocument<1)
+//                {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "You can Upload minimum Two documents");
+//                }
+//                else {
                 mIntent = new Intent(UploadYourDocumentActivity.this, VerificationActivity.class);
+                mIntent.putExtra("come_from", "");
                 startActivity(mIntent);
                 break;
+//                }
+
         }
     }
 
@@ -299,7 +324,8 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                         if (documentListCountryWiseJsonPojos.size() > 0) {
                             layoutManager = new LinearLayoutManager(UploadYourDocumentActivity.this);
                             uploadDocumentRecyclerView.setLayoutManager(layoutManager);
-                            uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2,datumLable_languages,datumLable_languages_msg);
+
+                            uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2, datumLable_languages, datumLable_languages_msg, mainUploadYourDocumentLinearLayout);
                             uploadDocumentRecyclerView.setAdapter(uploadDocumentListAdapter);
                             uploadDocumentListAdapter.notifyDataSetChanged();
                         }
@@ -345,7 +371,15 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 //                    skipTextViewViewHeader2.setVisibility(View.VISIBLE);
                     skipTextViewViewHeader2.setText(datumLable_languages.getSave());
 
-                    getDocumentListCountryWiseJsonCall();
+                    layoutManager = new LinearLayoutManager(UploadYourDocumentActivity.this);
+                    uploadDocumentRecyclerView.setLayoutManager(layoutManager);
+
+                    uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2, datumLable_languages, datumLable_languages_msg, mainUploadYourDocumentLinearLayout);
+                    uploadDocumentRecyclerView.setAdapter(uploadDocumentListAdapter);
+                    uploadDocumentListAdapter.notifyDataSetChanged();
+
+//                    getDocumentListCountryWiseJsonCall();
+                    getDocumentListCountryWiseDropDownJsonCall();
 
 
                 }
@@ -356,7 +390,8 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
             public void onFailure(Call<List<KYCUploadedDocumentListJsonPojo>> call, Throwable t) {
                 Constants.closeProgress();
                 t.printStackTrace();
-                getDocumentListCountryWiseJsonCall();
+//                getDocumentListCountryWiseJsonCall();
+                getDocumentListCountryWiseDropDownJsonCall();
 
             }
         });
@@ -373,6 +408,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
         timeForImageName = System.currentTimeMillis();
         imgName = "img" + timeForImageName + ".jpg";
         file = new File(getExternalFilesDir(null), imgName);
+//        fileUri = Constants.getOutputMediaFileUri();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             mIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         } else {
@@ -394,26 +430,53 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getParent());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getAbsolutePath());
                 CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getPath());
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(new File(file.getPath()).getAbsolutePath(), options);
+                int imageHeight = options.outHeight;
+                int imageWidth = options.outWidth;
+
+
+//                try {
+//                    compressedImage = new Compressor(this)
+//                            .setMaxWidth(640)
+//                            .setMaxHeight(480)
+//                            .setQuality(75)
+//                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                            .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                    Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                            .compressToFile(file);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 try {
-                    compressedImage = new Compressor(this)
-                            .setMaxWidth(640)
-                            .setMaxHeight(480)
-                            .setQuality(75)
-                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                            .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                            .compressToFile(file);
-                } catch (IOException e) {
+                    imgName1 = "img" + timeForImageName;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
-                    uploadKYCDoc();
-                } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this,nointernetmsg );
+                String imgStorepath = "";
+                imgStorepath = Environment.getExternalStorageDirectory() + "/" + getString(R.string.app_name) + "/";
+                try {
+                    Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                    i.putExtra("fileUri", pictureUri.toString());
+                    i.putExtra("width", String.valueOf(imageWidth));
+                    i.putExtra("height", String.valueOf(imageHeight));
+                    i.putExtra("imgStrPath", file.getPath());
+                    i.putExtra("fileName", imgName1);
+                    startActivityForResult(i, 525);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+//                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+//                    uploadKYCDoc();
+//                } else {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+//                }
             } else if (requestCode == SELECT_PICTURE) {
                 timeForImageName = System.currentTimeMillis();
                 imgName = "img" + timeForImageName + ".jpg";
+                imgName1 = "img" + timeForImageName;
                 pictureUri = data.getData();
 
                 String[] projection = {MediaStore.Images.Media.DATA};
@@ -435,26 +498,59 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                 CustomLog.d("System out", "width " + imageWidth);
                 CustomLog.d("System out", "height " + imageHeight);
 
-                if (imageWidth < 400 || imageHeight < 700) {
-                    compressedImage = file;
-                } else {
-                    try {
-                        compressedImage = new Compressor(this)
-                                .setMaxWidth(640)
-                                .setMaxHeight(480)
-                                .setQuality(75)
-                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                                .compressToFile(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                if (imageWidth < 400 || imageHeight < 700) {
+//                    compressedImage = file;
+//                } else {
+//                    try {
+//                        compressedImage = new Compressor(this)
+//                                .setMaxWidth(640)
+//                                .setMaxHeight(480)
+//                                .setQuality(75)
+//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                                .compressToFile(file);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+
+                try {
+                    Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                    i.putExtra("fileUri", pictureUri.toString());
+                    i.putExtra("width", String.valueOf(imageWidth));
+                    i.putExtra("height", String.valueOf(imageHeight));
+                    i.putExtra("imgStrPath", file.getPath());
+//                    i.putExtra("fileName", imgStorepath);
+                    startActivityForResult(i, 525);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
-                    uploadKYCDoc();
-                } else {
-                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this,  nointernetmsg);
+//                if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+//                    uploadKYCDoc();
+//                } else {
+//                    Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+//                }
+            } else if (requestCode == 525) {
+                Log.e("!_!525 Data Crop ?>>", data.getStringExtra("myFileName") + "");
+                try {
+                    imgFile = new File(data.getStringExtra("myFileName"));
+                    myUri = Uri.parse(data.getStringExtra("myFileName"));
+
+                    if (imgFile.exists()) {
+                        if (IsNetworkConnection.checkNetworkConnection(UploadYourDocumentActivity.this)) {
+                            compressedImage = new File(String.valueOf(myUri));
+                            uploadKYCDoc();
+                        } else {
+                            Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, nointernetmsg);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Image is not cropped", Toast.LENGTH_SHORT).show();
+//                        compressedImage = new File(String.valueOf(myUri));
+//                        uploadKYCDoc();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -570,4 +666,182 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
     }
 
 
+    private void getDocumentListCountryWiseDropDownJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("countryID", "" + getUserData().getCountryID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final String json = "[" + jsonObject + "]";
+        CustomLog.d("System out", "document list json " + json);
+        Constants.showProgress(UploadYourDocumentActivity.this);
+        Call<List<DocumentListCountryWiseJsonPojo>> call = RestClient.get().documentListCountryWiseJsonCall(json);
+
+        call.enqueue(new Callback<List<DocumentListCountryWiseJsonPojo>>() {
+            @Override
+            public void onResponse(Call<List<DocumentListCountryWiseJsonPojo>> call, Response<List<DocumentListCountryWiseJsonPojo>> response) {
+                Constants.closeProgress();
+
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    if (response.body().get(0).getStatus() == true) {
+                        documentListCountryWiseJsonPojos.addAll(response.body().get(0).getData());
+                        tempKycUploadedDocumentListJsonPojos.addAll(kycUploadedDocumentListJsonPojos);
+
+                        if (kycUploadedDocumentListJsonPojos.size() > 0) {
+                            CustomLog.d("System out", "uploaddocsize" + kycUploadedDocumentListJsonPojos.get(0).getInfo().size());
+                            CustomLog.d("System out", "countrydocsize" + documentListCountryWiseJsonPojos.size());
+                            if (kycUploadedDocumentListJsonPojos.get(0).getInfo().size() > 0) {
+                                for (int i = 0; i < documentListCountryWiseJsonPojos.size(); i++) {
+                                    boolean mFlag = true;
+                                    for (int j = 0; j < tempKycUploadedDocumentListJsonPojos.get(0).getInfo().size(); j++) {
+                                        if (tempKycUploadedDocumentListJsonPojos.get(0).getInfo().get(j).getKycdocnameID().equalsIgnoreCase(documentListCountryWiseJsonPojos.get(i).getKycdocnameID()) && tempKycUploadedDocumentListJsonPojos.get(0).getInfo().get(j).getKycdoctypeID().equalsIgnoreCase(documentListCountryWiseJsonPojos.get(i).getKycdoctypeID())) {
+                                            mFlag = false;
+                                        }
+                                    }
+
+                                    if (mFlag == true && i < documentListCountryWiseJsonPojos.size()) {
+                                        KYCUploadedDocumentListJsonPojo.Info info = new KYCUploadedDocumentListJsonPojo.Info();
+                                        info.setUserkycID("");
+                                        info.setKycdocnameID(documentListCountryWiseJsonPojos.get(i).getKycdocnameID());
+                                        info.setKycdoctypeID(documentListCountryWiseJsonPojos.get(i).getKycdoctypeID());
+                                        info.setKycdocnameName(documentListCountryWiseJsonPojos.get(i).getKycdocnameName());
+                                        info.setKycdoctypeName(documentListCountryWiseJsonPojos.get(i).getKycdoctypeName());
+                                        info.setUserID("");
+                                        info.setUserkycImage("");
+                                        info.setUserkycStatus("");
+                                        info.setUserkycStatusReason("");
+                                        info.setUserkycStatusDate("");
+                                        info.setUserkycCreatedDate("");
+                                        info.setKycstatushistory("");
+                                        kycUploadedDocumentListJsonPojos.get(0).getInfo().add(info);
+                                    }
+                                }
+                            }
+
+
+                        } else {
+                            KYCUploadedDocumentListJsonPojo jsonPojo = new KYCUploadedDocumentListJsonPojo();
+                            jsonPojo.setStatus(true);
+                            List<KYCUploadedDocumentListJsonPojo.Info> infoList = new ArrayList<>();
+                            for (int i = 0; i < documentListCountryWiseJsonPojos.size(); i++) {
+                                KYCUploadedDocumentListJsonPojo.Info info = new KYCUploadedDocumentListJsonPojo.Info();
+                                info.setUserkycID("");
+                                info.setKycdocnameID(documentListCountryWiseJsonPojos.get(i).getKycdocnameID());
+                                info.setKycdoctypeID(documentListCountryWiseJsonPojos.get(i).getKycdoctypeID());
+                                info.setKycdocnameName(documentListCountryWiseJsonPojos.get(i).getKycdocnameName());
+                                info.setKycdoctypeName(documentListCountryWiseJsonPojos.get(i).getKycdoctypeName());
+                                info.setUserID("");
+                                info.setUserkycImage("");
+                                info.setUserkycStatus("");
+                                info.setUserkycStatusReason("");
+                                info.setUserkycStatusDate("");
+                                info.setUserkycCreatedDate("");
+                                info.setKycstatushistory("");
+                                infoList.add(info);
+                            }
+                            jsonPojo.setInfo(infoList);
+                            kycUploadedDocumentListJsonPojos.add(jsonPojo);
+                        }
+
+                        setDropDown();
+                        uploaddocumentsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    List<KYCUploadedDocumentListJsonPojo.Info> infoList = new ArrayList<>();
+                                    for (int i = 0; i < documentListCountryWiseJsonPojos.size(); i++) {
+                                        KYCUploadedDocumentListJsonPojo.Info info = new KYCUploadedDocumentListJsonPojo.Info();
+                                        String str = new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeName().trim().getBytes(), Base64.DEFAULT)) + " - " + new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdocnameName().trim().getBytes(), Base64.DEFAULT));
+                                        uploaddocumentsSpinner.setEnabled(false);
+                                        if (str.equals(uploaddocumentsSpinner.getSelectedItem())) {
+                                            kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).setIsVisible(true);
+                                        }
+                                    }
+                                    layoutManager = new LinearLayoutManager(UploadYourDocumentActivity.this);
+                                    uploadDocumentRecyclerView.setLayoutManager(layoutManager);
+                                    uploadDocumentListAdapter = new UploadDocumentListAdapter(UploadYourDocumentActivity.this, kycUploadedDocumentListJsonPojos.get(0).getInfo(), getMyUserId(), skipTextViewViewHeader2, datumLable_languages, datumLable_languages_msg, mainUploadYourDocumentLinearLayout);
+                                    uploadDocumentRecyclerView.setAdapter(uploadDocumentListAdapter);
+                                    uploadDocumentListAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
+//                    if (response.body().get(0).getStatus() == true) {
+//                        kycDocumentListJsonCall();
+//                    }
+                    } else {
+//                        Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, response.body().get(0).getInfo());
+                        Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DocumentListCountryWiseJsonPojo>> call, Throwable t) {
+                Constants.closeProgress();
+
+            }
+        });
+    }
+
+    public void setDropDown() {
+        int poacounter = 0;
+        int poicounter = 0;
+        boolean poistatus = false;
+        boolean poastatus = false;
+        if (documentListCountryWiseJsonPojos.size() > 0) {
+
+            for (int i = 0; i < kycUploadedDocumentListJsonPojos.get(0).getInfo().size(); i++) {
+                if (!kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycImage().equalsIgnoreCase("")) {
+                    kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).setIsVisible(true);
+                    if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeID().equalsIgnoreCase("1")) {
+                        poacounter++;
+                        if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycStatus().equalsIgnoreCase("Approved")) {
+                            poastatus = true;
+                        }
+                    } else if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeID().equalsIgnoreCase("2")) {
+                        poicounter++;
+                        if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycStatus().equalsIgnoreCase("Approved")) {
+                            poistatus = true;
+                        }
+                    }
+                } else {
+                    kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).setIsVisible(false);
+                }
+
+            }
+        }
+        if (poacounter > 0 && poicounter > 0) {
+            uploaddocumentsSpinner.setError("Sufficient documents uploaded");
+            uploaddocumentsSpinner.setEnabled(false);
+            if (!poastatus || !poistatus) {
+                Constants.showMessage(mainUploadYourDocumentLinearLayout, UploadYourDocumentActivity.this, "Please submit the documents with your registered agent");
+            }
+        } else {
+            uploaddocumentsSpinner.setEnabled(true);
+            final ArrayList<String> documentList = new ArrayList<>();
+
+            if (documentListCountryWiseJsonPojos.size() > 0) {
+                for (int i = 0; i < kycUploadedDocumentListJsonPojos.get(0).getInfo().size(); i++) {
+                    CustomLog.d("size", String.valueOf(kycUploadedDocumentListJsonPojos.get(0).getInfo().size()));
+                    if (kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getUserkycImage().equalsIgnoreCase("")) {
+                        documentList.add(new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdoctypeName().trim().getBytes(), Base64.DEFAULT)) + " - " + new String(Base64.decode(kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).getKycdocnameName().trim().getBytes(), Base64.DEFAULT)));
+                        kycUploadedDocumentListJsonPojos.get(0).getInfo().get(i).setIsVisible(false);
+                    }
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(UploadYourDocumentActivity.this, android.R.layout.simple_spinner_item, documentList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                uploaddocumentsSpinner.setAdapter(adapter);
+
+            }
+        }
+    }
 }

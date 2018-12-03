@@ -1,5 +1,6 @@
 package com.fil.workerappz.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fil.workerappz.ActionBarActivity;
 import com.fil.workerappz.AddBeneficiaryActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryActivity;
@@ -26,6 +28,7 @@ import butterknife.Unbinder;
 
 public class CashPickUpFragment extends BaseFragment {
 
+
     @BindView(R.id.addBeneficiaryTextView)
     TextView addBeneficiaryTextView;
     @BindView(R.id.selectBeneficiaryTextView)
@@ -35,6 +38,8 @@ public class CashPickUpFragment extends BaseFragment {
     private Intent mIntent;
     private LabelListData datumLable_languages = new LabelListData();
     private SessionManager sessionManager;
+    private ActionBarActivity activity;
+
 
     public CashPickUpFragment() {
 
@@ -44,9 +49,17 @@ public class CashPickUpFragment extends BaseFragment {
         CashPickUpFragment fragment = new CashPickUpFragment();
         return fragment;
     }
+
     @Override
     public void onResume() {
         super.onResume();
+        activity.onUserInteraction();
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (ActionBarActivity) context;
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,36 +70,30 @@ public class CashPickUpFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bank_tab, container, false);
+//        View view = inflater.inflate(R.layout.cash_tab, container, false);
 
         unbinder = ButterKnife.bind(this, view);
-        if (Constants.cashBenificaryCount==0)
-        {
+        if (Constants.cashBenificaryCount == 0) {
             selectBeneficiaryTextView.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             selectBeneficiaryTextView.setVisibility(View.VISIBLE);
         }
 
         try {
-            sessionManager=new SessionManager(getActivity());
+            sessionManager = new SessionManager(getActivity());
             datumLable_languages = sessionManager.getAppLanguageLabel();
 
             if (datumLable_languages != null) {
 
-                addBeneficiaryTextView.setHint(datumLable_languages.getAddBeneficiary());
-                selectBeneficiaryTextView.setHint(datumLable_languages.getSelectBeneficiary());
+                addBeneficiaryTextView.setText(datumLable_languages.getAddBeneficiary());
+                selectBeneficiaryTextView.setText(datumLable_languages.getSelectBeneficiary());
+
+            } else {
+                addBeneficiaryTextView.setText(getResources().getString(R.string.add_beneficiary));
+                selectBeneficiaryTextView.setText(getResources().getString(R.string.select_beneficiary));
 
             }
-            else
-            {
-                addBeneficiaryTextView.setHint(getResources().getString(R.string.add_beneficiary));
-                selectBeneficiaryTextView.setHint(getResources().getString(R.string.select_beneficiary));
-
-            }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return view;

@@ -38,9 +38,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="@string/todo"
-                    android:padding="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:src="@drawable/workerapp_home_label" />
+                    android:padding="@dimen/_7sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:src="@drawable/workerapp_home_label1" />
             </FrameLayout>
 
             <LinearLayout
@@ -89,7 +89,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/hi"
                                     android:textColor="@color/colorWhite"
-                                    android:textSize="@dimen/_14ssp" />
+                                    android:textSize="@dimen/_20sdp" />
 
                                 <TextView
                                     android:id="@+id/goodtohavetextview"
@@ -130,7 +130,7 @@
                                 android:gravity="right"
                                 android:text="@string/balance"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_12ssp" />
+                                android:textSize="@dimen/_14ssp" />
 
                             <TextView
                                 android:id="@+id/walletAmountTextViewHomeActivity"
@@ -140,7 +140,7 @@
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:text=""
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_15ssp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"

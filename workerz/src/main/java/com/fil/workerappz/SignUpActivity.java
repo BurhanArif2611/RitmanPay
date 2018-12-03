@@ -1,12 +1,19 @@
 package com.fil.workerappz;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import android.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
@@ -19,6 +26,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fil.workerappz.pojo.LabelListData;
+import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.SessionManager;
 import com.google.android.gms.auth.api.Auth;
@@ -29,6 +37,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONObject;
 
@@ -59,19 +68,25 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
     TextView texdtviewor;
     @BindView(R.id.textviewsigninwithgoogle)
     TextView textviewsigninwithgoogle;
-    @BindView(R.id.signInWithGoogle)
-    FrameLayout signInWithGoogle;
+
     @BindView(R.id.textviewsigninwithfacebook)
     TextView textviewsigninwithfacebook;
+    @BindView(R.id.signInWithGoogle)
+    LinearLayout signInWithGoogle;
     @BindView(R.id.signInWithFacebook)
-    FrameLayout signInWithFacebook;
+    LinearLayout signInWithFacebook;
+    @BindView(R.id.alreadyhaveotptextview)
+    TextView alreadyhaveotptextview;
+    @BindView(R.id.mainSignUpLinearlayout)
+    LinearLayout mainSignUpLinearlayout;
+
     //G+ Login
     private GoogleApiClient mGoogleApiClient;
     private Intent mIntent;
     private boolean mIntentInProgress;
     // fb login
     private CallbackManager callbackManager;
-    private String accessTokenNew = "", email = "", userPin = "";
+    private String accessTokenNew = "", email = "", userPin = "", mobilenumber, validmobilenumber, comeFrom = "";
     private LabelListData datumLable_languages = new LabelListData();
 
 
@@ -86,7 +101,10 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
+        mIntent = getIntent();
+        if (mIntent != null) {
+            comeFrom = mIntent.getStringExtra("auto_logout");
+        }
         mGoogleApiClient = new GoogleApiClient.Builder(SignUpActivity.this)
                 .enableAutoManage(SignUpActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
@@ -99,7 +117,11 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 .build();
 
         fbLoginCall();
+        if (comeFrom.equalsIgnoreCase("log out")) {
+            logoutUser();
+        } else {
 
+        }
         try {
             SessionManager sessionManager = new SessionManager(SignUpActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
@@ -111,6 +133,7 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 texdtviewor.setText(datumLable_languages.getOR());
                 textviewsigninwithfacebook.setText(datumLable_languages.getSignUpWithFacebook());
                 textviewsigninwithgoogle.setText(datumLable_languages.getSignUpWithGoogle());
+
             } else {
                 signInTextViewSignUpActivity.setText(getResources().getString(R.string.sign_in));
                 signUpWithEmailMobileTextViewSignUpActivity.setText(getResources().getString(R.string.sign_up_with_email_mobile));
@@ -123,10 +146,97 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mobilenumber = getResources().getString(R.string.Please_Enter_Mobile_number);
+        validmobilenumber = getResources().getString(R.string.Please_Enter_valid_Mobile_number);
 
     }
+    private void logoutUser() {
+//        final AlertDialog.Builder builder;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder = new android.app.AlertDialog.Builder(SignUpActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert);
+//        } else {
+//            builder = new android.app.AlertDialog.Builder(SignUpActivity.this);
+//        }
+//
+//        builder.setTitle(datumLable_languages.getWorkerAppz())
+//                .setMessage("Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed")
+//                .setCancelable(false)
+//                .setPositiveButton(datumLable_languages.getYes(), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+////                .setNegativeButton(datumLable_languages.getNo(), new DialogInterface.OnClickListener() {
+////                    @Override
+////                    public void onClick(DialogInterface dialog, int which) {
+////                        dialog.dismiss();
+////                    }
+////                })
+//                .setIcon(R.drawable.app_icon)
+//                .show();
 
-    @OnClick({R.id.signUpWithEmailMobileTextViewSignUpActivity, R.id.signInTextViewSignUpActivity, R.id.signInWithFacebook ,R.id.signInWithGoogle})
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                SignUpActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle(datumLable_languages.getWorkerAppz());
+        builder.setIcon(R.drawable.app_icon);
+        builder.setMessage("Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed");
+        builder.setInverseBackgroundForced(true);
+        builder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+//    private void logoutuser() {
+//        final android.app.AlertDialog.Builder builder;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder = new android.app.AlertDialog.Builder(SignUpActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert);
+//        } else {
+//            builder = new android.app.AlertDialog.Builder(SignUpActivity.this);
+//        }
+//
+//        builder.setTitle(datumLable_languages.getWorkerAppz())
+//                .setMessage("Hi!You were logged out of the App since you were missing in action. You can continue accessing the app by logging in when needed")
+//                .setCancelable(false)
+//                .setPositiveButton(datumLable_languages.getYes(), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setNegativeButton(datumLable_languages.getNo(), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setIcon(R.drawable.app_icon)
+//                .show();
+//
+//
+////                .show();
+////        final android.app.AlertDialog alertDialog = builder.create();
+////        alertDialog.show();
+//
+////        new Handler().postDelayed(new Runnable() {
+////            @Override
+////            public void run() {
+////                if (alertDialog.isShowing()) {
+////                    alertDialog.dismiss();
+//////                    updateDeviceTokenJsonCall();
+////                }
+////            }
+////        }, 5000); //change 5000 with a specific time you want
+//    }
+
+    @OnClick({R.id.signUpWithEmailMobileTextViewSignUpActivity, R.id.signInTextViewSignUpActivity, R.id.signInWithFacebook, R.id.signInWithGoogle, R.id.alreadyhaveotptextview})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.signUpWithEmailMobileTextViewSignUpActivity:
@@ -149,10 +259,58 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 mIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(mIntent, RC_SIGN_IN);
                 break;
-            case  R.id.signInWithFacebook:
+            case R.id.signInWithFacebook:
                 fbButton.performClick();
                 break;
+            case R.id.alreadyhaveotptextview:
+                openOtpDialog();
+                break;
         }
+    }
+
+    private void openOtpDialog() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.mobile_number_custom_dialog, null);
+
+        final MaterialEditText editText = (MaterialEditText) dialogView.findViewById(R.id.MobileNoEditTextSignUpActivity);
+        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+        final LinearLayout customDialogLayput = (LinearLayout) dialogView.findViewById(R.id.customDialogLayput);
+
+//        editText.setHint(datumLable_languages.getMobileNumber());
+//        editText.setFloatingLabelText(datumLable_languages.getMobileNumber());
+        dialogBuilder.setTitle(datumLable_languages.getWorkerAppz());
+        dialogBuilder.setIcon(R.drawable.app_icon);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Constants.hideKeyboard(SignUpActivity.this);
+                if (editText.getText().toString().length() == 0 || editText.getText().toString().length() == 0) {
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, mobilenumber);
+                } else if (editText.getText().toString().length() > 0 && editText.getText().toString().length() < 7) {
+                    Constants.hideKeyboard(SignUpActivity.this);
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, validmobilenumber);
+                } else if (editText.getText().toString().startsWith("0")) {
+                    Constants.hideKeyboard(SignUpActivity.this);
+                    Constants.showMessage(customDialogLayput, SignUpActivity.this, validmobilenumber);
+                } else {
+                    dialogBuilder.dismiss();
+                    mIntent = new Intent(SignUpActivity.this, VerificationActivity.class);
+                    mIntent.putExtra("come_from", editText.getText().toString());
+                    startActivity(mIntent);
+                }
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 
     @Override

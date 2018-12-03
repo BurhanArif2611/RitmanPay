@@ -65,6 +65,12 @@ public class BeneficiaryListPojo implements Serializable {
         @SerializedName("benificaryCreatedDate")
         private String benificaryCreatedDate;
         @Expose
+        @SerializedName("benificaryState")
+        private String benificaryState;
+        @Expose
+        @SerializedName("benificaryCity")
+        private String benificaryCity;
+        @Expose
         @SerializedName("benificaryPayoutCountryCode")
         private String benificaryPayoutCountryCode;
         @Expose
@@ -212,6 +218,7 @@ public class BeneficiaryListPojo implements Serializable {
         public String getBenificaryCreatedDate() {
             return benificaryCreatedDate;
         }
+
 
         public void setBenificaryCreatedDate(String benificaryCreatedDate) {
             this.benificaryCreatedDate = benificaryCreatedDate;
@@ -420,9 +427,22 @@ public class BeneficiaryListPojo implements Serializable {
         public String getBenificaryID() {
             return benificaryID;
         }
+        public String getBenificaryState() {
+            return benificaryState;
+        }
+        public String getBenificaryCity() {
+            return benificaryCity;
+        }
 
         public void setBenificaryID(String benificaryID) {
             this.benificaryID = benificaryID;
+        }
+        public void setbenificaryCity(String benificaryCity) {
+            this.benificaryCity = benificaryCity;
+        }
+
+        public void setBenificaryState(String benificaryState) {
+            this.benificaryState = benificaryState;
         }
     }
 }

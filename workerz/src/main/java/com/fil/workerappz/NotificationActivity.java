@@ -113,6 +113,7 @@ public class NotificationActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
         layoutManager = new LinearLayoutManager(NotificationActivity.this);
         notificationRecycleView.setLayoutManager(layoutManager);
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
         if (IsNetworkConnection.checkNetworkConnection(this)) {
             notificationListJsonCall();
         } else {
@@ -315,7 +316,8 @@ public class NotificationActivity extends ActionBarActivity {
                 startActivity(mIntent);
                 break;
             case R.id.menuImageViewHeader2:
-                slideNotification.toggle();
+//                slideNotification.toggle();
+                finish();
                 break;
         }
     }

@@ -113,7 +113,7 @@ public class SendMoneyActivity extends ActionBarActivity {
                 sendMoneyViewPager.setCurrentItem(0);
             }
         });
-
+        menuImageViewHeader2.setImageResource(R.drawable.back_btn);
         sendMoneyViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -138,7 +138,8 @@ public class SendMoneyActivity extends ActionBarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
-                slideHolderSendMoney.toggle();
+//                slideHolderSendMoney.toggle();
+                finish();
                 break;
             case R.id.appImageViewHeader2:
                 mIntent = new Intent(SendMoneyActivity.this, HomeActivity.class);

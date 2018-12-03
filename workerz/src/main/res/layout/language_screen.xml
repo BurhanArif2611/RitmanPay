@@ -19,19 +19,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/app_icon"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/workerapp_home_label"
-            android:layout_marginTop="10dp"
-           />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:contentDescription="TODO"
+            android:src="@drawable/login_logo2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/select_your_language"
             android:textColor="@color/Black"
             android:textSize="@dimen/_12sdp" />
@@ -44,12 +40,12 @@
 
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="10dp">
+        android:padding="5dp">
         <fr.ganfra.materialspinner.MaterialSpinner
             android:id="@+id/languageSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp"
             app:ms_alignLabels="true"

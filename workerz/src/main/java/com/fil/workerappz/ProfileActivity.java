@@ -1,6 +1,8 @@
 package com.fil.workerappz;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -23,6 +26,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -30,12 +35,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fil.workerappz.adapter.SecurityQuestionListAdapter;
 import com.fil.workerappz.fragments.MediaChooseFragmentForProfile;
+import com.fil.workerappz.pojo.CityListPojo;
 import com.fil.workerappz.pojo.CountryData;
 import com.fil.workerappz.pojo.CountryListPojo;
+import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.ImageListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.pojo.UserListPojo;
 import com.fil.workerappz.retrofit.RestApi;
 import com.fil.workerappz.retrofit.RestClient;
@@ -61,7 +70,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,6 +101,54 @@ public class ProfileActivity extends ActionBarActivity {
     private static final int SELECT_PICTURE = 2;
     @BindView(R.id.textviewgendeprofile)
     TextView textviewgendeprofile;
+    //    @BindView(R.id.securityQuestionsRecyclerView)
+//    RecyclerView securityQuestionsRecyclerView;
+    @BindView(R.id.securityLinearLayout)
+    LinearLayout securityLinearLayout;
+    @BindView(R.id.changeLanguageTextViewProfile)
+    TextView changeLanguageTextViewProfile;
+    @BindView(R.id.securityQuestionsSpinneProfile)
+    MaterialSpinner securityQuestionsSpinneProfile;
+    @BindView(R.id.securityQuestionsEditTexProfile)
+    MaterialEditText securityQuestionsEditTexProfile;
+    @BindView(R.id.dateOfBirthEditTextProfile)
+    MaterialEditText dateOfBirthEditTextProfile;
+    @BindView(R.id.dateOfBirthTextViewProfile)
+    TextView dateOfBirthTextViewProfile;
+    @BindView(R.id.stateSpinnerSignUpProfile)
+    MaterialSpinner stateSpinnerSignUpProfile;
+    @BindView(R.id.citySpinnerSignUpProfile)
+    MaterialSpinner citySpinnerSignUpProfile;
+    @BindView(R.id.streetEditTextProfile)
+    MaterialEditText streetEditTextProfile;
+    @BindView(R.id.landmarkEditTextProfile)
+    MaterialEditText landmarkEditTextProfile;
+    @BindView(R.id.zipcodeEditTextProfile)
+    MaterialEditText zipcodeEditTextProfile;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
+    @BindView(R.id.stateFramelayoutProfile)
+    LinearLayout stateFramelayoutProfile;
+    @BindView(R.id.cityFramelayoutProfile)
+    LinearLayout cityFramelayoutProfile;
+    @BindView(R.id.addressFramelayout)
+    FrameLayout addressFramelayout;
+    @BindView(R.id.streetFramelayoutProfile)
+    LinearLayout streetFramelayoutProfile;
+    @BindView(R.id.landmarkFramelayoutProfile)
+    LinearLayout landmarkFramelayoutProfile;
+    @BindView(R.id.zipcodeFramelayoutProfile)
+    LinearLayout zipcodeFramelayoutProfile;
+    @BindView(R.id.passportnumberFramelayoutProfile)
+    LinearLayout passportnumberFramelayoutProfile;
+    @BindView(R.id.emiratsFramelayoutProfile)
+    LinearLayout emiratsFramelayoutProfile;
+    @BindView(R.id.mobileNumberFramelayoutProfile)
+    FrameLayout mobileNumberFramelayoutProfile;
+    @BindView(R.id.emailFramelayoutProfile)
+    FrameLayout emailFramelayoutProfile;
+    @BindView(R.id.countryrFramelayoutProfile)
+    FrameLayout countryrFramelayoutProfile;
     private String countryCode;
     private int countryId;
     @BindView(R.id.backImageViewHeader)
@@ -131,7 +191,8 @@ public class ProfileActivity extends ActionBarActivity {
     TextView addressTextViewProfile;
     @BindView(R.id.updateProfileTextView)
     TextView updateProfileTextView;
-
+    private final ArrayList<StateListPojo.DataStateList> stateListPojos = new ArrayList<>();
+    private final ArrayList<CityListPojo.Data> cityListPojos = new ArrayList<>();
     private Intent mIntent;
     private boolean editable = false;
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
@@ -146,11 +207,21 @@ public class ProfileActivity extends ActionBarActivity {
     private String countryFlagImage = "";
     private String CountryCodegoogle = "";
     private File compressedImage;
+    private int stateId = 0;
+    private int cityId = 0;
     private static final int REQUEST_CODE_WRITE_PERMISSIONS = 003;
+    private String dateofbirth;
+    private Calendar myCalendar1 = Calendar.getInstance();
+
 
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
-    private String firstname,lastname,address,selectcountry,passportmsg,emiratesidmsg,nointernetmsg;
+    private String firstname, lastname, address, selectcountry, passportmsg, emiratesidmsg, dateofbirthmsg, nointernetmsg;
+    private SecurityQuestionListAdapter securityQuestionListAdapter;
+    private final ArrayList<GetSecurityListPojo.DataSecurityList> SequrityQuestionListPojos = new ArrayList<>();
+    private LinearLayoutManager layoutManager;
+    private String answerId = "";
+    private String answer = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,20 +247,27 @@ public class ProfileActivity extends ActionBarActivity {
                 titleTextViewViewHeader.setText(datumLable_languages.getProfile());
                 editProfilePicture.setText(datumLable_languages.getEdit());
                 firstNameEditTextProfile.setHint(datumLable_languages.getFirstName());
+                firstNameEditTextProfile.setFloatingLabelText(datumLable_languages.getFirstName());
                 lastNameEditTextProfile.setHint(datumLable_languages.getLastName());
+                lastNameEditTextProfile.setFloatingLabelText(datumLable_languages.getLastName());
                 mobileNumberEditTextProfile.setHint(datumLable_languages.getMobileNumber());
+                mobileNumberEditTextProfile.setFloatingLabelText(datumLable_languages.getMobileNumber());
                 emailEditTextProfile.setHint(datumLable_languages.getEmail());
+                emailEditTextProfile.setFloatingLabelText(datumLable_languages.getEmail());
                 addressEditTextProfile.setHint(datumLable_languages.getAddress());
+                addressEditTextProfile.setFloatingLabelText(datumLable_languages.getAddress());
                 countryOfResidenceEditTextProfile.setHint(datumLable_languages.getCountryOfResidence());
                 passportNoEditTextProfile.setHint(datumLable_languages.getPassportNo());
+                passportNoEditTextProfile.setFloatingLabelText(datumLable_languages.getPassportNo());
                 emiratesIdEditTextProfile.setHint(datumLable_languages.getEmiratesId());
+                emiratesIdEditTextProfile.setFloatingLabelText(datumLable_languages.getEmiratesId());
                 countryOfResidenceEditTextProfile.setFloatingLabelText(datumLable_languages.getCountryOfResidence());
                 textviewgendeprofile.setText(datumLable_languages.getGender());
                 maleRadioButtonProfile.setText(datumLable_languages.getMale());
                 femaleRadioButtonProfile.setText(datumLable_languages.getFemale());
                 changePinTextViewProfile.setText(datumLable_languages.getChangePIN());
                 skipTextViewViewHeader.setText(datumLable_languages.getEdit());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
             } else {
                 titleTextViewViewHeader.setText(getResources().getString(R.string.profile));
@@ -208,31 +286,37 @@ public class ProfileActivity extends ActionBarActivity {
                 femaleRadioButtonProfile.setText(getResources().getString(R.string.female));
                 skipTextViewViewHeader.setText(getResources().getString(R.string.edit));
                 changePinTextViewProfile.setText(getResources().getString(R.string.change_pin));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (datumLable_languages_msg != null) {
-            firstname=datumLable_languages_msg.getEnterFirstName();
-            lastname=datumLable_languages_msg.getEnterLastName();
-            selectcountry=datumLable_languages_msg.getSelectCountryOfResidence();
-            passportmsg=datumLable_languages_msg.getEnterPassportNo();
-            emiratesidmsg=datumLable_languages_msg.getEnterEmiratesId();
-            address=datumLable_languages_msg.getEnterAddress();
+            firstname = datumLable_languages_msg.getEnterFirstName();
+            lastname = datumLable_languages_msg.getEnterLastName();
+            selectcountry = datumLable_languages_msg.getSelectCountryOfResidence();
+            passportmsg = datumLable_languages_msg.getEnterPassportNo();
+            emiratesidmsg = datumLable_languages_msg.getEnterEmiratesId();
+            address = datumLable_languages_msg.getEnterAddress();
+            dateofbirthmsg = datumLable_languages_msg.getSelectDateOfBirth();
 
         } else {
 
-            firstname=getResources().getString(R.string.Please_Enter_First_Name);
-            lastname=getResources().getString(R.string.Please_Enter_LAST_Name);
-            selectcountry=getResources().getString(R.string.Please_Select_countryof_residence);
-            passportmsg=getResources().getString(R.string.Please_enter_passport_no);
-            emiratesidmsg=getResources().getString(R.string.Please_enter_emirates_id);
-            address=getResources().getString(R.string.Please_Enter_address);
+            firstname = getResources().getString(R.string.Please_Enter_First_Name);
+            lastname = getResources().getString(R.string.Please_Enter_LAST_Name);
+            selectcountry = getResources().getString(R.string.Please_Select_countryof_residence);
+            passportmsg = getResources().getString(R.string.Please_enter_passport_no);
+            emiratesidmsg = getResources().getString(R.string.Please_enter_emirates_id);
+            address = getResources().getString(R.string.Please_Enter_address);
+            dateofbirthmsg = getResources().getString(R.string.Please_select_Dob);
 
 
         }
+//        layoutManager = new LinearLayoutManager(ProfileActivity.this);
+//        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
+        appImageViewHeader1.setVisibility(View.VISIBLE);
         setProfileInformation();
+        questionListJsonCall();
         if (SugarRecord.count(CountryData.class) > 0) {
             countryListPojos.addAll(SugarRecord.listAll(CountryData.class));
 
@@ -285,6 +369,8 @@ public class ProfileActivity extends ActionBarActivity {
                 Constants.showMessage(mainProfileActivityLinearLayout, this, nointernetmsg);
             }
         }
+        stateListJsonCall();
+
         firstNameEditTextProfile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -318,6 +404,130 @@ public class ProfileActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+//    private void questionListJsonCall() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//
+//
+////                jsonObject.put("languageID", Constants.language_id);
+//            jsonObject.put("userMobile", "0");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String json = "[" + jsonObject + "]";
+//        Constants.showProgress(ProfileActivity.this);
+//        CustomLog.d("System out", "question list json " + json);
+//        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+//
+//        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+//            @Override
+//            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+//                Constants.closeProgress();
+//                if (response.body() != null && response.body() instanceof ArrayList) {
+//                    SequrityQuestionListPojos.clear();
+//                    if (response.body().get(0).getStatus() == true) {
+//                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+//                        securityLinearLayout.setVisibility(View.VISIBLE);
+//                        securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos,false);
+//                        securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
+//                    } else {
+//                        securityLinearLayout.setVisibility(View.GONE);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
+//                Constants.closeProgress();
+//            }
+//        });
+//    }
+
+
+    private void questionListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+
+//                jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("userMobile", "0");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "question list json " + json);
+        Call<List<GetSecurityListPojo>> call = RestClient.get().getSecurityQuestionJsonCall(json);
+
+        call.enqueue(new Callback<List<GetSecurityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<GetSecurityListPojo>> call, Response<List<GetSecurityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    SequrityQuestionListPojos.clear();
+                    if (response.body().get(0).getStatus() == true) {
+                        SequrityQuestionListPojos.addAll(response.body().get(0).getData());
+                        securityLinearLayout.setVisibility(View.VISIBLE);
+
+
+                        ArrayList<String> questionList = new ArrayList<>();
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            questionList.add(SequrityQuestionListPojos.get(i).getSecQuestion().trim());
+                        }
+                        for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
+                            if (getUserData().getSecID().equalsIgnoreCase(SequrityQuestionListPojos.get(i).getSecID())) {
+                                securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
+                                securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(i).getSecQuestion());
+                                securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(i).getSecQuestion());
+                                answerId = SequrityQuestionListPojos.get(i).getSecID();
+                                securityQuestionsEditTexProfile.setText(getUserData().getUserSecurityAnswer());
+                                break;
+                            }
+                        }
+
+//
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, questionList);
+                        adapter.setDropDownViewResource(R.layout.custom_questions_layout);
+                        securityQuestionsSpinneProfile.setAdapter(adapter);
+
+                        securityQuestionsSpinneProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
+                                    securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    answerId = SequrityQuestionListPojos.get(position).getSecID();
+                                    securityQuestionsEditTexProfile.setText("");
+                                    answer = "";
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else
+
+                    {
+                        securityLinearLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetSecurityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
     }
 
     public static void OnlyCharacter(MaterialEditText editText) {
@@ -361,6 +571,12 @@ public class ProfileActivity extends ActionBarActivity {
         mobileNumberEditTextProfile.setText(userListPojo.getUserMobile());
         emiratesIdEditTextProfile.setText(userListPojo.getUserEmiratesID());
         passportNoEditTextProfile.setText(userListPojo.getUserPassportNo());
+        dateOfBirthEditTextProfile.setText(userListPojo.getuserDateOfBirth());
+        streetEditTextProfile.setText(userListPojo.getuserStreet());
+        landmarkEditTextProfile.setText(userListPojo.getuserLandmark());
+        zipcodeEditTextProfile.setText(userListPojo.getuserZipcode());
+        dateofbirth = userListPojo.getuserDateOfBirth();
+
 
 //        if (userListPojo.getUserGender().equalsIgnoreCase("Male")) {
 //            maleRadioButtonProfile.setChecked(true);
@@ -370,7 +586,7 @@ public class ProfileActivity extends ActionBarActivity {
 //            gender = "Female";
 //        }
 
-        if (userListPojo.getUserGender().equalsIgnoreCase(datumLable_languages.getMale())) {
+        if (userListPojo.getUserGender().equalsIgnoreCase("Male")) {
             maleRadioButtonProfile.setChecked(true);
             gender = datumLable_languages.getMale();
         } else {
@@ -380,7 +596,28 @@ public class ProfileActivity extends ActionBarActivity {
 
         Constants.latitude = userListPojo.getUserLattitude();
         Constants.longitude = userListPojo.getUserLongitutde();
+        securityQuestionsEditTexProfile.addTextChangedListener(new TextWatcher() {
 
+            // the user's changes are saved here
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+
+                int main_length = securityQuestionsEditTexProfile.getText().toString().length();
+
+                if (main_length > 0) {
+
+                    answer = String.valueOf(c);
+                }
+
+            }
+        });
         maleFemaleRadioGroupProfile.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -397,9 +634,9 @@ public class ProfileActivity extends ActionBarActivity {
 //                    gender = "Female";
 //                }
                 if (gender1.equalsIgnoreCase(datumLable_languages.getMale())) {
-                    gender = datumLable_languages.getMale();
+                    gender = "Male";
                 } else {
-                    gender = datumLable_languages.getFemale();
+                    gender = "Female";
                 }
             }
         });
@@ -410,7 +647,17 @@ public class ProfileActivity extends ActionBarActivity {
 
     }
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture,R.id.changeLanguageTextViewProfile})
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mIntent);
+        finish();
+    }
+
+
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile, R.id.mobileNumberFramelayoutProfile, R.id.emailFramelayoutProfile, R.id.countryrFramelayoutProfile, R.id.stateFramelayoutProfile, R.id.cityFramelayoutProfile, R.id.addressFramelayout, R.id.streetFramelayoutProfile, R.id.landmarkFramelayoutProfile, R.id.zipcodeFramelayoutProfile, R.id.passportnumberFramelayoutProfile, R.id.emiratsFramelayoutProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -418,6 +665,48 @@ public class ProfileActivity extends ActionBarActivity {
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
                 finish();
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
+                finish();
+                break;
+            case R.id.dateOfBirthEditTextProfile:
+                DataPickerDialog1();
+                break;
+            case R.id.mobileNumberFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.emailFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.countryrFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.stateFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.cityFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.addressFramelayout:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.streetFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.landmarkFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.zipcodeFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.emiratsFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+                break;
+            case R.id.passportnumberFramelayoutProfile:
+                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
                 break;
             case R.id.changePinTextViewProfile:
                 mIntent = new Intent(ProfileActivity.this, ChangePinActivity.class);
@@ -458,7 +747,7 @@ public class ProfileActivity extends ActionBarActivity {
                             profileUpdateJsonCall();
                         }
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                 }
                 break;
@@ -480,6 +769,52 @@ public class ProfileActivity extends ActionBarActivity {
         }
     }
 
+
+    private void DataPickerDialog1() {
+        final Calendar myCalendar = Calendar.getInstance();
+        int mYear = myCalendar.get(Calendar.YEAR) - 18;
+        int mMonth = myCalendar.get(Calendar.MONTH);
+        int mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth, mDay);
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(ProfileActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                Calendar minAdultAge = new GregorianCalendar();
+                minAdultAge.add(Calendar.YEAR, -18);
+                if (minAdultAge.before(myCalendar)) {
+                    Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please Enter Valid Date");
+                } else {
+                    myCalendar1 = myCalendar;
+                    updateLabel();
+                }
+            }
+        }, mYear, mMonth, mDay);
+
+        dpd.getDatePicker().setMaxDate(mincalendar.getTimeInMillis());
+        dpd.show();
+
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        dateOfBirthEditTextProfile.setText(sdf.format(myCalendar1.getTime()));
+
+//        dateofbirth = Constants.formatDate(dateOfBirthEditTextProfile.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        dateofbirth = sdf.format(myCalendar1.getTime());
+
+    }
+
     private boolean checkValidation() {
         boolean checkFlag = true;
         try {
@@ -494,6 +829,9 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (lastNameEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, lastname);
             checkFlag = false;
+        } else if (dateOfBirthEditTextProfile.getText().toString().length() == 0) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, dateofbirthmsg);
+            checkFlag = false;
         } else if (countryName.length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, selectcountry);
             checkFlag = false;
@@ -506,7 +844,14 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
             checkFlag = false;
+        } else if (securityQuestionsEditTexProfile.getText().toString().equals("")) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
+            checkFlag = false;
         }
+//        else if (answer.equals("")) {
+//            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
+//            checkFlag = false;
+//        }
 
 //        if (emailEditTextSignUpSubmit.getText().toString().length() != 0) {
 //            signUpWith = "Email";
@@ -549,23 +894,72 @@ public class ProfileActivity extends ActionBarActivity {
             emiratesIdEditTextProfile.setEnabled(false);
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setEnabled(true);
+            securityQuestionsEditTexProfile.setEnabled(true);
 //            countryOfResidenceEditTextProfile.setEnabled(true);
             countryOfResidenceEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
+            dateOfBirthTextViewProfile.setEnabled(true);
+            dateOfBirthEditTextProfile.setEnabled(true);
+
+            stateSpinnerSignUpProfile.setEnabled(false);
+            citySpinnerSignUpProfile.setEnabled(false);
+            streetEditTextProfile.setEnabled(false);
+            landmarkEditTextProfile.setEnabled(false);
+            zipcodeEditTextProfile.setEnabled(false);
+            mobileNumberEditTextProfile.setEnabled(false);
+            emailFramelayoutProfile.setEnabled(true);
+            countryrFramelayoutProfile.setEnabled(true);
+            stateFramelayoutProfile.setEnabled(true);
+            cityFramelayoutProfile.setEnabled(true);
+            addressFramelayout.setEnabled(true);
+            landmarkFramelayoutProfile.setEnabled(true);
+            streetFramelayoutProfile.setEnabled(true);
+            zipcodeFramelayoutProfile.setEnabled(true);
+            emiratsFramelayoutProfile.setEnabled(true);
+            passportnumberFramelayoutProfile.setEnabled(true);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos, true);
+//            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         } else {
+            mobileNumberFramelayoutProfile.setEnabled(false);
+            emailFramelayoutProfile.setEnabled(false);
+            countryrFramelayoutProfile.setEnabled(false);
+            stateFramelayoutProfile.setEnabled(false);
+            cityFramelayoutProfile.setEnabled(false);
+            addressFramelayout.setEnabled(false);
+            landmarkFramelayoutProfile.setEnabled(false);
+            streetFramelayoutProfile.setEnabled(false);
+            zipcodeFramelayoutProfile.setEnabled(false);
+            emiratsFramelayoutProfile.setEnabled(false);
+            passportnumberFramelayoutProfile.setEnabled(false);
             mainProfileActivityLinearLayout.setFocusable(true);
             skipTextViewViewHeader.setFocusable(true);
             skipTextViewViewHeader.setFocusableInTouchMode(true);
             addressTextViewProfile.setEnabled(false);
             firstNameEditTextProfile.setEnabled(false);
             lastNameEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setEnabled(false);
+            securityQuestionsEditTexProfile.setEnabled(false);
             maleRadioButtonProfile.setEnabled(false);
             femaleRadioButtonProfile.setEnabled(false);
             emiratesIdEditTextProfile.setEnabled(false);
             mobileNumberEditTextProfile.setEnabled(false);
             emailEditTextProfile.setEnabled(false);
+            securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
             passportNoEditTextProfile.setEnabled(false);
             addressEditTextProfile.setEnabled(false);
+            dateOfBirthTextViewProfile.setEnabled(false);
+            dateOfBirthEditTextProfile.setEnabled(false);
             countryOfResidenceEditTextProfile.setEnabled(false);
+            stateSpinnerSignUpProfile.setEnabled(false);
+            citySpinnerSignUpProfile.setEnabled(false);
+            streetEditTextProfile.setEnabled(false);
+            landmarkEditTextProfile.setEnabled(false);
+            zipcodeEditTextProfile.setEnabled(false);
+//            securityQuestionsRecyclerView.setClickable(false);
+//            securityQuestionsRecyclerView.setEnabled(false);
+            securityQuestionListAdapter = new SecurityQuestionListAdapter(ProfileActivity.this, SequrityQuestionListPojos, false);
+//            securityQuestionsRecyclerView.setAdapter(securityQuestionListAdapter);
         }
     }
 
@@ -628,7 +1022,7 @@ public class ProfileActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
                         uploadProfilePicture();
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                     break;
                 case SELECT_PICTURE:
@@ -677,7 +1071,7 @@ public class ProfileActivity extends ActionBarActivity {
                     if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
                         uploadProfilePicture();
                     } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                     }
                     break;
                 case REQUEST_CODE_AUTOCOMPLETE:
@@ -781,7 +1175,7 @@ public class ProfileActivity extends ActionBarActivity {
                             setProfileInformation();
                             profileUpdateJsonCall();
                         } else {
-                            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this,nointernetmsg);
+                            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
                         }
 
                     } else {
@@ -829,7 +1223,13 @@ public class ProfileActivity extends ActionBarActivity {
             jsonObject.put("userDeviceID", Constants.device_token);
             jsonObject.put("userID", getMyUserId());
             jsonObject.put("userProfilePicture", userListPojo.getUserProfilePicture());
-            jsonObject.put("userGender", gender);
+            jsonObject.put("userGender", gender.trim());
+            jsonObject.put("secID", answerId);
+            jsonObject.put("userSecurityAnswer", answer);
+            jsonObject.put("userDateOfBirth", dateofbirth);
+            jsonObject.put("userStreet", streetEditTextProfile.getText().toString());
+            jsonObject.put("userLandmark", landmarkEditTextProfile.getText().toString());
+            jsonObject.put("userZipcode", zipcodeEditTextProfile.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -858,6 +1258,8 @@ public class ProfileActivity extends ActionBarActivity {
                         sessionManager.setuserflagimage(countryFlagImage);
                         sessionManager.updateUserProfile(new Gson().toJson(userListPojos.get(0).getData().get(0)));
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
+                        answerId = "";
+                        answer = "";
                     } else {
                         Constants.closeProgress();
                         Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, datumLable_languages_msg.getMessage(userListPojos.get(0).getInfo().toString()));
@@ -933,4 +1335,159 @@ public class ProfileActivity extends ActionBarActivity {
             }
         });
     }
+
+    private void stateListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("languageID", Constants.language_id);
+            jsonObject.put("countryID", countryId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "state json " + json);
+        Call<List<StateListPojo>> call = RestClient.get().stateListJsonCall(json);
+
+        call.enqueue(new Callback<List<StateListPojo>>() {
+            @Override
+            public void onResponse(Call<List<StateListPojo>> call, Response<List<StateListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    stateListPojos.clear();
+                    ArrayList<String> stateList = new ArrayList<>();
+                    stateList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    stateSpinnerSignUpProfile.setAdapter(adapter);
+                    if (response.body().get(0).getStatus() == true) {
+                        stateListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < stateListPojos.size(); i++) {
+                            stateList.add(new String(Base64.decode(stateListPojos.get(i).getStateName().trim().getBytes(), Base64.DEFAULT)));
+                            if (getUserData().getStateID() == (stateListPojos.get(i).getStateID())) {
+                                stateSpinnerSignUpProfile.setSelection(i + 1);
+                                stateId = stateListPojos.get(i).getStateID();
+                                cityId = 0;
+                                cityListJsonCall();
+                                break;
+                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, stateList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        stateSpinnerSignUpProfile.setAdapter(adapter);
+
+                        stateSpinnerSignUpProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StateListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
+    private void cityListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+            if (stateId == 0 && countryId == (0)) {
+                jsonObject.put("languageID", Constants.language_id);
+            } else if (stateId == 0) {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+            } else {
+                jsonObject.put("languageID", Constants.language_id);
+                jsonObject.put("countryID", countryId);
+                jsonObject.put("stateID", stateId);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(ProfileActivity.this);
+        CustomLog.d("System out", "city json " + json);
+        Call<List<CityListPojo>> call = RestClient.get().cityListJsonCall(json);
+
+        call.enqueue(new Callback<List<CityListPojo>>() {
+            @Override
+            public void onResponse(Call<List<CityListPojo>> call, Response<List<CityListPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    cityListPojos.clear();
+                    ArrayList<String> cityList = new ArrayList<>();
+                    cityList.clear();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, cityList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    citySpinnerSignUpProfile.setAdapter(adapter);
+
+                    if (response.body().get(0).getStatus() == true) {
+                        cityListPojos.addAll(response.body().get(0).getData());
+
+                        for (int i = 0; i < cityListPojos.size(); i++) {
+                            cityList.add(new String(Base64.decode(cityListPojos.get(i).getCityName().trim().getBytes(), Base64.DEFAULT)));
+                            if (getUserData().getCityID() == (cityListPojos.get(i).getCityID())) {
+                                cityId = cityListPojos.get(i).getCityID();
+                                citySpinnerSignUpProfile.setSelection(i + 1);
+                                break;
+                            }
+
+
+                        }
+                        adapter = new ArrayAdapter<>(ProfileActivity.this, android.R.layout.simple_spinner_item, cityList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        citySpinnerSignUpProfile.setAdapter(adapter);
+
+                        citySpinnerSignUpProfile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    cityId = cityListPojos.get(position).getCityID();
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CityListPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
 }

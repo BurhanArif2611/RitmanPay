@@ -26,13 +26,17 @@ public class BrowsePlansListAdapter extends RecyclerView.Adapter<BrowsePlansList
 
     private final Activity context;
     private String comeFrom = "";
+    private String validity = "";
+    private String receiveValue = "";
     private Intent mIntent;
     private final List<GetProductsList> getProductsLists;
 
-    public BrowsePlansListAdapter(Activity context, List<GetProductsList> getProductsLists) {
+    public BrowsePlansListAdapter(Activity context, List<GetProductsList> getProductsLists, String validity, String receiveValue) {
         this.getProductsLists = getProductsLists;
         this.context = context;
         this.comeFrom = comeFrom;
+        this.validity = validity;
+        this.receiveValue = receiveValue;
     }
 
     @Override
@@ -46,10 +50,12 @@ public class BrowsePlansListAdapter extends RecyclerView.Adapter<BrowsePlansList
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
+      holder.receiveValuelabelTextView.setText(receiveValue);
+      holder.validitylabelTextview.setText(validity);
         if (getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getValidityPeriodIso() == null) {
             holder.validityBrowsePlanAdapterTextView.setText("NA");
         } else {
-            String validity= getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getValidityPeriodIso();
+            String validity = getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getValidityPeriodIso();
             if (validity.startsWith("P")) {
                 holder.validityBrowsePlanAdapterTextView.setText(validity.substring(1));
             } else {
@@ -57,8 +63,8 @@ public class BrowsePlansListAdapter extends RecyclerView.Adapter<BrowsePlansList
             }
         }
         holder.valueBrowsePlanAdapterTextView.setText(getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getDefaultDisplayText());
-        holder.receiveValueBrowsePlanAdapterTextView.setText(getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getReceiveCurrencyIso()+" "+getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getReceiveValueExcludingTax());
-        holder.globalValueBrowsePlanAdapterTextView.setText(getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getSendCurrencyIso()+" "+getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getSendValue());
+        holder.receiveValueBrowsePlanAdapterTextView.setText(getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getReceiveCurrencyIso() + " " + getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getReceiveValueExcludingTax());
+        holder.globalValueBrowsePlanAdapterTextView.setText(getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getSendCurrencyIso() + " " + getProductsLists.get(0).getData().get(holder.getAdapterPosition()).getMaximum().getSendValue());
 
         holder.globalValueBrowsePlanAdapterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +90,11 @@ public class BrowsePlansListAdapter extends RecyclerView.Adapter<BrowsePlansList
         TextView receiveValueBrowsePlanAdapterTextView;
         @BindView(R.id.globalValueBrowsePlanAdapterTextView)
         TextView globalValueBrowsePlanAdapterTextView;
+        @BindView(R.id.validitylabelTextview)
+        TextView validitylabelTextview;
+
+        @BindView(R.id.receiveValuelabelTextView)
+        TextView receiveValuelabelTextView;
 
         ViewHolder(View view) {
             super(view);

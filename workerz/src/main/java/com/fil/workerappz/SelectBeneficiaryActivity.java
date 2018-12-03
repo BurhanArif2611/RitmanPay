@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +16,6 @@ import android.widget.TextView;
 import com.fil.workerappz.adapter.BeneficiaryListAdapter;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
 import com.fil.workerappz.pojo.LabelListData;
-import com.fil.workerappz.pojo.MessagelistData;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
@@ -95,6 +97,8 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
     LinearLayout footerlinerselectbeneficiary;
     @BindView(R.id.textviewNoprecordFound)
     TextView textviewNoprecordFound;
+    @BindView(R.id.inputSearch)
+    EditText inputSearch;
     private BeneficiaryListAdapter beneficiaryListAdapter;
     private LinearLayoutManager layoutManager;
     private String comeFrom = "";
@@ -124,7 +128,7 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
         layoutManager = new LinearLayoutManager(SelectBeneficiaryActivity.this);
         selectBeneficiaryRecyclerView.setLayoutManager(layoutManager);
         try {
-            sessionManager=new SessionManager(SelectBeneficiaryActivity.this);
+            sessionManager = new SessionManager(SelectBeneficiaryActivity.this);
             datumLable_languages = sessionManager.getAppLanguageLabel();
 
             if (datumLable_languages != null) {
@@ -134,12 +138,10 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                 quickPayTextViewFooter.setText(datumLable_languages.getQuickPay());
                 beneficiaryTextViewFooter.setText(datumLable_languages.getBeneficiary());
                 historyTextViewFooter.setText(datumLable_languages.getHistory());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
 
-            }
-            else
-            {
+            } else {
                 titleTextViewViewHeader2.setText(getResources().getString(R.string.select_beneficiary));
                 textviewNoprecordFound.setText(getResources().getString(R.string.no_record_found));
                 titleTextViewViewHeader2.setText(getResources().getString(R.string.quick_pay));
@@ -147,36 +149,57 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                 quickPayTextViewFooter.setText(getResources().getString(R.string.quick_pay));
                 beneficiaryTextViewFooter.setText(getResources().getString(R.string.beneficiary));
                 historyTextViewFooter.setText(getResources().getString(R.string.history));
-                nointernetmsg=getResources().getString(R.string.no_internet);
+                nointernetmsg = getResources().getString(R.string.no_internet);
 
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         mIntent = getIntent();
         if (mIntent != null) {
             comeFrom = mIntent.getStringExtra("come_from");
-
-
         }
         if (!comeFrom.equalsIgnoreCase("")) {
             titleTextViewViewHeader2.setText(datumLable_languages.getSelectBeneficiary());
             menuImageViewHeader2.setImageResource(R.drawable.back_btn);
             footerlinerselectbeneficiary.setVisibility(View.GONE);
+            inputSearch.setVisibility(View.VISIBLE);
 
         } else {
             titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryList());
             footerlinerselectbeneficiary.setVisibility(View.VISIBLE);
+            inputSearch.setVisibility(View.GONE);
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
         }
 
         if (IsNetworkConnection.checkNetworkConnection(SelectBeneficiaryActivity.this)) {
             beneficiaryListJsonCall();
         } else {
-            Constants.showMessage(mainSelectBeneficiaryLinearLayout, SelectBeneficiaryActivity.this,nointernetmsg );
+            Constants.showMessage(mainSelectBeneficiaryLinearLayout, SelectBeneficiaryActivity.this, nointernetmsg);
         }
+
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                    beneficiaryListAdapter.getFilter().filter(cs);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+
+            }
+        });
         beneficiarySelection();
 
         selectBeneficiaryRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -217,7 +240,6 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
 
     private void beneficiaryListJsonCall() {
 
-
         Constants.showProgress(SelectBeneficiaryActivity.this);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -239,8 +261,8 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                     try {
                         Constants.closeProgress();
 
-                        if (response.body() != null  && response.body().size() > 0) {
-                            isLoading=false;
+                        if (response.body() != null && response.body().size() > 0) {
+                            isLoading = false;
                             if (response.body().get(0).getStatus() == false) {
                                 isLastpage = true;
                                 if (beneficiaryListPojos.size() == 0) {
@@ -258,7 +280,7 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                                     beneficiaryListPojos.addAll(response.body());
 //                                    layoutManager = new LinearLayoutManager(SelectBeneficiaryActivity.this);
 //                                    selectBeneficiaryRecyclerView.setLayoutManager(layoutManager);
-                                    beneficiaryListAdapter = new BeneficiaryListAdapter(SelectBeneficiaryActivity.this, beneficiaryListPojos, comeFrom);
+                                    beneficiaryListAdapter = new BeneficiaryListAdapter(SelectBeneficiaryActivity.this, beneficiaryListPojos.get(0).getData(), comeFrom);
                                     selectBeneficiaryRecyclerView.setAdapter(beneficiaryListAdapter);
                                 } else {
                                     selectBeneficiaryRecyclerView.setVisibility(View.VISIBLE);
@@ -321,7 +343,8 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
                 if (!comeFrom.equalsIgnoreCase("")) {
                     finish();
                 } else {
-                    slideHolderSelectBeneficiary.toggle();
+//                    slideHolderSelectBeneficiary.toggle();
+                    finish();
                 }
                 break;
             }

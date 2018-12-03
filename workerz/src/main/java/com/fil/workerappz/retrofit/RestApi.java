@@ -19,6 +19,7 @@ import com.fil.workerappz.pojo.DingTransferPayJsonPojo;
 import com.fil.workerappz.pojo.DocumentListCountryWiseJsonPojo;
 import com.fil.workerappz.pojo.EditBeneficiaryJsonPojo;
 import com.fil.workerappz.pojo.GetLanguageList;
+import com.fil.workerappz.pojo.GetSecurityListPojo;
 import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.ImageListPojo;
 import com.fil.workerappz.pojo.JsonListPojo;
@@ -27,14 +28,19 @@ import com.fil.workerappz.pojo.KYCUploadedDocumentListJsonPojo;
 import com.fil.workerappz.pojo.LabelListJsonPojo;
 import com.fil.workerappz.pojo.LanguagesListPojo;
 import com.fil.workerappz.pojo.MessageListJsonPojo;
+import com.fil.workerappz.pojo.ModeWiseCountryListJsonPojo;
 import com.fil.workerappz.pojo.NotificationListJsonPojo;
 import com.fil.workerappz.pojo.PurposeOfTransferListPojo;
 import com.fil.workerappz.pojo.QuickPayJsonPojo;
+import com.fil.workerappz.pojo.RelationshipListJsonPojo;
 import com.fil.workerappz.pojo.SendMoneyBeneficiaryJsonPojo;
 import com.fil.workerappz.pojo.SendPaymentJsonPojo;
 import com.fil.workerappz.pojo.SendReceiveMoneyJsonPojo;
+import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.pojo.TransactionHistoryListJsonPojo;
+import com.fil.workerappz.pojo.TransactionReceiptListJsonPojo;
 import com.fil.workerappz.pojo.UserListPojo;
+import com.fil.workerappz.pojo.VerifySecurityListPojo;
 import com.fil.workerappz.pojo.WalletSuggestionListPojo;
 import com.fil.workerappz.pojo.WalletToWalletTransferListPojo;
 import com.fil.workerappz.pojo.ding.GetBalanceList;
@@ -78,6 +84,22 @@ public interface RestApi {
     Call<List<CountryListPojo>> countryListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
+    @POST("state/list-state")
+    Call<List<StateListPojo>> stateListJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("city/list-city")
+    Call<List<CityListPojo>> cityListJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("users/get-security-question")
+    Call<List<GetSecurityListPojo>> getSecurityQuestionJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("users/verify-security-question")
+    Call<List<VerifySecurityListPojo>>verifySecurityQuestionJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
     @POST("wallettransactions/send-ding-transfer")
     Call<List<DingTransferPayJsonPojo>> dingPaymentTransferJsonCall(@Field("json") String json);
 
@@ -91,7 +113,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("users/verify-otp")
-    Call<List<JsonListPojo>> verifyOTPJsonCall(@Field("json") String json);
+    Call<List<UserListPojo>> verifyOTPJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("users/forgot-pin")
@@ -110,16 +132,20 @@ public interface RestApi {
     Call<List<KYCUploadedDocumentListJsonPojo>> uploadedKYCDocumentListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
+    @POST("users/get-relationships")
+    Call<List<RelationshipListJsonPojo>> userRelationShipListJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
     @POST("wallettransactions/get-balance")
     Call<List<BalanceListJsonPojo>> getBalanceListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/customer-cards")
-    Call<List<CustomerCardJsonPojo>>customerCardJsonCall(@Field("json") String json);
+    Call<List<CustomerCardJsonPojo>> customerCardJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/card-balance")
-    Call<List<CustomerCardBalanceJsonPojo>>customerCardBalanceJsonCall(@Field("json") String json);
+    Call<List<CustomerCardBalanceJsonPojo>> customerCardBalanceJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/add-balance")
@@ -132,6 +158,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("wallettransactions/get-history")
     Call<List<TransactionHistoryListJsonPojo>> walletHistoryJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("wallettransactions/get-transaction-receipt")
+    Call<List<TransactionReceiptListJsonPojo>> transactionReceipyJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-bank-network")
@@ -162,6 +192,10 @@ public interface RestApi {
     Call<List<IdTypeListJsonPojo>> getIdTypeJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
+    @POST("wallettransactions/get-mode-wise-country")
+    Call<List<ModeWiseCountryListJsonPojo>>getModeWiseCountryJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
     @POST("users/update-user")
     Call<List<UserListPojo>> updateUserJsonCall(@Field("json") String json);
 
@@ -185,9 +219,6 @@ public interface RestApi {
     @POST("wallettransactions/calculate-transfer")
     Call<List<CalculateTransferListJsonPojo>> calculateTransferJsonCall(@Field("json") String json);
 
-    @FormUrlEncoded
-    @POST("city/list-city")
-    Call<List<CityListPojo>> getCityListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/list-benificary")
@@ -257,7 +288,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-providers")
-    Call<List<GetProvidersList>> getProvidersJsonCall(@Field("json") String json);
+    Call<List<GetProvidersList>>getProvidersJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-regions")

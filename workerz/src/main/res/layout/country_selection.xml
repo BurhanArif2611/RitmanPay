@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/rootBottomSheet1">
   <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -14,6 +19,7 @@
         android:background="@color/colorWhite"
         android:gravity="center|left"
         android:padding="@dimen/_10ssp"
+        android:id="@+id/labelselectcountryTextView"
         android:text="@string/select_country"
         android:textColor="@color/Black"
         android:textSize="@dimen/_13ssp"
@@ -30,11 +36,27 @@
         android:contentDescription="TODO" />
 
   </FrameLayout>
+  <EditText
+      android:id="@+id/inputSearch"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:hint="Search Country.."
+      android:padding="@dimen/_10ssp"
+      android:inputType="textVisiblePassword"/>
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/countrySelectionRecyclerView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="match_parent"
+    >
 
   </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+        android:id="@+id/rootBottomSheet2">
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

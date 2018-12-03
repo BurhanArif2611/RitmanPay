@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
@@ -17,10 +19,12 @@ import android.widget.TextView;
 import com.fil.workerappz.R;
 import com.fil.workerappz.pojo.ding.GetProductsList;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -59,6 +63,7 @@ public class Constants {
     public static String language_id_label_msg = "1";
 
     public static String filter = "all";
+    public static int uploaddocument = 0;
     public static int country_selection_position = -1;
     public static int ca = -1;
 
@@ -68,7 +73,10 @@ public class Constants {
     private static Dialog dialog;
     public static GetProductsList.Data productListData = null;
     public static boolean Updateflag=false;
+    public static boolean firsttimeautologout=false;
     public static int beneficiarcount=0;
+
+    public static ArrayList<String>answerevalidation;
 
     public static void showProgress(Activity activity) {
         try {
@@ -121,6 +129,41 @@ public class Constants {
         matcher = pattern.matcher(character);
         return matcher.matches();
     }
+
+    public static Uri getOutputMediaFileUri() {
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    private static File getOutputMediaFile() {
+        File mediaFile;
+
+        // External sdcard location
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "temp");
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+
+        if (!mediaFile.exists())
+            try {
+                mediaFile.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return mediaFile;
+    }
+
 
     public static void showMessage(View view, Context context, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);

@@ -18,16 +18,31 @@ import java.util.regex.Pattern;
 public class BankNetworkListJsonPojo implements Serializable {
 
 
-    @Expose
-    @SerializedName("info")
-    private String info;
-    @Expose
-    @SerializedName("data")
-    private List<Data> data;
-    @Expose
     @SerializedName("status")
-    private boolean status;
+    @Expose
+    private Boolean status;
+    @SerializedName("data")
+    @Expose
+    private Object data;
+    @SerializedName("info")
+    @Expose
+    private String info;
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(BankDataPojo data) {
+        this.data = data;
+    }
 
     public String getInfo() {
         return info;
@@ -36,81 +51,6 @@ public class BankNetworkListJsonPojo implements Serializable {
     public void setInfo(String info) {
         this.info = info;
     }
-
-    public List<Data> getData() {
-        return data;
-    }
-
-    public void setData(List<Data> data) {
-        this.data = data;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public static class Data {
-        @Expose
-        @SerializedName("BankCode")
-        private String BankCode;
-        @Expose
-        @SerializedName("BranchName")
-        private String BranchName;
-        @Expose
-        @SerializedName("BankAddress")
-        private String BankAddress;
-        @Expose
-        @SerializedName("BankName")
-        private String BankName;
-
-        public String getBankCode() {
-            return BankCode;
-        }
-
-        public void setBankCode(String BankCode) {
-            this.BankCode = BankCode;
-        }
-
-        public String getBranchName() {
-////            String normalizedbranchname = Normalizer.normalize(BranchName, Normalizer.Form.NFD)
-////                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-////            return normalizedbranchname;
-//            String temp = Normalizer.normalize(BranchName, Normalizer.Form.NFD);
-//            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-//            return pattern.matcher(temp).replaceAll("");
-            return BranchName;
-        }
-
-        public void setBranchName(String BranchName) {
-            this.BranchName = BranchName;
-        }
-
-        public String getBankAddress() {
-//            String normalizedbankaddress = Normalizer.normalize(BankAddress, Normalizer.Form.NFD)
-//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-//            return normalizedbankaddress;
-            return BankAddress;
-
-        }
-
-        public void setBankAddress(String BankAddress) {
-            this.BankAddress = BankAddress;
-        }
-
-        public String getBankName() {
-//            String normalized = Normalizer.normalize(BankName, Normalizer.Form.NFD)
-//                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-//            return normalized;
-            return BankName;
-        }
-
-        public void setBankName(String BankName) {
-            this.BankName = BankName;
-        }
-    }
-
 }
+
+

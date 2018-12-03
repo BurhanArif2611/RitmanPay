@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:hint="@string/id_number"
-        android:inputType="number"
+        android:inputType=""
         android:maxLength="25"
         android:paddingLeft="@dimen/_5sdp"
         android:text=""
@@ -63,7 +63,8 @@
         app:met_singleLineEllipsis="false" />
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
       <com.rengwuxian.materialedittext.MaterialEditText
           android:id="@+id/dateofBirthEditTextAddBeneficiaryCustomerInfo"

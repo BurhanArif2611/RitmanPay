@@ -14,7 +14,7 @@
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
-
+    //testlast3131
     <application
         android:name=".utils.MainApplication"
         android:allowBackup="true"
@@ -24,8 +24,7 @@
         android:protectionLevel="signature"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:icon">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
@@ -46,6 +45,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".VerificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BeneficiaryPinVerificationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SignUpSubmitActivity"
@@ -149,7 +151,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCKHZ_-XnOcENYMeVnxAETVe7ExFJQjrS8" />
+            android:value="AIzaSyA1Wx-OZFnuNdkHwggP4b1JC2KGVbsfgRQ" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -232,7 +234,9 @@
             android:value="95f5709e4f63ecbfd13969d5991aa1512cf4cbc9" />
 
         <activity android:name=".MainLanguageActivity" />
-        <activity android:name=".ChangeLanguageActivity"></activity>
+        <activity android:name=".ChangeLanguageActivity" />
+        <activity android:name=".CropActivity" />
+        <activity android:name=".TransactionReceiptActivity"></activity>
     </application>
 
 </manifest>

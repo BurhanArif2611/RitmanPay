@@ -1,13 +1,12 @@
 package com.fil.workerappz;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,11 +32,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangeLanguageActivity extends AppCompatActivity {
+public class ChangeLanguageActivity extends ActionBarActivity {
 
     private final ArrayList<LabelListJsonPojo> labelListPojos = new ArrayList<>();
     private final ArrayList<MessageListJsonPojo> messageListPojos = new ArrayList<>();
@@ -51,14 +51,17 @@ public class ChangeLanguageActivity extends AppCompatActivity {
     TextView titleTextViewViewHeader;
     @BindView(R.id.skipTextViewViewHeader)
     TextView skipTextViewViewHeader;
-    @BindView(R.id.languageTextviewchange)
-    TextView languageTextviewchange;
     @BindView(R.id.linearlanguagechange)
     LinearLayout linearlanguagechange;
+    @BindView(R.id.languageSpinner)
+    MaterialSpinner languageSpinner;
     @BindView(R.id.savelanguageTextView)
     TextView savelanguageTextView;
     @BindView(R.id.mainChangeLanguageLinearLayout)
     LinearLayout mainChangeLanguageLinearLayout;
+    @BindView(R.id.appImageViewHeader1)
+    ImageView appImageViewHeader1;
+
 
     private String languageid = "1";
     String[] stockArr = new String[0];
@@ -72,6 +75,7 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         titleTextViewViewHeader.setText(getResources().getString(R.string.change_language));
         LanguageListJsonCall();
+        appImageViewHeader1.setVisibility(View.VISIBLE);
     }
 
     private void LanguageListJsonCall() {
@@ -86,20 +90,38 @@ public class ChangeLanguageActivity extends AppCompatActivity {
                     languagesListPojo.addAll(response.body());
                     if (languagesListPojo.get(0).getStatus() == true) {
                         final ArrayList<String> languagestringList = new ArrayList<>();
-                       stockArr = new String[languagesListPojo.get(0).getData().size()];
                         for (int i = 0; i < languagesListPojo.get(0).getData().size(); i++) {
                             languagestringList.add(new String(Base64.decode(languagesListPojo.get(0).getData().get(i).getLanguageName().trim().getBytes(), Base64.DEFAULT)));
-                            stockArr[i] = new String(Base64.decode(languagesListPojo.get(0).getData().get(i).getLanguageName().trim().getBytes(), Base64.DEFAULT));
                         }
-                            for (int i1=0;i1<stockArr.length;i1++)
-                        {
-                            if (Constants.language_id_label_msg.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID())))
-                            {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(ChangeLanguageActivity.this, android.R.layout.simple_spinner_item, languagestringList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        languageSpinner.setAdapter(adapter);
 
-                                languageTextviewchange.setText(stockArr[i1]);
+                        for (int i = 0; i < languagesListPojo.get(0).getData().size(); i++) {
+                            if (Constants.language_id_label_msg.equalsIgnoreCase(String.valueOf(languagesListPojo.get(0).getData().get(i).getLanguageID()))) {
+                                Constants.language_id_label_msg = Constants.language_id_label_msg;
+                                languageSpinner.setSelection(i + 1);
+
                             }
                         }
 
+                        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    languageid = String.valueOf(languagesListPojo.get(0).getData().get(position).getLanguageID());
+                                    Constants.language_id_label_msg = languageid;
+
+                                }
+
+                            }
+
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -111,37 +133,41 @@ public class ChangeLanguageActivity extends AppCompatActivity {
         });
     }
 
-    private void opendialog(final String[] stockArr) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ChangeLanguageActivity.this);
-        mBuilder.setTitle("Select Language");
-        mBuilder.setSingleChoiceItems(stockArr, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                languageTextviewchange.setText(stockArr[i]);
-                for (int i1=0;i1<stockArr.length;i1++)
-                {
-                    if (languageTextviewchange.getText().toString().equalsIgnoreCase(new String(Base64.decode(languagesListPojo.get(0).getData().get(i1).getLanguageName().trim().getBytes(), Base64.DEFAULT))))
-                    {
-                        Constants.language_id_label_msg= String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID());
-                    }
-                }
-                dialogInterface.dismiss();
-            }
-        });
-
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
+//    private void opendialog(final String[] stockArr) {
+//        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ChangeLanguageActivity.this);
+//        mBuilder.setTitle("Select Language");
+//        mBuilder.setSingleChoiceItems(stockArr, -1, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                languageTextviewchange.setText(stockArr[i]);
+//                for (int i1 = 0; i1 < stockArr.length; i1++) {
+//                    if (languageTextviewchange.getText().toString().equalsIgnoreCase(new String(Base64.decode(languagesListPojo.get(0).getData().get(i1).getLanguageName().trim().getBytes(), Base64.DEFAULT)))) {
+//                        Constants.language_id_label_msg = String.valueOf(languagesListPojo.get(0).getData().get(i1).getLanguageID());
+//                    }
+//                }
+//                dialogInterface.dismiss();
+//            }
+//        });
+//
+//        AlertDialog mDialog = mBuilder.create();
+//        mDialog.show();
+//    }
 
 
-    @OnClick({R.id.backImageViewHeader, R.id.savelanguageTextView, R.id.linearlanguagechange})
+    @OnClick({R.id.backImageViewHeader, R.id.savelanguageTextView, R.id.linearlanguagechange,R.id.appImageViewHeader1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
                 finish();
                 break;
             case R.id.linearlanguagechange:
-                opendialog(stockArr);
+//                opendialog(stockArr);
+                break;
+            case R.id.appImageViewHeader1:
+                mIntent = new Intent(ChangeLanguageActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
+                finish();
                 break;
             case R.id.savelanguageTextView:
                 Constants.hideKeyboard(ChangeLanguageActivity.this);

@@ -38,7 +38,7 @@
                     android:layout_weight="1"
                     android:hint="@string/first_name"
                     android:inputType="text|textCapSentences"
-                    android:maxLength="15"
+                    android:maxLength="25"
                     android:nextFocusDown="@+id/lastNameEditTextSignUpSubmit"
                     android:paddingLeft="@dimen/_5sdp"
                     android:text=""
@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:hint="@string/last_name"
                     android:inputType="text|textCapSentences"
-                    android:maxLength="15"
+                    android:maxLength="25"
                     android:paddingLeft="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/colorBlack"
@@ -161,6 +161,40 @@
                 app:met_primaryColor="@color/colorGreen"
                 app:met_singleLineEllipsis="false" />
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/dateOfBirthEditTextSignUpSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:drawableRight="@drawable/dropdown_arrow"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="@string/date_of_birth"
+                    android:inputType="none"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_11ssp"
+                    app:met_baseColor="@color/colorBlack"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelTextSize="@dimen/_10ssp"
+                    app:met_primaryColor="@color/colorGreen"
+                    app:met_singleLineEllipsis="false" />
+
+                <TextView
+                    android:id="@+id/dateOfBirthTextViewSignUpSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_5sdp" />
+            </FrameLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,12 +202,12 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textviewgender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:paddingLeft="@dimen/_5sdp"
-                    android:layout_gravity="center"
-                    android:id="@+id/textviewgender"
                     android:text="@string/gender" />
 
                 <RadioGroup
@@ -204,9 +238,77 @@
                 </RadioGroup>
             </LinearLayout>
 
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/countryOfResidenceSpinnerSignUpSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10ssp"
+                app:ms_alignLabels="true"
+                app:ms_arrowColor="@color/colorGreen"
+                app:ms_arrowSize="@dimen/_12sdp"
+                app:ms_baseColor="@color/colorSpinner"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/colorSpinnerText"
+                app:ms_floatingLabelText="@string/country_of_residence"
+                app:ms_highlightColor="@color/colorGreen"
+                app:ms_hint="@string/country_of_residence"
+                app:ms_hintColor="@color/colorSpinnerText"
+                app:ms_hintTextSize="@dimen/_10ssp"
+                app:ms_multiline="false"
+                app:ms_thickness="0.5dp" />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/stateSpinnerSignUpSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10ssp"
+                app:ms_alignLabels="true"
+                app:ms_arrowColor="@color/colorGreen"
+                app:ms_arrowSize="@dimen/_12sdp"
+                app:ms_baseColor="@color/colorSpinner"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/colorSpinnerText"
+                app:ms_floatingLabelText="@string/state"
+                app:ms_highlightColor="@color/colorGreen"
+                app:ms_hint="@string/state"
+                app:ms_hintColor="@color/colorSpinnerText"
+                app:ms_hintTextSize="@dimen/_10ssp"
+                app:ms_multiline="false"
+                app:ms_thickness="0.5dp" />
+
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/citySpinnerSignUpSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10ssp"
+                app:ms_alignLabels="true"
+                app:ms_arrowColor="@color/colorGreen"
+                app:ms_arrowSize="@dimen/_12sdp"
+                app:ms_baseColor="@color/colorSpinner"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/colorSpinnerText"
+                app:ms_floatingLabelText="@string/city"
+                app:ms_highlightColor="@color/colorGreen"
+                app:ms_hint="@string/city"
+                app:ms_hintColor="@color/colorSpinnerText"
+                app:ms_hintTextSize="@dimen/_10ssp"
+                app:ms_multiline="false"
+                app:ms_thickness="0.5dp" />
+
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <!--<android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -226,7 +328,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:hint="@string/address"
-                    android:inputType="textPostalAddress"
+                    android:inputType=""
                     android:paddingLeft="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/colorBlack"
@@ -245,27 +347,74 @@
                     android:padding="@dimen/_5sdp" />
             </FrameLayout>
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/countryOfResidenceSpinnerSignUpSubmit"
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/addressEditTextSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/address"
+                android:inputType="textPostalAddress"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text=""
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_10ssp"
-                app:ms_alignLabels="true"
-                app:ms_arrowColor="@color/colorGreen"
-                app:ms_arrowSize="@dimen/_12sdp"
-                app:ms_baseColor="@color/colorSpinner"
-                app:ms_enableErrorLabel="false"
-                app:ms_enableFloatingLabel="false"
-                app:ms_floatingLabelColor="@color/colorSpinnerText"
-                app:ms_floatingLabelText="@string/country_of_residence"
-                app:ms_highlightColor="@color/colorGreen"
-                app:ms_hint="@string/country_of_residence"
-                app:ms_hintColor="@color/colorSpinnerText"
-                app:ms_hintTextSize="@dimen/_10ssp"
-                app:ms_multiline="false"
-                app:ms_thickness="0.5dp" />
+                android:textSize="@dimen/_11ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/streetEditTextSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/street"
+                android:inputType="textPostalAddress"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_11ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/landmarkEditTextSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/landmark"
+                android:inputType="textPostalAddress"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_11ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/zipcodeEditTextSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/zipcode"
+                android:inputType="text"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_11ssp"
+                app:met_baseColor="@color/colorBlack"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextSize="@dimen/_10ssp"
+                app:met_primaryColor="@color/colorGreen"
+                app:met_singleLineEllipsis="false" />
+
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/passportNoEditTextSignUpSubmit"
@@ -273,10 +422,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:hint="@string/passport_no"
+                android:inputType=""
                 android:maxLength="10"
                 android:paddingLeft="@dimen/_5sdp"
                 android:text=""
-                android:inputType=""
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_11ssp"
                 app:met_baseColor="@color/colorBlack"
@@ -292,7 +441,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:hint="@string/emirates_id"
                 android:inputType="number"
-                android:maxLength="10"
+                android:maxLength="16"
                 android:paddingLeft="@dimen/_5sdp"
                 android:text=""
                 android:textColor="@color/colorBlack"
@@ -302,6 +451,72 @@
                 app:met_floatingLabelTextSize="@dimen/_10ssp"
                 app:met_primaryColor="@color/colorGreen"
                 app:met_singleLineEllipsis="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/securityLinearLayout"
+                android:orientation="vertical"
+                >
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Fill Any One Security Details"-->
+                    <!--android:textColor="@color/colorSpinnerText"-->
+                    <!--android:textSize="@dimen/_11ssp"-->
+
+                    <!--android:layout_marginTop="@dimen/_10ssp"/>-->
+
+                <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:id="@+id/securityQuestionsRecyclerView"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_marginTop="@dimen/_3sdp">-->
+
+                <!--</android.support.v7.widget.RecyclerView>-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/securityQuestionsSpinnerSignUpSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    app:ms_alignLabels="true"
+                    app:ms_arrowColor="@color/colorGreen"
+                    app:ms_arrowSize="@dimen/_12sdp"
+                    app:ms_baseColor="@color/colorSpinner"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/colorSpinnerText"
+                    app:ms_floatingLabelText="@string/security_questions"
+                    app:ms_highlightColor="@color/colorGreen"
+                    app:ms_hint="@string/security_questions"
+                    app:ms_hintColor="@color/colorSpinnerText"
+                    app:ms_hintTextSize="@dimen/_10ssp"
+                    app:ms_multiline="false"
+                    app:ms_thickness="0.5dp" />
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/securityQuestionsEditTextSignUpSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="@string/security_questions"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text=""
+                    android:maxLines="5"
+                    android:visibility="gone"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_11ssp"
+                    app:met_baseColor="@color/colorBlack"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelTextSize="@dimen/_10ssp"
+                    app:met_primaryColor="@color/colorGreen"
+                    app:met_singleLineEllipsis="false" />
+            </LinearLayout>
 
 
             <TextView

@@ -1,11 +1,18 @@
 package com.fil.workerappz;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,8 +90,42 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private SessionManager sessionManager;
-    private String idtypemsg, idnumbermsg, valididnumbermsg, dateofbirthmsg,iddescriptionmsg;
+    private String idtypemsg, idnumbermsg, valididnumbermsg, dateofbirthmsg, iddescriptionmsg;
     private String nointernetmsg;
+    private int idtypemaxlength = 15;
+    private int idtypeminlength = 7;
+    private ActionBarActivity activity;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
+                idTypeJsonCall();
+            } else {
+                Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), nointernetmsg);
+            }
+        } else {
+            // fragment is no longer visible
+        }
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (ActionBarActivity) context;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
 
     @Nullable
     @Override
@@ -128,7 +169,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                 idDescriptionEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIDDESCRIPTION());
                 nextTextview.setHint(datumLable_languages.getAdd());
                 customerInfoTextView.setText(datumLable_languages.getCustomerInfo());
-                nointernetmsg=datumLable_languages.getNoInternetConnectionAvailable();
+                nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
             } else {
                 idNumberEditTextAddBeneficiaryCustomerInfo.setHint(getResources().getString(R.string.id_number));
                 dateofBirthEditTextAddBeneficiaryCustomerInfo.setHint(getResources().getString(R.string.date_of_birth));
@@ -154,7 +195,6 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             dateofbirthmsg = getResources().getString(R.string.Please_select_Dob);
 
 
-
         }
         dateofBirthTextViewAddBeneficiaryCustomerInfo.setOnClickListener(new View.OnClickListener() {
 
@@ -166,13 +206,95 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                 DataPickerDialog1();
             }
         });
-        if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
-            idTypeJsonCall();
-        } else {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),nointernetmsg);
-        }
+
+        idNumberEditTextAddBeneficiaryCustomerInfo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(idNumberEditTextAddBeneficiaryCustomerInfo);
+            }
+        });
+
 
         return view;
+    }
+
+    public static void OnlyCharacter1(MaterialEditText editText) {
+//        if (editText.getText().toString().length() > 0) {
+//
+//            char x;
+//            int[] t = new int[editText.getText().toString()
+//                    .length()];
+//
+//            for (int i = 0; i < editText.getText().toString()
+//                    .length(); i++) {
+//                x = editText.getText().toString().charAt(i);
+//                int z = (int) x;
+//                t[i] = z;
+//
+//                if ((z > 64 && z < 91)
+//                        || (z > 96 && z < 123)|| (z > 47 && z < 58) ) {
+//
+//                }
+//                else {
+//
+//                    editText.setText(editText
+//                            .getText()
+//                            .toString()
+//                            .substring(
+//                                    0,
+//                                    (editText.getText()
+//                                            .toString().length()) - 1));
+//                    editText.setSelection(editText
+//                            .getText().length());
+//                }
+//                Log.d("System out", "decimal value of character" + z);
+//
+//            }
+//        }
+
+        if (editText.getText().toString().length() > 0) {
+
+            char x;
+            int[] t = new int[editText.getText().toString()
+                    .length()];
+
+            for (int i = 0; i < editText.getText().toString()
+                    .length(); i++) {
+                x = editText.getText().toString().charAt(i);
+                int z = (int) x;
+                t[i] = z;
+
+                if ((z > 64 && z < 91)
+                        || (z > 96 && z < 123) || (z >= 48 && z <= 57)) {
+
+                } else {
+
+                    editText.setText(editText
+                            .getText()
+                            .toString()
+                            .substring(
+                                    0,
+                                    (editText.getText()
+                                            .toString().length()) - 1));
+                    editText.setSelection(editText
+                            .getText().length());
+                }
+
+            }
+        }
+
     }
 
     @Override
@@ -181,10 +303,14 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         unbinder.unbind();
 
     }
+
     @Override
     public void onResume() {
+
         super.onResume();
+        activity.onUserInteraction();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,8 +337,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth, mDay);
-
-        DatePickerDialog dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        int themeResId = 2;
+        DatePickerDialog dpd = new DatePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -224,7 +350,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                 Calendar minAdultAge = new GregorianCalendar();
                 minAdultAge.add(Calendar.YEAR, -18);
                 if (minAdultAge.before(myCalendar)) {
-                    Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),nointernetmsg);
+                    Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), nointernetmsg);
                 } else {
                     myCalendar1 = myCalendar;
                     updateLabel();
@@ -241,13 +367,15 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         JSONObject jsonObject = new JSONObject();
         Constants.showProgress(getActivity());
         try {
-            jsonObject.put("countryCode", "India");
+//            jsonObject.put("countryCode", "India");
+            jsonObject.put("countryCode", sessionManager.userProfileData().getCountryShortCode());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String json = "[" + jsonObject + "]";
 //        Constants.showProgress(ProfileActivity.this);
+        CustomLog.i("System out", "json " + json);
         Call<List<IdTypeListJsonPojo>> call = RestClient.get().getIdTypeJsonCall(json);
 
         call.enqueue(new Callback<List<IdTypeListJsonPojo>>() {
@@ -272,7 +400,20 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
-                                    idtype = idTypePojos.get(0).getData().get(position).getIDType_ID();
+                                    idtype = idTypePojos.get(0).getData().get(position).getIDTypeID();
+                                    idtypemaxlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMaxLength());
+                                    idtypeminlength = Integer.parseInt(idTypePojos.get(0).getData().get(position).getMinLength());
+                                    if (idTypePojos.get(0).getData().get(position).getIsNumeric().equals("true") && idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("false")) {
+                                        idNumberEditTextAddBeneficiaryCustomerInfo.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    } else if (idTypePojos.get(0).getData().get(position).getIsAlphaNumeric().equals("true") && idTypePojos.get(0).getData().get(position).getIsNumeric().equals("false")) {
+                                        idNumberEditTextAddBeneficiaryCustomerInfo.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    } else {
+                                        idNumberEditTextAddBeneficiaryCustomerInfo.setInputType(InputType.TYPE_CLASS_TEXT);
+                                    }
+                                    InputFilter[] FilterArray = new InputFilter[1];
+                                    FilterArray[0] = new InputFilter.LengthFilter(idtypemaxlength);
+                                    idNumberEditTextAddBeneficiaryCustomerInfo.setFilters(FilterArray);
+
 //                                    IDtype_Description = idTypePojos.get(0).getData().get(position).getIDType();
 //                                    countryId = idTypePojos.get(0).getData().get(position).getCountryID();
                                 }
@@ -303,11 +444,18 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idnumbermsg);
-        } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < 10) {
+        } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < idtypeminlength) {
+            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "ID Number should be" + " " + idtypeminlength + " " + "digits");
+        } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
-        } else if (dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),dateofbirthmsg);
         }
+//        else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < 7) {
+//            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
+//        }
+
+//        else if (dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), dateofbirthmsg);
+//        }
 // else if (idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
 //            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), );
 //        }
@@ -316,7 +464,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
                 createCustomerJsonCall();
             } else {
-                Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),nointernetmsg);
+                Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), nointernetmsg);
             }
 
         }
@@ -338,7 +486,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("userID", String.valueOf(userId));
-            jsonObject.put("userDateOfBirth", Constants.formatDate(dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy"));
+//            jsonObject.put("userDateOfBirth", Constants.formatDate(dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy"));
+            jsonObject.put("userDateOfBirth", "");
             jsonObject.put("IDType", idtype);
             jsonObject.put("IDtype_Description", idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString());
             jsonObject.put("IDExpiryDate", "12/31/2099");
@@ -361,14 +510,13 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                         createCustomerListJsonPojos.addAll(response.body());
 //                        Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), response.body().get(0).getInfo());
                         Constants.closeProgress();
-                        String test=datumLable_languages_msg.getMessage("Request successful");
-                        String test1=createCustomerListJsonPojos.get(0).getData().get(0).getDescription();
+                        String test = datumLable_languages_msg.getMessage("Request successful");
+                        String test1 = createCustomerListJsonPojos.get(0).getData().get(0).getDescription();
                         if (test.equalsIgnoreCase("")) {
-                            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),test1);
+                            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), test1);
                         } else {
                             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), datumLable_languages_msg.getMessage(createCustomerListJsonPojos.get(0).getData().get(0).getDescription().toString()));
                         }
-
 
 
                         Constants.beneficiarcount++;
@@ -395,7 +543,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                     } else {
                         Constants.closeProgress();
                         if (datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()).equalsIgnoreCase("")) {
-                            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(),response.body().get(0).getInfo().toString());
+                            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), response.body().get(0).getInfo().toString());
                         } else {
                             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), datumLable_languages_msg.getMessage(response.body().get(0).getInfo().toString()));
                         }

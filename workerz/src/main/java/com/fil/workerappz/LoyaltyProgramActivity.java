@@ -1,11 +1,15 @@
 package com.fil.workerappz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.pojo.LabelListData;
+import com.fil.workerappz.utils.SessionManager;
 import com.fil.workerappz.utils.SlideHolder;
 
 import butterknife.BindView;
@@ -19,12 +23,17 @@ import butterknife.OnClick;
 
 public class LoyaltyProgramActivity extends ActionBarActivity {
 
+
     @BindView(R.id.menuImageViewHeader2)
     ImageView menuImageViewHeader2;
     @BindView(R.id.appImageViewHeader2)
     ImageView appImageViewHeader2;
     @BindView(R.id.titleTextViewViewHeader2)
     TextView titleTextViewViewHeader2;
+    @BindView(R.id.appLeftImageViewHeader2)
+    ImageView appLeftImageViewHeader2;
+    @BindView(R.id.skipTextViewViewHeader2)
+    TextView skipTextViewViewHeader2;
     @BindView(R.id.filterImageViewHeader2)
     ImageView filterImageViewHeader2;
     @BindView(R.id.homeImageViewFooter)
@@ -59,8 +68,11 @@ public class LoyaltyProgramActivity extends ActionBarActivity {
     LinearLayout historyLinearLayoutFooter;
     @BindView(R.id.slideHolderLoyaltyProgram)
     SlideHolder slideHolderLoyaltyProgram;
-    @BindView(R.id.appLeftImageViewHeader2)
-    ImageView appLeftImageViewHeader2;
+    private SessionManager sessionManager;
+    private LabelListData datumLable_languages = new LabelListData();
+    private Intent mIntent;
+    private String comeFrom = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,12 +80,82 @@ public class LoyaltyProgramActivity extends ActionBarActivity {
 
         setContentView(R.layout.loyalty_program);
         ButterKnife.bind(this);
+        filterImageViewHeader2.setVisibility(View.INVISIBLE);
 
-        titleTextViewViewHeader2.setText(getResources().getString(R.string.loyalty_program));
+        try {
+            sessionManager = new SessionManager(LoyaltyProgramActivity.this);
+            datumLable_languages = sessionManager.getAppLanguageLabel();
+
+            if (datumLable_languages != null) {
+
+
+                titleTextViewViewHeader2.setText(datumLable_languages.getLoyaltyPoints());
+
+
+            } else {
+
+                titleTextViewViewHeader2.setText(getResources().getString(R.string.loyalty_program));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        homeSelection();
+
+        mIntent = getIntent();
+        if (mIntent != null) {
+            comeFrom = mIntent.getStringExtra("come_from");
+
+
+        }
+        if (comeFrom.equalsIgnoreCase("")) {
+            menuImageViewHeader2.setImageResource(R.drawable.back_btn);
+
+
+        } else {
+        }
     }
 
-    @OnClick(R.id.menuImageViewHeader2)
-    public void onViewClicked() {
-        slideHolderLoyaltyProgram.toggle();
+
+    private void homeSelection() {
+        homeImageViewFooter.setImageResource(R.drawable.footer_icon_home_selected);
+        homeTextViewFooter.setTextColor(getResources().getColor(R.color.colorWhite));
+    }
+
+    @OnClick({R.id.kycLinearLayoutFooter, R.id.quickPayLinearLayoutFooter, R.id.beneficiaryLinearLayoutFooter, R.id.historyLinearLayoutFooter, R.id.menuImageViewHeader2,R.id.appImageViewHeader2})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.menuImageViewHeader2:
+                if (comeFrom.equalsIgnoreCase("")) {
+                    finish();
+                } else {
+                    slideHolderLoyaltyProgram.toggle();
+                }
+                break;
+            case R.id.kycLinearLayoutFooter:
+                mIntent = new Intent(LoyaltyProgramActivity.this, UploadYourDocumentActivity.class);
+                startActivity(mIntent);
+                break;
+            case R.id.quickPayLinearLayoutFooter:
+                mIntent = new Intent(LoyaltyProgramActivity.this, PinVerificationActivity.class);
+                mIntent.putExtra("come_from", "quick_pay");
+                startActivity(mIntent);
+                break;
+            case R.id.beneficiaryLinearLayoutFooter:
+                mIntent = new Intent(LoyaltyProgramActivity.this, SelectBeneficiaryActivity.class);
+                mIntent.putExtra("come_from", "");
+                startActivity(mIntent);
+                break;
+            case R.id.historyLinearLayoutFooter:
+                mIntent = new Intent(LoyaltyProgramActivity.this, PinVerificationActivity.class);
+                mIntent.putExtra("come_from", "history");
+                startActivity(mIntent);
+                break;
+            case R.id.appImageViewHeader2:
+                mIntent = new Intent(LoyaltyProgramActivity.this, HomeActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mIntent);
+                break;
+        }
     }
 }

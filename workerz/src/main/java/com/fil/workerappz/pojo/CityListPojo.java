@@ -48,7 +48,7 @@ public class CityListPojo implements Serializable {
         this.status = status;
     }
 
-    static class Data {
+    public class Data {
         @Expose
         @SerializedName("cityName")
         private String cityName;

@@ -74,6 +74,18 @@ public class KYCUploadedDocumentListJsonPojo implements Serializable {
         @Expose
         @SerializedName("kycdoctypeName")
         private String kycdoctypeName;
+        @Expose
+        @SerializedName("isVisible")
+        private Boolean isVisible = true;
+
+        public Boolean getIsVisible() {
+            return isVisible;
+        }
+
+        public void setIsVisible(Boolean isVisible) {
+            this.isVisible = isVisible;
+        }
+
         public String getKycstatushistory() {
             return kycstatushistory;
         }
@@ -153,6 +165,7 @@ public class KYCUploadedDocumentListJsonPojo implements Serializable {
         public void setUserkycID(String userkycID) {
             this.userkycID = userkycID;
         }
+
         public String getKycdoctypeID() {
             return kycdoctypeID;
         }
@@ -160,6 +173,7 @@ public class KYCUploadedDocumentListJsonPojo implements Serializable {
         public void setKycdoctypeID(String kycdoctypeID) {
             this.kycdoctypeID = kycdoctypeID;
         }
+
         public String getKycdoctypeName() {
             return kycdoctypeName;
         }
