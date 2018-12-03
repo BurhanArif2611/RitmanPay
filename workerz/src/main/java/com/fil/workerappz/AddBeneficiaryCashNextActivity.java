@@ -99,7 +99,7 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
     private BeneficiaryListPojo.Data cashbeneficiarinfopojo;
     private final ArrayList<PurposeOfTransferListPojo> purposeOfTransferListPojos = new ArrayList<>();
     private final ArrayList<CashNetworkListJsonPojo> cashnetworklistListPojos = new ArrayList<>();
-    private String countryCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode, Beneficiarnumber, agentname, CountryShortCode;
+    private String countryCode, payoutBranchCode, payoutCurrencyCode, payoutCountry, branchName, address, branchCode, payoutCountryCode, Beneficiarnumber, agentname, CountryShortCode,purposedescription;
     private Intent mIntent;
     private final ArrayList<EditBeneficiaryJsonPojo> editbeneficiaryJsonPojos = new ArrayList<>();
     private QuickPayDataPojo quickPayData = new QuickPayDataPojo();
@@ -135,6 +135,10 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             agentname = cashbeneficiarinfopojo.getBenificaryPayOutBranchCode();
             purposecode = cashbeneficiarinfopojo.getBenificaryPurposeCode();
             nationality=cashbeneficiarinfopojo.getBenificaryNationality();
+            if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13"))
+            {
+                purposedescription= cashbeneficiarinfopojo.getBenificaryPurposeDescription();
+            }
         }
         beneficiaryinfoPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiarydata");
 
@@ -241,6 +245,15 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                             if (purposecode.equalsIgnoreCase(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTransferID())) {
                                 purposeOfTransferSpinnerCashAddBeneficiary.setSelection(i + 1);
                                 purposecode = purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTransferID();
+
+                                if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13")) {
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer());
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer());
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setText(purposedescription);
+                                } else {
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+                                }
                                 break;
                             }
                         }
@@ -250,16 +263,13 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     purposecode = purposeOfTransferListPojos.get(0).getData().get(position).getPurposeOfTransferID();
-
-//                                    if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString().equalsIgnoreCase("Others")) {
-//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
-//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
-//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
-//                                    } else {
-//                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
-//                                    }
-
-//                                    countryId = purposeOfTransferListPojos.get(0).getData().get(position).getCountryID();
+                                    if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13")) {
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+                                    } else {
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+                                    }
 
                                 }
                             }
@@ -410,6 +420,11 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                     Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this, purposetransfermsg);
 
                 }
+                else if ((purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13"))&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length()==0) {
+
+                    Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this
+                            , "Please specify other purpose of transfer");
+                }
 //                else if  (purposecode.equalsIgnoreCase("12")&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length() == 0) {
 //                        Constants.showMessage(mainAddBeneficiaryCashNextActivityLinearLayout, AddBeneficiaryCashNextActivity.this
 //                                , "Please specify purpose of transfer");
@@ -474,6 +489,10 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
             jsonObject.put("userID", getUserData().getUserID());
             jsonObject.put("benificaryState", beneficiaryinfoPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryinfoPojo.getCity());
+            if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13"))
+            {
+                jsonObject.put("benificaryPurposeDescription", otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

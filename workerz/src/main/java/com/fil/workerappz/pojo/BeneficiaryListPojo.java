@@ -157,6 +157,9 @@ public class BeneficiaryListPojo implements Serializable {
         @SerializedName("benificaryDestinationZipCode")
         @Expose
         private String benificaryDestinationZipCode;
+        @Expose
+        @SerializedName("benificaryPurposeDescription")
+        private String benificaryPurposeDescription;
 
 
         public String getBenificaryBeneficiaryNo() {
@@ -223,7 +226,13 @@ public class BeneficiaryListPojo implements Serializable {
         public void setBenificaryCreatedDate(String benificaryCreatedDate) {
             this.benificaryCreatedDate = benificaryCreatedDate;
         }
+        public String getBenificaryPurposeDescription() {
+            return benificaryPurposeDescription;
+        }
 
+        public void setBenificaryPurposeDescription(String benificaryPurposeDescription) {
+            this.benificaryPurposeDescription = benificaryPurposeDescription;
+        }
         public String getBenificaryPayoutCountryCode() {
             return benificaryPayoutCountryCode;
         }

@@ -412,6 +412,14 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //                                        otherPurposeOfTransferEditTextAddBeneficiary.setVisibility(View.GONE);
 //                                    }
 
+                                    if (purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13")) {
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setVisibility(View.VISIBLE);
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString());
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setHint(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString());
+                                    } else {
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setVisibility(View.GONE);
+                                    }
+
                                 }
                             }
 
@@ -491,6 +499,11 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //                        Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
 //                                , "Please specify purpose of transfer");
 //                }
+                else if ((purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13"))&&otherPurposeOfTransferEditTextAddBeneficiary.getText().toString().length()==0) {
+
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
+                            , "Please specify other purpose of transfer");
+                }
                 else {
                     if (IsNetworkConnection.checkNetworkConnection(this)) {
                         addBeneficiaryJsonCall();
@@ -553,6 +566,10 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("userID", getUserData().getUserID());
             jsonObject.put("benificaryState", beneficiaryInfoListPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryInfoListPojo.getCity());
+            if (purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13"))
+            {
+                jsonObject.put("benificaryPurposeDescription", otherPurposeOfTransferEditTextAddBeneficiary.getText().toString());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

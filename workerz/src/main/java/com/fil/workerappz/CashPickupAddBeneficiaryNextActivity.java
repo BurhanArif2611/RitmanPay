@@ -229,6 +229,13 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
 //                                    } else {
 //                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
 //                                    }
+                                    if (purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13")) {
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+                                    } else {
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
+                                    }
                                 }
                             }
 
@@ -368,6 +375,11 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem() == null) {
                     Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this, purposetransfermsg);
 
+                }
+                else if ((purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13"))&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length()==0) {
+
+                    Constants.showMessage(addBeneficiaryCashNextActivityLinearLayout, CashPickupAddBeneficiaryNextActivity.this
+                            , "Please specify other purpose of transfer");
                 }
 //                else if (purposeCode.equalsIgnoreCase("12")&&otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString().length() == 0) {
 //
@@ -530,6 +542,10 @@ public class CashPickupAddBeneficiaryNextActivity extends ActionBarActivity {
             jsonObject.put("benificaryState", beneficiaryInfoListPojo.getState());
             jsonObject.put("benificaryCity", beneficiaryInfoListPojo.getCity());
             jsonObject.put("userID", getUserData().getUserID());
+            if (purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13"))
+            {
+                jsonObject.put("benificaryPurposeDescription", otherPurposeOfTransferEditTextCashAddBeneficiary.getText().toString());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
