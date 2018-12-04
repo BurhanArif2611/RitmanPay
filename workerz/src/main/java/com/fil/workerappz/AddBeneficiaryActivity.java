@@ -897,10 +897,10 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Issue Date");
             checkFlag = false;
         }
-//        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
-//            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Expirey Date");
-//            checkFlag = false;
-//        }
+        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Expirey Date");
+            checkFlag = false;
+        }
         else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
             checkFlag = false;

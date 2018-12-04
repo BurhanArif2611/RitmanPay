@@ -362,7 +362,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             zipcodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryZipCode());
             emailEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryEmailID());
             mobileNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());
-            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(quickPayData.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
+            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryIDNumber());
             idIssueDateEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryIDTypeIssueDate(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idissuedate = bankbenefiardata.getBenificaryIDTypeIssueDate();
@@ -1085,10 +1085,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
             checkFlag = false;
         }
-//        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
-//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
-//            checkFlag = false;
-//        }
+        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
+            checkFlag = false;
+        }
         else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select any one customer Relation");
             checkFlag = false;
