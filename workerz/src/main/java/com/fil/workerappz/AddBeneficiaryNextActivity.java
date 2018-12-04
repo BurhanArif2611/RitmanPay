@@ -306,6 +306,8 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //                receiverId = walletSuggestionListPojos.get(0).getData().get(position).getUserID();
             }
         });
+        bankNameEditTextAddBeneficiary.setEnabled(false);
+        bankNameNewEditTextAddBeneficiary.setEnabled(false);
         ifscCodeEditTextAddBeneficiaryNext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -320,10 +322,13 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                     bankNameNewEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
+                    bankNameEditTextAddBeneficiary.setEnabled(false);
+                    bankNameNewEditTextAddBeneficiary.setEnabled(false);
                 } else if (main_length > 3) {
                     bankNameNewEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
+                    bankNameNewEditTextAddBeneficiary.setEnabled(true);
                     bankListJsonCall("");
                 }
             }
@@ -681,6 +686,7 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 //                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                                    bankNameSpinner.setAdapter(adapter);
                                     bankNameEditTextAddBeneficiary.setAdapter(adapter);
+                                    bankNameEditTextAddBeneficiary.setEnabled(true);
 
                                     bankNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                         @Override

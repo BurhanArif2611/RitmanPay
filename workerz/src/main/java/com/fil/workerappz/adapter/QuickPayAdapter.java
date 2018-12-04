@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fil.workerappz.BeneficiaryPinVerificationActivity;
 import com.fil.workerappz.R;
 import com.fil.workerappz.SelectBeneficiaryViewActivity;
 import com.fil.workerappz.SendMoneyActivity;
@@ -102,12 +103,37 @@ public class QuickPayAdapter extends RecyclerView.Adapter<QuickPayAdapter.ViewHo
                 }
             });
         }
+//        else if (quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()).getTransactionType().equalsIgnoreCase(datumLable_languages.getCashTransfer())) {
+//            holder.linearLayoutWalletSummaryAdapter.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mIntent = new Intent(mContext, SelectBeneficiaryViewActivity.class);
+//                    mIntent.putExtra("come_from", "cashquickpay");
+//                    mIntent.putExtra("beneficiary_object", quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()));
+//                    mContext.startActivity(mIntent);
+//                    mContext.finish();
+//                }
+//            });
+//        } else if (quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()).getTransactionType().equalsIgnoreCase(datumLable_languages.getBankTransfer())) {
+//            holder.linearLayoutWalletSummaryAdapter.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mIntent = new Intent(mContext, SelectBeneficiaryViewActivity.class);
+//                    mIntent.putExtra("come_from", "bankquickpay");
+//                    mIntent.putExtra("beneficiary_object", quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()));
+//                    mContext.startActivity(mIntent);
+//                    mContext.finish();
+//                }
+//            });
+//        }
+
         else if (quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()).getTransactionType().equalsIgnoreCase(datumLable_languages.getCashTransfer())) {
             holder.linearLayoutWalletSummaryAdapter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mIntent = new Intent(mContext, SelectBeneficiaryViewActivity.class);
+                    mIntent = new Intent(mContext, BeneficiaryPinVerificationActivity.class);
                     mIntent.putExtra("come_from", "cashquickpay");
+                    mIntent.putExtra("search", "search");
                     mIntent.putExtra("beneficiary_object", quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()));
                     mContext.startActivity(mIntent);
                     mContext.finish();
@@ -117,8 +143,9 @@ public class QuickPayAdapter extends RecyclerView.Adapter<QuickPayAdapter.ViewHo
             holder.linearLayoutWalletSummaryAdapter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mIntent = new Intent(mContext, SelectBeneficiaryViewActivity.class);
+                    mIntent = new Intent(mContext, BeneficiaryPinVerificationActivity.class);
                     mIntent.putExtra("come_from", "bankquickpay");
+                    mIntent.putExtra("search", "search");
                     mIntent.putExtra("beneficiary_object", quickPayJsonPojos.get(0).getData().get(holder.getAdapterPosition()));
                     mContext.startActivity(mIntent);
                     mContext.finish();

@@ -314,10 +314,10 @@ public class DrawerMenu extends LinearLayout implements View.OnClickListener {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setType("plain/text");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "WorkerAppz invitation");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "WorkerAppz Money Transfer invitation");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareString);
-//        mContext.startActivity(Intent.createChooser(shareIntent, "WorkerAppz"));
-        mContext.startActivity(Intent.createChooser(shareIntent, datumLable_languages.getWorkerAppz()));
+        mContext.startActivity(Intent.createChooser(shareIntent, "WorkerAppz Money Transfer"));
+//        mContext.startActivity(Intent.createChooser(shareIntent, datumLable_languages.getWorkerAppz()));
     }
 
     private void logoutUser() {

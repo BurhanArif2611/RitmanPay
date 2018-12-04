@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fil.workerappz.fragments.CountryBeneficiarySelection;
+import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.CityListPojo;
 import com.fil.workerappz.pojo.CountryData;
@@ -45,6 +46,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,6 +148,12 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     MaterialEditText idExpireyDateEditTextAddBeneficiary;
     @BindView(R.id.idExpireyDateTextViewAddBeneficiary)
     TextView idExpireyDateTextViewAddBeneficiary;
+    @BindView(R.id.countryCodeTextViewSignUp)
+    TextView countryCodeTextViewSignUp;
+    @BindView(R.id.countryCodeImageViewSignUp)
+    ImageView countryCodeImageViewSignUp;
+    @BindView(R.id.countrySpinnerSignUp)
+    LinearLayout countrySpinnerSignUp;
     private String countryCode;
     private String CountryName;
     private String countryCodeField, countryIdNationalityFiled;
@@ -157,7 +165,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     private String idType;
     private String idTypeDescription;
     private String comeFrom, Customerno;
-    private String dateOfBirth,idissuedate,idexpireydate="", type;
+    private String dateOfBirth, idissuedate, idexpireydate = "", type;
     private Intent mIntent;
     private int stateId = 0;
     private String relationId = "";
@@ -334,6 +342,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                         countryFlagImage = countryListPojos.get(i).getCountryFlagImage();
                         countryCurrency = countryListPojos.get(i).getCountryCurrencySymbol();
                         countryShortCode = countryListPojos.get(i).getCountryShortCode();
+
 
 
                         break;
@@ -569,6 +578,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         idExpireyDateEditTextAddBeneficiary.setText("");
 
     }
+
     private void updateLabelIdIssueDate() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -579,6 +589,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         idExpireyDateEditTextAddBeneficiary.setText("");
 
     }
+
     private void updateLabelIdExpireyDate() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -590,7 +601,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary})
+    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary,R.id.countrySpinnerSignUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -619,6 +630,13 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 //                dateOfBirthDialog();
                     DataPickerDialogIdIssueDate();
                 }
+                break;
+            case R.id.countrySpinnerSignUp:
+                CountryBeneficiarySelection countrySelectionBottomSheet1 = new CountryBeneficiarySelection();
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("country_list", modeWisecountryListPojos);
+                countrySelectionBottomSheet1.setArguments(bundle1);
+                countrySelectionBottomSheet1.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
             case R.id.idExpireyDateEditTextAddBeneficiary:
                 if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
@@ -734,6 +752,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         dpd.show();
 
     }
+
     private void DataPickerDialogIdIssueDate() {
 
         String getfromdate = dateOfBirthEditTextAddBeneficiary.getText().toString().trim();
@@ -742,11 +761,11 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
         final Calendar myCalendar = Calendar.getInstance();
         final int mYear = Integer.parseInt(getfrom[2]);
-        final int mMonth =Integer.parseInt(getfrom[1]);
-        final int mDay =Integer.parseInt(getfrom[0]);
+        final int mMonth = Integer.parseInt(getfrom[1]);
+        final int mDay = Integer.parseInt(getfrom[0]);
 
         Calendar mincalendar = Calendar.getInstance();
-        mincalendar.set(mYear, mMonth-1, mDay);
+        mincalendar.set(mYear, mMonth - 1, mDay);
 
         int themeResId = 2;
         DatePickerDialog dpd = new DatePickerDialog(AddBeneficiaryActivity.this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
@@ -769,13 +788,14 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 updateLabelIdIssueDate();
 //                }
             }
-        }, mYear, mMonth-1, mDay);
+        }, mYear, mMonth - 1, mDay);
 
         dpd.getDatePicker().setMinDate(mincalendar.getTimeInMillis());
 
         dpd.show();
 
     }
+
     private void DataPickerDialogIdExpireyDate() {
 
         String getfromdate = idIssueDateEditTextAddBeneficiary.getText().toString().trim();
@@ -784,11 +804,11 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
         final Calendar myCalendar = Calendar.getInstance();
         final int mYear = Integer.parseInt(getfrom[2]);
-        final int mMonth =Integer.parseInt(getfrom[1]);
-        final int mDay =Integer.parseInt(getfrom[0]);
+        final int mMonth = Integer.parseInt(getfrom[1]);
+        final int mDay = Integer.parseInt(getfrom[0]);
 
         Calendar mincalendar = Calendar.getInstance();
-        mincalendar.set(mYear, mMonth-1, mDay);
+        mincalendar.set(mYear, mMonth - 1, mDay);
         int themeResId = 2;
 
 
@@ -813,13 +833,14 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 updateLabelIdExpireyDate();
 //                }
             }
-        }, mYear, mMonth-1, mDay);
+        }, mYear, mMonth - 1, mDay);
 
         dpd.getDatePicker().setMinDate(mincalendar.getTimeInMillis());
 
         dpd.show();
 
     }
+
     private boolean checkValidation() {
         boolean checkFlag = true;
         String name = null;
@@ -892,20 +913,16 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
         } else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, valididnumbermsg);
             checkFlag = false;
-        }
-        else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Issue Date");
             checkFlag = false;
-        }
-        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select Id Expirey Date");
             checkFlag = false;
-        }
-        else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+        } else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
             checkFlag = false;
-        }
-        else if (customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+        } else if (customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, AddBeneficiaryActivity.this, "Please select any one customer Relation");
             checkFlag = false;
         }
@@ -1121,7 +1138,7 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             @Override
             public void onResponse(Call<List<ModeWiseCountryListJsonPojo>> call, Response<List<ModeWiseCountryListJsonPojo>> response) {
                 Constants.closeProgress();
-                countryListPojos.clear();
+                modeWisecountryListPojos.clear();
                 if (response.body() != null && response.body() instanceof ArrayList) {
                     if (response.body().get(0).getStatus() == true) {
                         ArrayList<String> countryList = new ArrayList<>();
@@ -1129,6 +1146,8 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                         for (int i = 0; i < modeWisecountryListPojos.size(); i++) {
                             if (getUserData().getCountryShortCode().equalsIgnoreCase(modeWisecountryListPojos.get(i).getCountryShortName())) {
                                 countryEditTextAddBeneficiary.setText(modeWisecountryListPojos.get(i).getCountryName());
+                                countryCodeTextViewSignUp.setText(countryListPojos.get(i).getCountryDialCode());
+                                Picasso.with(AddBeneficiaryActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                                 break;
                             }
                         }
@@ -1448,6 +1467,16 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
             }
         });
     }
+    public void updateMobileCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryCodeTextViewSignUp.setText(countryListPojosupdated.get(position).getCountryDialCode());
+        Picasso.with(AddBeneficiaryActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageViewSignUp);
+        countryEditTextAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
+//        countryId = countryListPojosupdated.get(position).getCountryID();
+//        stateId = 0;
+//        cityId = 0;
+//        CountryName = countryListPojosupdated.get(position).getCountryName();
+//        countryListJsonCall();
+    }
 
     public void updateCountrySelection(List<ModeWiseCountryListJsonPojo.Data> countryListPojosupdated, int position) {
         countryEditTextAddBeneficiary.setText(countryListPojosupdated.get(position).getCountryName());
@@ -1462,6 +1491,9 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
                 countryCurrency = countryListPojos.get(i).getCountryCurrencySymbol();
                 countryShortCode = countryListPojos.get(i).getCountryShortCode();
                 CountryName = countryListPojos.get(i).getCountryName();
+
+                countryCodeTextViewSignUp.setText(countryListPojos.get(i).getCountryDialCode());
+                Picasso.with(AddBeneficiaryActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                 break;
 //                            }
             }

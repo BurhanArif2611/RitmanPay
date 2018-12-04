@@ -331,7 +331,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 //            }
 //        });
 
-
+        bankNameEditTextAddBeneficiary.setEnabled(false);
+        bankNameNewEditTextAddBeneficiary.setEnabled(false);
         ifscCodeEditTextAddBeneficiaryNext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -346,10 +347,13 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     bankNameNewEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
                     bankNameEditTextAddBeneficiary.setText("");
+                    bankNameEditTextAddBeneficiary.setEnabled(false);
+                    bankNameNewEditTextAddBeneficiary.setEnabled(false);
                 } else if (main_length > 3) {
                     bankNameNewEditTextAddBeneficiary.setText("");
                     bankNameEditTextAddBeneficiary.setText("");
                     bankAddressEditTextAddBeneficiary.setText("");
+                    bankNameNewEditTextAddBeneficiary.setEnabled(true);
                     bankListJsonCall("");
                 }
             }
@@ -740,6 +744,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                                     }
 
                                     bankAddressEditTextAddBeneficiary.setEnabled(false);
+                                    bankNameEditTextAddBeneficiary.setEnabled(true);
                                     autocompletelayout.setVisibility(View.VISIBLE);
                                     bankNameNewEditTextAddBeneficiary.setVisibility(View.GONE);
 //                                    for (int i = 0; i < data.size(); i++) {
@@ -750,6 +755,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
 //                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                                    bankNameSpinner.setAdapter(adapter);
                                     bankNameEditTextAddBeneficiary.setAdapter(adapter);
+                                    bankNameEditTextAddBeneficiary.setEnabled(true);
 
                                     bankNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                         @Override
@@ -768,6 +774,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                                         }
                                     });
                                 } else {
+
                                     spinnerflag = false;
                                     bankNameSpinner.setVisibility(View.GONE);
                                     autocompletelayout.setVisibility(View.GONE);

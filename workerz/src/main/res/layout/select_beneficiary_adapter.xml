@@ -73,6 +73,7 @@
                     android:padding="@dimen/_5sdp"
                     android:visibility="visible"
                     android:tint="@color/Black"
+                    android:id="@+id/backarrowimageView"
                     android:src="@drawable/next_arrow" />
             </LinearLayout>
 

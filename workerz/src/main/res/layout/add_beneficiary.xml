@@ -136,25 +136,78 @@
                         app:met_primaryColor="@color/colorGreen"
                         app:met_singleLineEllipsis="false" />
 
-                    <com.rengwuxian.materialedittext.MaterialEditText
-                        android:id="@+id/mobileNumberEditTextAddBeneficiary"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:hint="@string/mobile_number"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:maxLength="15"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:text=""
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_11ssp"
-                        app:met_baseColor="@color/colorBlack"
-                        app:met_floatingLabel="highlight"
-                        app:met_floatingLabelTextSize="@dimen/_10ssp"
-                        app:met_primaryColor="@color/colorGreen"
-                        app:met_singleLineEllipsis="false" />
+                        android:orientation="horizontal">
 
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom">
+
+                            <LinearLayout
+                                android:id="@+id/countrySpinnerSignUp"
+                                android:layout_width="@dimen/_75sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/countryCodeTextViewSignUp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:maxLines="1"
+                                    android:text="@string/_91"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="@dimen/_12ssp" />
+
+                                <ImageView
+                                    android:id="@+id/countryCodeImageViewSignUp"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="@dimen/_19sdp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="@dimen/_1sdp"
+                                    android:contentDescription="TODO" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="@dimen/_1sdp"
+                                    android:contentDescription="TODO"
+                                    android:src="@drawable/dropdown_arrow" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="@dimen/_65sdp"
+                                android:layout_height="0.3dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:background="@color/colorSpinner" />
+                        </FrameLayout>
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:id="@+id/mobileNumberEditTextAddBeneficiary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:hint="@string/mobile_number"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="15"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text=""
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_11ssp"
+                            app:met_baseColor="@color/colorBlack"
+                            app:met_floatingLabel="highlight"
+                            app:met_floatingLabelTextSize="@dimen/_10ssp"
+                            app:met_primaryColor="@color/colorGreen"
+                            app:met_singleLineEllipsis="false" />
+                    </LinearLayout>
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -295,7 +348,7 @@
                         app:ms_hint="@string/state"
                         app:ms_hintColor="@color/colorSpinnerText"
                         app:ms_hintTextSize="@dimen/_10ssp"
-                        app:ms_multiline="false"/>
+                        app:ms_multiline="false" />
 
 
                     <fr.ganfra.materialspinner.MaterialSpinner
@@ -469,6 +522,7 @@
                             android:padding="@dimen/_5sdp"
                             android:paddingLeft="@dimen/_5sdp" />
                     </FrameLayout>
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -511,6 +565,7 @@
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_10ssp"
                         app:ms_alignLabels="true"
+                        app:ms_alwaysShowFloatingLabel="true"
                         app:ms_arrowColor="@color/colorGreen"
                         app:ms_arrowSize="@dimen/_12sdp"
                         app:ms_baseColor="@color/colorSpinner"
@@ -522,7 +577,6 @@
                         app:ms_hint="@string/relation_with_customer"
                         app:ms_hintColor="@color/colorSpinnerText"
                         app:ms_hintTextSize="@dimen/_10ssp"
-                        app:ms_alwaysShowFloatingLabel="true"
                         app:ms_multiline="false"
                         app:ms_thickness="0.5dp" />
 

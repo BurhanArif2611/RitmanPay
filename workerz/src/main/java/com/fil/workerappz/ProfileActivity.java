@@ -657,7 +657,7 @@ public class ProfileActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.addressTextViewProfile, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile, R.id.mobileNumberFramelayoutProfile, R.id.emailFramelayoutProfile, R.id.countryrFramelayoutProfile, R.id.stateFramelayoutProfile, R.id.cityFramelayoutProfile, R.id.addressFramelayout, R.id.streetFramelayoutProfile, R.id.landmarkFramelayoutProfile, R.id.zipcodeFramelayoutProfile, R.id.passportnumberFramelayoutProfile, R.id.emiratsFramelayoutProfile})
+    @OnClick({R.id.backImageViewHeader, R.id.changePinTextViewProfile, R.id.skipTextViewViewHeader, R.id.profilePictureImageView, R.id.updateProfileTextView, R.id.editProfilePicture, R.id.changeLanguageTextViewProfile, R.id.appImageViewHeader1, R.id.dateOfBirthEditTextProfile, R.id.mobileNumberFramelayoutProfile, R.id.emailFramelayoutProfile, R.id.countryrFramelayoutProfile, R.id.stateFramelayoutProfile, R.id.cityFramelayoutProfile, R.id.addressFramelayout, R.id.streetFramelayoutProfile, R.id.landmarkFramelayoutProfile, R.id.zipcodeFramelayoutProfile, R.id.passportnumberFramelayoutProfile, R.id.emiratsFramelayoutProfile})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.backImageViewHeader:
@@ -690,18 +690,18 @@ public class ProfileActivity extends ActionBarActivity {
             case R.id.cityFramelayoutProfile:
                 Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
                 break;
-            case R.id.addressFramelayout:
-                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
-                break;
-            case R.id.streetFramelayoutProfile:
-                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
-                break;
-            case R.id.landmarkFramelayoutProfile:
-                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
-                break;
-            case R.id.zipcodeFramelayoutProfile:
-                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
-                break;
+//            case R.id.addressFramelayout:
+//                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+//                break;
+//            case R.id.streetFramelayoutProfile:
+//                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+//                break;
+//            case R.id.landmarkFramelayoutProfile:
+//                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+//                break;
+//            case R.id.zipcodeFramelayoutProfile:
+//                Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
+//                break;
             case R.id.emiratsFramelayoutProfile:
                 Constants.showMessage(mainProfileActivityLinearLayout, this, "To modify details please visit your registered agent branch");
                 break;
@@ -756,9 +756,6 @@ public class ProfileActivity extends ActionBarActivity {
                     MediaChooseFragmentForProfile mediaChooseFragmentForProfile = new MediaChooseFragmentForProfile();
                     mediaChooseFragmentForProfile.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 }
-                break;
-            case R.id.addressTextViewProfile:
-                openAutocompleteActivity();
                 break;
             case R.id.updateProfileTextView:
                 Constants.hideKeyboard(ProfileActivity.this);
@@ -887,26 +884,26 @@ public class ProfileActivity extends ActionBarActivity {
     private void editable(boolean editable) {
         if (editable == true) {
             addressTextViewProfile.setEnabled(false);
-            firstNameEditTextProfile.setEnabled(true);
-            lastNameEditTextProfile.setEnabled(true);
-            maleRadioButtonProfile.setEnabled(true);
-            femaleRadioButtonProfile.setEnabled(true);
+            firstNameEditTextProfile.setEnabled(false);
+            lastNameEditTextProfile.setEnabled(false);
+            maleRadioButtonProfile.setEnabled(false);
+            femaleRadioButtonProfile.setEnabled(false);
             emiratesIdEditTextProfile.setEnabled(false);
             passportNoEditTextProfile.setEnabled(false);
-            addressEditTextProfile.setEnabled(false);
-            securityQuestionsSpinneProfile.setEnabled(true);
-            securityQuestionsEditTexProfile.setEnabled(true);
+            addressEditTextProfile.setEnabled(true);
+            securityQuestionsSpinneProfile.setEnabled(false);
+            securityQuestionsEditTexProfile.setEnabled(false);
 //            countryOfResidenceEditTextProfile.setEnabled(true);
             countryOfResidenceEditTextProfile.setEnabled(false);
             securityQuestionsSpinneProfile.setVisibility(View.VISIBLE);
-            dateOfBirthTextViewProfile.setEnabled(true);
-            dateOfBirthEditTextProfile.setEnabled(true);
+            dateOfBirthTextViewProfile.setEnabled(false);
+            dateOfBirthEditTextProfile.setEnabled(false);
 
             stateSpinnerSignUpProfile.setEnabled(false);
             citySpinnerSignUpProfile.setEnabled(false);
-            streetEditTextProfile.setEnabled(false);
-            landmarkEditTextProfile.setEnabled(false);
-            zipcodeEditTextProfile.setEnabled(false);
+            streetEditTextProfile.setEnabled(true);
+            landmarkEditTextProfile.setEnabled(true);
+            zipcodeEditTextProfile.setEnabled(true);
             mobileNumberEditTextProfile.setEnabled(false);
             emailFramelayoutProfile.setEnabled(true);
             countryrFramelayoutProfile.setEnabled(true);

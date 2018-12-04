@@ -89,17 +89,19 @@ public class BeneficiaryListAdapter extends RecyclerView.Adapter<BeneficiaryList
                     } else if (beneficiaryListPojoList.get(holder.getAdapterPosition()).getBenificaryPaymentMode().equalsIgnoreCase("CASH")) {
                         mIntent.putExtra("come_from", "CASH");
                     }
-                    mIntent.putExtra("search", "");
+                    mIntent.putExtra("search", "search");
                     mIntent.putExtra("beneficiary_object", beneficiaryListPojoList.get(holder.getAdapterPosition()));
                     context.startActivity(mIntent);
                 }
             }
         });
+
         if (comeFrom.equalsIgnoreCase("")) {
             holder.editbeneficiary.setVisibility(View.VISIBLE);
         } else {
             holder.editbeneficiary.setVisibility(View.GONE);
         }
+
         holder.editbeneficiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +187,8 @@ public class BeneficiaryListAdapter extends RecyclerView.Adapter<BeneficiaryList
         TextView bankBranchNameBeneficiary;
         @BindView(R.id.editbeneficiary)
         ImageView editbeneficiary;
+        @BindView(R.id.backarrowimageView)
+        ImageView backarrowimageView;
         @BindView(R.id.mainBeneficiaryAdapterLinearLayout)
         LinearLayout mainBeneficiaryAdapterLinearLayout;
 

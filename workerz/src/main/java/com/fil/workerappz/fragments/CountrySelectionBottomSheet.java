@@ -193,8 +193,9 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             if (getActivity() instanceof AddBeneficiaryActivity || getActivity() instanceof SelectBeneficiaryViewActivity) {
-                holder.imageViewCountrySelectionAdapter.setVisibility(View.GONE);
+                holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
                 holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
+                Picasso.with(getActivity()).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(holder.imageViewCountrySelectionAdapter);
             } else {
                 holder.imageViewCountrySelectionAdapter.setVisibility(View.VISIBLE);
                 holder.textViewCountrySelectionAdapter.setText(new String(Base64.decode(countryListPojos.get(position).getCountryName().trim().getBytes(), Base64.DEFAULT)));
@@ -216,16 +217,16 @@ public class CountrySelectionBottomSheet extends BottomSheetDialogFragment {
                         forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
                         dismiss();
                     }
-//                    else if (getActivity() instanceof AddBeneficiaryActivity) {
-//                        AddBeneficiaryActivity forgotPinActivity = (AddBeneficiaryActivity) getActivity();
-//                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-//                        dismiss();
-//                    }
-//                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
-//                        SelectBeneficiaryViewActivity forgotPinActivity = (SelectBeneficiaryViewActivity) getActivity();
-//                        forgotPinActivity.updateCountrySelection(countryListPojos, holder.getAdapterPosition());
-//                        dismiss();
-//                    }
+                    else if (getActivity() instanceof AddBeneficiaryActivity) {
+                        AddBeneficiaryActivity addBeneficiaryActivity = (AddBeneficiaryActivity) getActivity();
+                        addBeneficiaryActivity.updateMobileCountrySelection(countryListPojos, holder.getAdapterPosition());
+                        dismiss();
+                    }
+                    else if (getActivity() instanceof SelectBeneficiaryViewActivity) {
+                        AddBeneficiaryActivity selectBeneficiaryActivity = (AddBeneficiaryActivity) getActivity();
+                        selectBeneficiaryActivity.updateMobileCountrySelection(countryListPojos, holder.getAdapterPosition());
+                        dismiss();
+                    }
                 }
             });
 

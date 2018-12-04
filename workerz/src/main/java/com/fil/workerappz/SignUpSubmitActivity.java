@@ -349,6 +349,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                             countryCode = countryListPojos.get(position).getCountryDialCode();
                             countryId = countryListPojos.get(position).getCountryID();
                             countryIdNationality = String.valueOf(countryListPojos.get(position).getCountryID());
+                            countryCodeTextViewSignUp.setText(countryListPojos.get(position).getCountryDialCode());
+                            Picasso.with(SignUpSubmitActivity.this).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                             stateId = 0;
                             cityId = 0;
                             stateListJsonCall();
@@ -766,7 +768,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        } else if (answer.equals("")) {
+        }else if (securityQuestionsEditTextSignUpSubmit.getText().toString().equals("")) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -943,6 +945,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                                     countryCode = countryListPojos.get(position).getCountryDialCode();
                                     countryId = countryListPojos.get(position).getCountryID();
                                     countryIdNationality = String.valueOf(countryListPojos.get(position).getCountryID());
+                                    countryCodeTextViewSignUp.setText(countryListPojos.get(position).getCountryDialCode());
+                                    Picasso.with(SignUpSubmitActivity.this).load(Constants.FLAG_URL + countryListPojos.get(position).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                                     stateId = 0;
                                     cityId = 0;
                                     stateListJsonCall();

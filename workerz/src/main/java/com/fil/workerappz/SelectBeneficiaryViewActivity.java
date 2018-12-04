@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fil.workerappz.fragments.CountryBeneficiarySelection;
+import com.fil.workerappz.fragments.CountrySelectionBottomSheet;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.BeneficiaryListPojo;
 import com.fil.workerappz.pojo.CityListPojo;
@@ -52,16 +53,15 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.orm.SugarRecord;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -154,6 +154,12 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     MaterialEditText idExpireyDateEditTextAddBeneficiary;
     @BindView(R.id.idExpireyDateTextViewAddBeneficiary)
     TextView idExpireyDateTextViewAddBeneficiary;
+    @BindView(R.id.countryCodeTextViewSignUp)
+    TextView countryCodeTextViewSignUp;
+    @BindView(R.id.countryCodeImageViewSignUp)
+    ImageView countryCodeImageViewSignUp;
+    @BindView(R.id.countrySpinnerSignUp)
+    LinearLayout countrySpinnerSignUp;
     private String countryCode;
     private String countryshortcode;
     private String activitytype;
@@ -454,6 +460,8 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                             countryShortCode = countryListPojos.get(i).getCountryShortCode();
                             countryshortcode = countryListPojos.get(i).getCountryShortCode();
 
+//                            countryCodeTextViewSignUp.setText(countryListPojos.get(i).getCountryDialCode());
+//                            Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                             break;
                         }
                     }
@@ -607,6 +615,9 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                                 countryShortCode = countryListPojos.get(i).getCountryShortCode();
                                 countryshortcode = countryListPojos.get(i).getCountryShortCode();
                                 CountryName = countryListPojos.get(i).getCountryName();
+
+                                countryCodeTextViewSignUp.setText(countryListPojos.get(i).getCountryDialCode());
+                                Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                                 break;
 //                            }
                             }
@@ -776,7 +787,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary})
+    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary,R.id.countrySpinnerSignUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -786,6 +797,13 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 mIntent = new Intent(SelectBeneficiaryViewActivity.this, HomeActivity.class);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mIntent);
+                break;
+            case R.id.countrySpinnerSignUp:
+                CountryBeneficiarySelection countrySelectionBottomSheet1 = new CountryBeneficiarySelection();
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("country_list", modeWisecountryListPojos);
+                countrySelectionBottomSheet1.setArguments(bundle1);
+                countrySelectionBottomSheet1.show(getSupportFragmentManager(), "BottomSheet Fragment");
                 break;
             case R.id.dateOfBirthEditTextAddBeneficiary:
                 InputMethodManager inputMethodManager = (InputMethodManager) SelectBeneficiaryViewActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -1084,12 +1102,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         } else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
             checkFlag = false;
-        }
-        else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
             checkFlag = false;
-        }
-        else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
+        } else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select any one customer Relation");
             checkFlag = false;
         } else if (customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
@@ -1204,6 +1220,16 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             }
         }
     }
+    public void updateMobileCountrySelection(List<CountryData> countryListPojosupdated, int position) {
+        countryCodeTextViewSignUp.setText(countryListPojosupdated.get(position).getCountryDialCode());
+        Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageViewSignUp);
+//        countryId = countryListPojosupdated.get(position).getCountryID();
+//        stateId = 0;
+//        cityId = 0;
+//        CountryName = countryListPojosupdated.get(position).getCountryName();
+//        countryListJsonCall();
+    }
+
 
 //    private void countryListJsonCall() {
 //        JSONObject jsonObject = new JSONObject();
@@ -1722,6 +1748,9 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 countryShortCode = countryListPojos.get(i).getCountryShortCode();
                 countryshortcode = countryListPojos.get(i).getCountryShortCode();
                 CountryName = countryListPojos.get(i).getCountryName();
+
+                countryCodeTextViewSignUp.setText( countryListPojos.get(i).getCountryDialCode());
+                Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                 break;
 //                            }
             }
