@@ -156,17 +156,17 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
 
-                destinationAddressEditTextAddBeneficiaryNext.setHint(datumLable_languages.getDestinationAddress());
-                destinationAddressEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getDestinationAddress());
+                destinationAddressEditTextAddBeneficiaryNext.setHint(datumLable_languages.getDestinationAddress()+"*");
+                destinationAddressEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getDestinationAddress()+"*");
                 destinationLandmarkEditTextAddBeneficiary.setHint(datumLable_languages.getDestinationLandmark());
                 destinationLandmarkEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDestinationLandmark());
                 destinationZipCodeEditTextAddBeneficiary.setHint(datumLable_languages.getDestinationZipcode());
                 destinationZipCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDestinationZipcode());
-                agentsSpinnerAddBeneficiary.setHint(datumLable_languages.getAvailableAgents());
-                agentsSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getSelectAvailableAgent());
+                agentsSpinnerAddBeneficiary.setHint(datumLable_languages.getAvailableAgents()+"*");
+                agentsSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getSelectAvailableAgent()+"*");
 
-                purposeOfTransferSpinnerCashAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer());
-                purposeOfTransferSpinnerCashAddBeneficiary.setFloatingLabelText(datumLable_languages.getPurposeOfTransfer());
+                purposeOfTransferSpinnerCashAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer()+"*");
+                purposeOfTransferSpinnerCashAddBeneficiary.setFloatingLabelText(datumLable_languages.getPurposeOfTransfer()+"*");
 
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
@@ -248,8 +248,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
 
                                 if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13")) {
                                     otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
-                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer());
-                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer());
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer()+"*");
+                                    otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferListPojos.get(0).getData().get(i).getPurposeOfTranfer()+"*");
                                     otherPurposeOfTransferEditTextCashAddBeneficiary.setText(purposedescription);
                                 } else {
                                     otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
@@ -265,8 +265,8 @@ public class AddBeneficiaryCashNextActivity extends ActionBarActivity {
                                     purposecode = purposeOfTransferListPojos.get(0).getData().get(position).getPurposeOfTransferID();
                                     if (purposecode.equalsIgnoreCase("12")||purposecode.equalsIgnoreCase("13")) {
                                         otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.VISIBLE);
-                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
-                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString());
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString()+"*");
+                                        otherPurposeOfTransferEditTextCashAddBeneficiary.setHint(purposeOfTransferSpinnerCashAddBeneficiary.getSelectedItem().toString()+"*");
                                     } else {
                                         otherPurposeOfTransferEditTextCashAddBeneficiary.setVisibility(View.GONE);
                                     }

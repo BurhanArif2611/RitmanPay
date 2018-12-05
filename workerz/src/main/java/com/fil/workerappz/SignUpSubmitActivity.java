@@ -218,30 +218,30 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
             if (datumLable_languages != null) {
-                firstNameEditTextSignUpSubmit.setHint(datumLable_languages.getFirstName());
-                firstNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getFirstName());
-                lastNameEditTextSignUpSubmit.setHint(datumLable_languages.getLastName());
-                lastNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getLastName());
-                mobileNoEditTextSignUpSubmit.setHint(datumLable_languages.getMobileNumber());
-                mobileNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getMobileNumber());
-                emailEditTextSignUpSubmit.setHint(datumLable_languages.getEmail());
-                emailEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmail());
-                addressEditTextSignUpSubmit.setHint(datumLable_languages.getAddress());
-                addressEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getAddress());
-                countryOfResidenceSpinnerSignUpSubmit.setHint(datumLable_languages.getCountryOfResidence());
-                passportNoEditTextSignUpSubmit.setHint(datumLable_languages.getPassportNo());
-                passportNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getPassportNo());
-                emiratesIdEditTextSignUpSubmit.setHint(datumLable_languages.getEmiratesId());
-                emiratesIdEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmiratesId());
-                countryOfResidenceSpinnerSignUpSubmit.setFloatingLabelText(datumLable_languages.getCountryOfResidence());
-                textviewgender.setText(datumLable_languages.getGender());
+                firstNameEditTextSignUpSubmit.setHint(datumLable_languages.getFirstName() + "*");
+                firstNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getFirstName() + "*");
+                lastNameEditTextSignUpSubmit.setHint(datumLable_languages.getLastName() + "*");
+                lastNameEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getLastName() + "*");
+                mobileNoEditTextSignUpSubmit.setHint(datumLable_languages.getMobileNumber() + "*");
+                mobileNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getMobileNumber() + "*");
+                emailEditTextSignUpSubmit.setHint(datumLable_languages.getEmail() + "*");
+                emailEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmail() + "*");
+                addressEditTextSignUpSubmit.setHint(datumLable_languages.getAddress() + "*");
+                addressEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getAddress() + "*");
+                countryOfResidenceSpinnerSignUpSubmit.setHint(datumLable_languages.getCountryOfResidence() + "*");
+                passportNoEditTextSignUpSubmit.setHint(datumLable_languages.getPassportNo() + "*");
+                passportNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getPassportNo() + "*");
+                emiratesIdEditTextSignUpSubmit.setHint(datumLable_languages.getEmiratesId() + "*");
+                emiratesIdEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmiratesId() + "*");
+                countryOfResidenceSpinnerSignUpSubmit.setFloatingLabelText(datumLable_languages.getCountryOfResidence() + "*");
+                textviewgender.setText(datumLable_languages.getGender() + "*");
                 maleRadioButtonSignUpSubmit.setText(datumLable_languages.getMale());
                 femaleRadioButtonSignUpSubmit.setText(datumLable_languages.getFemale());
                 submitTextViewSignUpSubmit.setText(datumLable_languages.getNext());
                 titleTextViewViewHeader.setText(datumLable_languages.getSignUp());
                 nointernetmessage = datumLable_languages.getNoInternetConnectionAvailable();
-                dateOfBirthEditTextSignUpSubmit.setHint(datumLable_languages.getDateOfBirth());
-                dateOfBirthEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getDateOfBirth());
+                dateOfBirthEditTextSignUpSubmit.setHint(datumLable_languages.getDateOfBirth() + "*");
+                dateOfBirthEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getDateOfBirth() + "*");
 
 
             } else {
@@ -267,7 +267,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        landmarkEditTextSignUp.setHint(getResources().getString(R.string.landmark) + "*");
+        landmarkEditTextSignUp.setFloatingLabelText(getResources().getString(R.string.landmark) + "*");
         if (datumLable_languages_msg != null) {
             firstname = datumLable_languages_msg.getEnterFirstName();
             lastname = datumLable_languages_msg.getEnterLastName();
@@ -395,10 +396,9 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
                 int main_length = securityQuestionsEditTextSignUpSubmit.getText().toString().length();
 
-                if (main_length>0)
-                {
+                if (main_length > 0) {
 
-                   answer = String.valueOf(c);
+                    answer = String.valueOf(c);
                 }
 
             }
@@ -768,7 +768,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
-        }else if (securityQuestionsEditTextSignUpSubmit.getText().toString().equals("")) {
+        } else if (securityQuestionsEditTextSignUpSubmit.getText().toString().equals("")) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }
@@ -835,7 +835,6 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         sessionManager.setLogin(true);
                         sessionManager.setVerify(false);
                         sessionManager.setLogoutVerify(false);
-
 
 
                         final Handler handler = new Handler();
@@ -1263,7 +1262,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                         }
 
 //
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignUpSubmitActivity.this, android.R.layout.simple_spinner_item , questionList);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignUpSubmitActivity.this, android.R.layout.simple_spinner_item, questionList);
                         adapter.setDropDownViewResource(R.layout.custom_questions_layout);
                         securityQuestionsSpinnerSignUpSubmit.setAdapter(adapter);
 
@@ -1272,8 +1271,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     securityQuestionsEditTextSignUpSubmit.setVisibility(View.VISIBLE);
-                                    securityQuestionsEditTextSignUpSubmit.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
-                                    securityQuestionsEditTextSignUpSubmit.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTextSignUpSubmit.setHint(SequrityQuestionListPojos.get(position).getSecQuestion() + "*");
+                                    securityQuestionsEditTextSignUpSubmit.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion() + "*");
                                     answerId = SequrityQuestionListPojos.get(position).getSecID();
 
                                 }

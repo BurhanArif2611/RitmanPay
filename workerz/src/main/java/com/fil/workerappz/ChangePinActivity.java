@@ -81,11 +81,11 @@ public class ChangePinActivity extends ActionBarActivity {
 
                 titleTextViewViewHeader.setText(datumLable_languages.getChangePIN());
                 oldPinEditText.setHint(datumLable_languages.getOldWalletPIN());
-                oldPinEditText.setFloatingLabelText(datumLable_languages.getOldWalletPIN());
-                newPinEditText.setHint(datumLable_languages.getNewWalletPIN());
-                newPinEditText.setFloatingLabelText(datumLable_languages.getNewWalletPIN());
-                repeatPinEditText.setHint(datumLable_languages.getRepeatNewWalletPIN());
-                repeatPinEditText.setFloatingLabelText(datumLable_languages.getRepeatNewWalletPIN());
+                oldPinEditText.setFloatingLabelText(datumLable_languages.getOldWalletPIN()+"*");
+                newPinEditText.setHint(datumLable_languages.getNewWalletPIN()+"*");
+                newPinEditText.setFloatingLabelText(datumLable_languages.getNewWalletPIN()+"*");
+                repeatPinEditText.setHint(datumLable_languages.getRepeatNewWalletPIN()+"*");
+                repeatPinEditText.setFloatingLabelText(datumLable_languages.getRepeatNewWalletPIN()+"*");
                 savePinTextView.setText(datumLable_languages.getSave());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
@@ -118,12 +118,12 @@ public class ChangePinActivity extends ActionBarActivity {
             pinnotmatch = getResources().getString(R.string.Pin_does_not_match);
 
         }
-        oldPinEditText.setHint("Old PIN");
-        oldPinEditText.setFloatingLabelText("Old PIN");
-        newPinEditText.setHint("New PIN");
-        newPinEditText.setFloatingLabelText("New PIN");
-        repeatPinEditText.setHint("Repeat New PIN");
-        repeatPinEditText.setFloatingLabelText("Repeat New PIN");
+        oldPinEditText.setHint("Old PIN"+"*");
+        oldPinEditText.setFloatingLabelText("Old PIN"+"*");
+        newPinEditText.setHint("New PIN"+"*");
+        newPinEditText.setFloatingLabelText("New PIN"+"*");
+        repeatPinEditText.setHint("Repeat New PIN"+"*");
+        repeatPinEditText.setFloatingLabelText("Repeat New PIN"+"*");
         appImageViewHeader1.setVisibility(View.VISIBLE);
 
     }

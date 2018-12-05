@@ -134,19 +134,19 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
             if (datumLable_languages != null) {
-                bankAccountNumberEditTextAddBeneficiaryNext.setHint(datumLable_languages.getAccountNumber());
-                bankAccountNumberEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getAccountNumber());
-                bankNameEditTextAddBeneficiary.setHint(datumLable_languages.getBankName());
-                bankNameNewEditTextAddBeneficiary.setHint(datumLable_languages.getBankName());
-                bankCodeEditTextAddBeneficiary.setHint(datumLable_languages.getBranchCode());
-                bankCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchCode());
-                bankAddressEditTextAddBeneficiary.setHint(datumLable_languages.getBranchAddress());
-                bankAddressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchAddress());
-                phoneNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber());
-                bankNameSpinner.setHint(datumLable_languages.getBankName());
+                bankAccountNumberEditTextAddBeneficiaryNext.setHint(datumLable_languages.getAccountNumber()+"*");
+                bankAccountNumberEditTextAddBeneficiaryNext.setFloatingLabelText(datumLable_languages.getAccountNumber()+"*");
+                bankNameEditTextAddBeneficiary.setHint(datumLable_languages.getBankName()+"*");
+                bankNameNewEditTextAddBeneficiary.setHint(datumLable_languages.getBankName()+"*");
+                bankCodeEditTextAddBeneficiary.setHint(datumLable_languages.getBranchCode()+"*");
+                bankCodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchCode()+"*");
+                bankAddressEditTextAddBeneficiary.setHint(datumLable_languages.getBranchAddress()+"*");
+                bankAddressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getBranchAddress()+"*");
+                phoneNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber()+"*");
+                bankNameSpinner.setHint(datumLable_languages.getBankName()+"*");
                 phoneNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber());
-                bankNameSpinner.setFloatingLabelText(datumLable_languages.getBankName());
-                purposeOfTransferSpinnerAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer());
+                bankNameSpinner.setFloatingLabelText(datumLable_languages.getBankName()+"*");
+                purposeOfTransferSpinnerAddBeneficiary.setHint(datumLable_languages.getPurposeOfTransfer()+"*");
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
                 addTextViewAddBeneficiary.setText(datumLable_languages.getAdd());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
@@ -419,8 +419,8 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
 
                                     if (purposeCode.equalsIgnoreCase("12")||purposeCode.equalsIgnoreCase("13")) {
                                         otherPurposeOfTransferEditTextAddBeneficiary.setVisibility(View.VISIBLE);
-                                        otherPurposeOfTransferEditTextAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString());
-                                        otherPurposeOfTransferEditTextAddBeneficiary.setHint(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString());
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setFloatingLabelText(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString()+"*");
+                                        otherPurposeOfTransferEditTextAddBeneficiary.setHint(purposeOfTransferSpinnerAddBeneficiary.getSelectedItem().toString()+"*");
                                     } else {
                                         otherPurposeOfTransferEditTextAddBeneficiary.setVisibility(View.GONE);
                                     }
@@ -467,18 +467,24 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                 } else if (!bankAccountNumberEditTextAddBeneficiaryNext.getText().toString().equalsIgnoreCase(bankReAccountNumberEditTextAddBeneficiaryNext.getText().toString())) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
                             , "Account number and Reaccount number does not match");
-                } else if (spinnerflag &&bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
-                            , banknamemsg);
-                } else if (!spinnerflag && bankNameNewEditTextAddBeneficiary.getText().toString().length() == 0) {
-                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
-                            , banknamemsg);
-
-                } else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
+                }
+                else if (accountHolderNameEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, "Please Enter Accountholdername");
+                }
+                 else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, branchcodemsg);
 
                 } else if (bankAddressEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this, branchaddmsg);
+
+                }
+                else if (spinnerflag &&bankNameEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
+                            , banknamemsg);
+                }
+                else if (!spinnerflag && bankNameNewEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryNextActivity.this
+                            , banknamemsg);
 
                 }
 //                else if (!bankCodeEditTextAddBeneficiary.getText().toString().equalsIgnoreCase(BankBranchCode)) {

@@ -137,11 +137,11 @@ public class WalletMoneyTransferFragment extends BaseFragment {
             datumLable_languages_msg = sessionManager.getAppLanguageMessage();
 
             if (datumLable_languages != null) {
-                amountSendMoneyEditText.setHint(datumLable_languages.getAmount());
-                amountSendMoneyEditText.setFloatingLabelText(datumLable_languages.getAmount());
-                mobileNoSendMoneyEditText.setHint(datumLable_languages.getMobileNumber());
-                walletNameSendMoneyEditText.setHint(datumLable_languages.getWalletName());
-                walletNameSendMoneyEditText.setFloatingLabelText(datumLable_languages.getWalletName());
+                amountSendMoneyEditText.setHint(datumLable_languages.getAmount()+"*");
+                amountSendMoneyEditText.setFloatingLabelText(datumLable_languages.getAmount()+"*");
+                mobileNoSendMoneyEditText.setHint(datumLable_languages.getMobileNumber()+"*");
+                walletNameSendMoneyEditText.setHint(datumLable_languages.getWalletName()+"*");
+                walletNameSendMoneyEditText.setFloatingLabelText(datumLable_languages.getWalletName()+"*");
                 descriptionSendMoneyEditText.setHint(datumLable_languages.getDescription());
                 descriptionSendMoneyEditText.setFloatingLabelText(datumLable_languages.getDescription());
                 sendNowWalletMoneyTransfer.setText(datumLable_languages.getSendNow());

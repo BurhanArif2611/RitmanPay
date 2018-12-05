@@ -42,7 +42,8 @@ public class WalletSummaryPagerAdapter extends FragmentStatePagerAdapter {
                 }
                 if (flag == false) {
 //                    Constants.filter = "all";
-                    Constants.filter = stringArrayList.get(0);
+//                    Constants.filter = stringArrayList.get(0);
+                    Constants.filter = "";
                 }
                 walletHistoryFragment.getTransactionHistory(position, userId);
                 break;
@@ -53,7 +54,8 @@ public class WalletSummaryPagerAdapter extends FragmentStatePagerAdapter {
                 }
                 if (flag == false) {
 //                    Constants.filter = "paid";
-                    Constants.filter = stringArrayList.get(1);
+//                    Constants.filter = stringArrayList.get(1);
+                    Constants.filter ="paid";
                 }
                 walletHistoryFragment1.getTransactionHistory(position, userId);
                 break;
@@ -64,7 +66,8 @@ public class WalletSummaryPagerAdapter extends FragmentStatePagerAdapter {
                 }
                 if (flag == false) {
 //                    Constants.filter = "received";
-                    Constants.filter = stringArrayList.get(2);
+//                    Constants.filter = stringArrayList.get(2);
+                    Constants.filter = "received";
                 }
                 walletHistoryFragment2.getTransactionHistory(position, userId);
                 break;

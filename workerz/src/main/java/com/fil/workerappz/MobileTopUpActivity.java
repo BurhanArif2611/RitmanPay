@@ -149,11 +149,11 @@ public class MobileTopUpActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getMobileTopup());
-                countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry());
-                mobileNumberEditTextRecharge.setHint(datumLable_languages.getRechargePhoneNumber());
-                mobileNumberEditTextRecharge.setFloatingLabelText(datumLable_languages.getRechargePhoneNumber());
-                serviceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider());
-                BrowserPlansEditTextMobileTopUp.setHint(datumLable_languages.getBrowsePlans());
+                countryCodeTextViewMobileTopUp.setText(datumLable_languages.getCountry()+"*");
+                mobileNumberEditTextRecharge.setHint(datumLable_languages.getRechargePhoneNumber()+"*");
+                mobileNumberEditTextRecharge.setFloatingLabelText(datumLable_languages.getRechargePhoneNumber()+"*");
+                serviceProviderEditTextMobileTopUp.setHint(datumLable_languages.getServiceProvider()+"*");
+                BrowserPlansEditTextMobileTopUp.setHint(datumLable_languages.getBrowsePlans()+"*");
                 validityTextview.setText(datumLable_languages.getValidity());
                 receivevaluetextview.setText(datumLable_languages.getReceiveValue());
                 submitTextview.setText(datumLable_languages.getProceedToPay());

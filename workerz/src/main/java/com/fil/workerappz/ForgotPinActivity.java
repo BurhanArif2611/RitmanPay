@@ -133,8 +133,8 @@ public class ForgotPinActivity extends ActionBarActivity {
 
                 titleTextViewViewHeader.setText(datumLable_languages.getForgotPIN());
                 dontwrrytextview.setText(datumLable_languages.getResetYourPIN());
-                emailMobileNoEditTextForgotPinActivity.setHint(datumLable_languages.getEmailMobileNo());
-                emailMobileNoEditTextForgotPinActivity.setFloatingLabelText(datumLable_languages.getEmailMobileNo());
+                emailMobileNoEditTextForgotPinActivity.setHint(datumLable_languages.getEmailMobileNo()+"*");
+                emailMobileNoEditTextForgotPinActivity.setFloatingLabelText(datumLable_languages.getEmailMobileNo()+"*");
                 sendTextViewForgotPinActivity.setText(datumLable_languages.getSend());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
 
@@ -291,8 +291,8 @@ public class ForgotPinActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     securityQuestionsEditTextForgotPin.setVisibility(View.VISIBLE);
-                                    securityQuestionsEditTextForgotPin.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
-                                    securityQuestionsEditTextForgotPin.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTextForgotPin.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion()+"*");
+                                    securityQuestionsEditTextForgotPin.setHint(SequrityQuestionListPojos.get(position).getSecQuestion()+"*");
                                     answerId = SequrityQuestionListPojos.get(position).getSecID();
 
                                 }
@@ -389,7 +389,7 @@ public class ForgotPinActivity extends ActionBarActivity {
         } else if (inputType == true && emailMobileNoEditTextForgotPinActivity.getText().toString().startsWith("0")) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, validmobilenumber);
             checkFlag = false;
-        } else if (answer.equals("")) {
+        } else if (securityQuestionsEditTextForgotPin.getText().toString().length()==0) {
             Constants.showMessage(mainLinearLayoutForgotPIN, ForgotPinActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }

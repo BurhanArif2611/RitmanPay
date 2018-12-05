@@ -99,6 +99,8 @@ public class ProfileActivity extends ActionBarActivity {
     private static final int REQUEST_CODE_AUTOCOMPLETE = 0;
     private static final int TAKE_PICTURE = 1;
     private static final int SELECT_PICTURE = 2;
+    private static final int croppingResult = 525;
+    private String imgName1 = "";
     @BindView(R.id.textviewgendeprofile)
     TextView textviewgendeprofile;
     //    @BindView(R.id.securityQuestionsRecyclerView)
@@ -196,10 +198,10 @@ public class ProfileActivity extends ActionBarActivity {
     private Intent mIntent;
     private boolean editable = false;
     private final ArrayList<CountryData> countryListPojos = new ArrayList<>();
-    private File file;
+    private File file, imgFile;
     private long timeForImageName;
     private String imgName = "";
-    private Uri pictureUri = null;
+    private Uri pictureUri = null, myUri;
     private SessionManager sessionManager;
     private UserListPojo.Data userListPojo;
     private String gender = "Male";
@@ -246,23 +248,23 @@ public class ProfileActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
                 titleTextViewViewHeader.setText(datumLable_languages.getProfile());
                 editProfilePicture.setText(datumLable_languages.getEdit());
-                firstNameEditTextProfile.setHint(datumLable_languages.getFirstName());
-                firstNameEditTextProfile.setFloatingLabelText(datumLable_languages.getFirstName());
-                lastNameEditTextProfile.setHint(datumLable_languages.getLastName());
-                lastNameEditTextProfile.setFloatingLabelText(datumLable_languages.getLastName());
-                mobileNumberEditTextProfile.setHint(datumLable_languages.getMobileNumber());
-                mobileNumberEditTextProfile.setFloatingLabelText(datumLable_languages.getMobileNumber());
-                emailEditTextProfile.setHint(datumLable_languages.getEmail());
-                emailEditTextProfile.setFloatingLabelText(datumLable_languages.getEmail());
-                addressEditTextProfile.setHint(datumLable_languages.getAddress());
-                addressEditTextProfile.setFloatingLabelText(datumLable_languages.getAddress());
-                countryOfResidenceEditTextProfile.setHint(datumLable_languages.getCountryOfResidence());
-                passportNoEditTextProfile.setHint(datumLable_languages.getPassportNo());
-                passportNoEditTextProfile.setFloatingLabelText(datumLable_languages.getPassportNo());
-                emiratesIdEditTextProfile.setHint(datumLable_languages.getEmiratesId());
-                emiratesIdEditTextProfile.setFloatingLabelText(datumLable_languages.getEmiratesId());
-                countryOfResidenceEditTextProfile.setFloatingLabelText(datumLable_languages.getCountryOfResidence());
-                textviewgendeprofile.setText(datumLable_languages.getGender());
+                firstNameEditTextProfile.setHint(datumLable_languages.getFirstName()+"*");
+                firstNameEditTextProfile.setFloatingLabelText(datumLable_languages.getFirstName()+"*");
+                lastNameEditTextProfile.setHint(datumLable_languages.getLastName()+"*");
+                lastNameEditTextProfile.setFloatingLabelText(datumLable_languages.getLastName()+"*");
+                mobileNumberEditTextProfile.setHint(datumLable_languages.getMobileNumber()+"*");
+                mobileNumberEditTextProfile.setFloatingLabelText(datumLable_languages.getMobileNumber()+"*");
+                emailEditTextProfile.setHint(datumLable_languages.getEmail()+"*");
+                emailEditTextProfile.setFloatingLabelText(datumLable_languages.getEmail()+"*");
+                addressEditTextProfile.setHint(datumLable_languages.getAddress()+"*");
+                addressEditTextProfile.setFloatingLabelText(datumLable_languages.getAddress()+"*");
+                countryOfResidenceEditTextProfile.setHint(datumLable_languages.getCountryOfResidence()+"*");
+                passportNoEditTextProfile.setHint(datumLable_languages.getPassportNo()+"*");
+                passportNoEditTextProfile.setFloatingLabelText(datumLable_languages.getPassportNo()+"*");
+                emiratesIdEditTextProfile.setHint(datumLable_languages.getEmiratesId()+"*");
+                emiratesIdEditTextProfile.setFloatingLabelText(datumLable_languages.getEmiratesId()+"*");
+                countryOfResidenceEditTextProfile.setFloatingLabelText(datumLable_languages.getCountryOfResidence()+"*");
+                textviewgendeprofile.setText(datumLable_languages.getGender()+"*");
                 maleRadioButtonProfile.setText(datumLable_languages.getMale());
                 femaleRadioButtonProfile.setText(datumLable_languages.getFemale());
                 changePinTextViewProfile.setText(datumLable_languages.getChangePIN());
@@ -483,8 +485,8 @@ public class ProfileActivity extends ActionBarActivity {
                         for (int i = 0; i < SequrityQuestionListPojos.size(); i++) {
                             if (getUserData().getSecID().equalsIgnoreCase(SequrityQuestionListPojos.get(i).getSecID())) {
                                 securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
-                                securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(i).getSecQuestion());
-                                securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(i).getSecQuestion());
+                                securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(i).getSecQuestion()+"*");
+                                securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(i).getSecQuestion()+"*");
                                 answerId = SequrityQuestionListPojos.get(i).getSecID();
                                 securityQuestionsEditTexProfile.setText(getUserData().getUserSecurityAnswer());
                                 break;
@@ -501,8 +503,8 @@ public class ProfileActivity extends ActionBarActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != -1) {
                                     securityQuestionsEditTexProfile.setVisibility(View.VISIBLE);
-                                    securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion());
-                                    securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion());
+                                    securityQuestionsEditTexProfile.setFloatingLabelText(SequrityQuestionListPojos.get(position).getSecQuestion()+"*");
+                                    securityQuestionsEditTexProfile.setHint(SequrityQuestionListPojos.get(position).getSecQuestion()+"*");
                                     answerId = SequrityQuestionListPojos.get(position).getSecID();
                                     securityQuestionsEditTexProfile.setText("");
                                     answer = "";
@@ -1004,23 +1006,49 @@ public class ProfileActivity extends ActionBarActivity {
                     CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getParent());
                     CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getAbsolutePath());
                     CustomLog.d("System out", "pictureUri " + getExternalFilesDir(null).getPath());
+
+                    BitmapFactory.Options options1 = new BitmapFactory.Options();
+                    options1.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(new File(file.getPath()).getAbsolutePath(), options1);
+                    int imageHeight1 = options1.outHeight;
+                    int imageWidth1 = options1.outWidth;
+
+//                    try {
+//                        compressedImage = new Compressor(this)
+//                                .setMaxWidth(640)
+//                                .setMaxHeight(480)
+//                                .setQuality(75)
+//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                                .compressToFile(file);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                     try {
-                        compressedImage = new Compressor(this)
-                                .setMaxWidth(640)
-                                .setMaxHeight(480)
-                                .setQuality(75)
-                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                                .compressToFile(file);
-                    } catch (IOException e) {
+                        imgName1 = "img" + timeForImageName;
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
-                        uploadProfilePicture();
-                    } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
+                    String imgStorepath = "";
+                    imgStorepath = Environment.getExternalStorageDirectory() + "/" + getString(R.string.app_name) + "/";
+                    try {
+                        Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                        i.putExtra("fileUri", pictureUri.toString());
+                        i.putExtra("width", String.valueOf(imageWidth1));
+                        i.putExtra("height", String.valueOf(imageHeight1));
+                        i.putExtra("imgStrPath", file.getPath());
+                        i.putExtra("fileName", imgName1);
+                        startActivityForResult(i, 525);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
+//                    if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
+//                        uploadProfilePicture();
+//                    } else {
+//                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
+//                    }
                     break;
                 case SELECT_PICTURE:
                     timeForImageName = System.currentTimeMillis();
@@ -1049,26 +1077,60 @@ public class ProfileActivity extends ActionBarActivity {
                     CustomLog.d("System out", "width " + imageWidth);
                     CustomLog.d("System out", "height " + imageHeight);
 
-                    if (imageWidth < 400 || imageHeight < 700) {
-                        compressedImage = file;
-                    } else {
-                        try {
-                            compressedImage = new Compressor(this)
-                                    .setMaxWidth(640)
-                                    .setMaxHeight(480)
-                                    .setQuality(75)
-                                    .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                                    .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-                                            Environment.DIRECTORY_PICTURES).getAbsolutePath())
-                                    .compressToFile(file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                    if (imageWidth < 400 || imageHeight < 700) {
+//                        compressedImage = file;
+//                    } else {
+//                        try {
+//                            compressedImage = new Compressor(this)
+//                                    .setMaxWidth(640)
+//                                    .setMaxHeight(480)
+//                                    .setQuality(75)
+//                                    .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                    .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                            Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                                    .compressToFile(file);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+
+                    try {
+                        Intent i = new Intent(getApplicationContext(), CropActivity.class);
+                        i.putExtra("fileUri", pictureUri.toString());
+                        i.putExtra("width", String.valueOf(imageWidth));
+                        i.putExtra("height", String.valueOf(imageHeight));
+                        i.putExtra("imgStrPath", file.getPath());
+//                    i.putExtra("fileName", imgStorepath);
+                        startActivityForResult(i, 525);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
-                        uploadProfilePicture();
-                    } else {
-                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
+//                    if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
+//                        uploadProfilePicture();
+//                    } else {
+//                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
+//                    }
+                    break;
+                case croppingResult:
+                    Log.e("!_!525 Data Crop ?>>", data.getStringExtra("myFileName") + "");
+                    try {
+                        imgFile = new File(data.getStringExtra("myFileName"));
+                        myUri = Uri.parse(data.getStringExtra("myFileName"));
+
+                        if (imgFile.exists()) {
+                            if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
+                                compressedImage = new File(String.valueOf(myUri));
+                                uploadProfilePicture();
+                            } else {
+                                Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Image is not cropped", Toast.LENGTH_SHORT).show();
+//                        compressedImage = new File(String.valueOf(myUri));
+//                        uploadKYCDoc();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     break;
                 case REQUEST_CODE_AUTOCOMPLETE:

@@ -208,33 +208,33 @@ public class AddBeneficiaryActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
 
-                firstNameEditTextAddBeneficiary.setHint(datumLable_languages.getFirstName());
-                firstNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getFirstName());
-                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName());
-                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName());
-                mobileNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber());
-                mobileNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber());
+                firstNameEditTextAddBeneficiary.setHint(datumLable_languages.getFirstName()+"*");
+                firstNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getFirstName()+"*");
+                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName()+"*");
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName()+"*");
+                mobileNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber()+"*");
+                mobileNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber()+"*");
                 middleNameEditTextAddBeneficiary.setHint(datumLable_languages.getMiddleName());
                 middleNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMiddleName());
-                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName());
-                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName());
-                nickNameEditTextAddBeneficiary.setHint(datumLable_languages.getNickName());
-                nickNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getNickName());
-                emailEditTextAddBeneficiary.setHint(datumLable_languages.getEmail());
-                emailEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getEmail());
-                dateOfBirthEditTextAddBeneficiary.setHint(datumLable_languages.getDateOfBirth());
-                dateOfBirthEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDateOfBirth());
+                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName()+"*");
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName()+"*");
+                nickNameEditTextAddBeneficiary.setHint(datumLable_languages.getNickName()+"*");
+                nickNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getNickName()+"*");
+                emailEditTextAddBeneficiary.setHint(datumLable_languages.getEmail()+"*");
+                emailEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getEmail()+"*");
+                dateOfBirthEditTextAddBeneficiary.setHint(datumLable_languages.getDateOfBirth()+"*");
+                dateOfBirthEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDateOfBirth()+"*");
 
-                addressEditTextAddBeneficiary.setHint(datumLable_languages.getAddress());
-                addressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getAddress());
+                addressEditTextAddBeneficiary.setHint(datumLable_languages.getAddress()+"*");
+                addressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getAddress()+"*");
                 landmarkEditTextAddBeneficiary.setHint(datumLable_languages.getLandmark());
                 landmarkEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLandmark());
                 zipcodeEditTextAddBeneficiary.setHint(datumLable_languages.getZipCode());
                 zipcodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getZipCode());
-                idTypeSpinnerAddBeneficiary.setHint(datumLable_languages.getIdType());
-                idTypeSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdType());
-                idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber());
-                idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber());
+                idTypeSpinnerAddBeneficiary.setHint(datumLable_languages.getIdType()+"*");
+                idTypeSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdType()+"*");
+                idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber()+"*");
+                idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber()+"*");
                 nextAddBeneficiaryTextView.setText(datumLable_languages.getNext());
 //                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.getNationality());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());

@@ -130,7 +130,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
-                EdittextSendMoney.setHint(datumLable_languages.getSendMoney());
+                EdittextSendMoney.setHint(datumLable_languages.getSendMoney()+"*");
                 EdittextReceiveMoney.setHint(datumLable_languages.getReceiveMoney());
                 sendNowTextview.setText(datumLable_languages.getSendNow());
                 sendingamountTextview.setText(datumLable_languages.getSendingAmount() + ":");

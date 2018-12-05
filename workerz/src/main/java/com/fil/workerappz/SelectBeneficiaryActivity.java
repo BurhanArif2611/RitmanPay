@@ -167,7 +167,8 @@ public class SelectBeneficiaryActivity extends ActionBarActivity {
             inputSearch.setVisibility(View.VISIBLE);
 
         } else {
-            titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryList());
+//            titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryList());
+            titleTextViewViewHeader2.setText("Manage Beneficiary");
             footerlinerselectbeneficiary.setVisibility(View.VISIBLE);
             inputSearch.setVisibility(View.GONE);
             menuImageViewHeader2.setImageResource(R.drawable.back_btn);

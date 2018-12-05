@@ -164,9 +164,13 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
             if (datumLable_languages != null) {
 
-                idNumberEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdNumber());
-                dateofBirthEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getDateOfBirth());
+                idNumberEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdNumber()+"*");
+                idNumberEditTextAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdNumber()+"*");
+                dateofBirthEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getDateOfBirth()+"*");
                 idDescriptionEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIDDESCRIPTION());
+                idDescriptionEditTextAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIDDESCRIPTION());
+                idtypeSpinnerAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdType()+"*");
+                idtypeSpinnerAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdType()+"*");
                 nextTextview.setHint(datumLable_languages.getAdd());
                 customerInfoTextView.setText(datumLable_languages.getCustomerInfo());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();

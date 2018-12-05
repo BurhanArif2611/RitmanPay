@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.fil.workerappz.R;
 import com.fil.workerappz.adapter.WalletHistoryAdapter;
@@ -16,7 +17,6 @@ import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
-import com.fil.workerappz.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +43,9 @@ import retrofit2.Response;
 public class WalletHistoryFragment extends BaseFragment {
 
     RecyclerView transactionHistoryRecyclerView;
+    @BindView(R.id.maintransactionfragmentlinearlayout)
+    LinearLayout maintransactionfragmentlinearlayout;
+    Unbinder unbinder;
     private int userId;
     private int position;
     private LinearLayoutManager layoutManager;
@@ -51,7 +57,7 @@ public class WalletHistoryFragment extends BaseFragment {
     private WalletHistoryAdapter walletHistoryAdapter;
     private LabelListData datumLable_languages = new LabelListData();
     private final ArrayList<TransactionHistoryListJsonPojo> transactionHistoryListJsonPojos = new ArrayList<>();
-    private boolean pagginationFlag=false;
+    private boolean pagginationFlag = false;
 
     public WalletHistoryFragment() {
 
@@ -72,6 +78,7 @@ public class WalletHistoryFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.transaction_history, container, false);
         transactionHistoryRecyclerView = view.findViewById(R.id.transactionHistoryRecyclerView);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -164,11 +171,14 @@ public class WalletHistoryFragment extends BaseFragment {
                         isLastpage = true;
                         if (transactionHistoryListJsonPojos.size() == 0) {
                             transactionHistoryRecyclerView.setAdapter(null);
+                            Constants.showMessage(maintransactionfragmentlinearlayout, getActivity(), getResources().getString(R.string.no_record_found));
 
                         }
                     } else {
-                        if (response.body().get(0).getData().size() == 0) {
+                        if (response.body().get(0).getData().size() == 0&& pageNo == 0) {
                             isLastpage = true;
+                            transactionHistoryRecyclerView.setAdapter(null);
+                            Constants.showMessage(maintransactionfragmentlinearlayout,  getActivity(), getResources().getString(R.string.no_record_found));
                         } else {
                             if (pageNo == 0) {
                                 transactionHistoryListJsonPojos.clear();
@@ -201,5 +211,11 @@ public class WalletHistoryFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
