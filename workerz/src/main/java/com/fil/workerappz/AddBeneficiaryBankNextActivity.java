@@ -516,7 +516,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this
                             , "Account number and Reaccount number does not match");
                 }
-                else if (accountHolderNameEditTextAddBeneficiaryNext.getText().toString().length() < 8) {
+                else if (accountHolderNameEditTextAddBeneficiaryNext.getText().toString().length() ==0) {
                     Constants.showMessage(mainAddBeneficiaryNextActivityLinearLayout, AddBeneficiaryBankNextActivity.this, "Please Enter Accountholdername");
                 }
                 else if (ifscCodeEditTextAddBeneficiaryNext.getText().toString().length() == 0) {

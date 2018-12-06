@@ -165,10 +165,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     private String activitytype;
     private int countryId;
     private String idtypeId;
-    private String IDtype_Description;
-    private String dateofbirth, idissuedate, idexpireydate = "";
+    private String IDtype_Description = "";
+    private String dateofbirth = "", idissuedate = "", idexpireydate = "";
     private String nationality;
-    private String idType;
+    private String idType = "";
     private int stateId = 0;
     private int cityId = 0;
     private int idtypemaxlength = 7;
@@ -216,33 +216,33 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
             if (datumLable_languages != null) {
 
-                firstNameEditTextAddBeneficiary.setHint(datumLable_languages.getFirstName()+"*");
-                firstNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getFirstName()+"*");
-                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName()+"*");
-                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName()+"*");
-                mobileNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber()+"*");
-                mobileNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber()+"*");
+                firstNameEditTextAddBeneficiary.setHint(datumLable_languages.getFirstName() + "*");
+                firstNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getFirstName() + "*");
+                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName() + "*");
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName() + "*");
+                mobileNumberEditTextAddBeneficiary.setHint(datumLable_languages.getMobileNumber() + "*");
+                mobileNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMobileNumber() + "*");
                 middleNameEditTextAddBeneficiary.setHint(datumLable_languages.getMiddleName());
                 middleNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getMiddleName());
-                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName()+"*");
-                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName()+"*");
-                nickNameEditTextAddBeneficiary.setHint(datumLable_languages.getNickName()+"*");
-                nickNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getNickName()+"*");
-                emailEditTextAddBeneficiary.setHint(datumLable_languages.getEmail()+"*");
-                emailEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getEmail()+"*");
-                dateOfBirthEditTextAddBeneficiary.setHint(datumLable_languages.getDateOfBirth()+"*");
-                dateOfBirthEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDateOfBirth()+"*");
+                lastNameEditTextAddBeneficiary.setHint(datumLable_languages.getLastName() + "*");
+                lastNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLastName() + "*");
+                nickNameEditTextAddBeneficiary.setHint(datumLable_languages.getNickName() + "*");
+                nickNameEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getNickName() + "*");
+                emailEditTextAddBeneficiary.setHint(datumLable_languages.getEmail() + "*");
+                emailEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getEmail() + "*");
+                dateOfBirthEditTextAddBeneficiary.setHint(datumLable_languages.getDateOfBirth() + "*");
+                dateOfBirthEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getDateOfBirth() + "*");
 
-                addressEditTextAddBeneficiary.setHint(datumLable_languages.getAddress()+"*");
-                addressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getAddress()+"*");
+                addressEditTextAddBeneficiary.setHint(datumLable_languages.getAddress() + "*");
+                addressEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getAddress() + "*");
                 landmarkEditTextAddBeneficiary.setHint(datumLable_languages.getLandmark());
                 landmarkEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getLandmark());
                 zipcodeEditTextAddBeneficiary.setHint(datumLable_languages.getZipCode());
                 zipcodeEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getZipCode());
-                idTypeSpinnerAddBeneficiary.setHint(datumLable_languages.getIdType()+"*");
-                idTypeSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdType()+"*");
-                idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber()+"*");
-                idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber()+"*");
+                idTypeSpinnerAddBeneficiary.setHint(datumLable_languages.getIdType());
+                idTypeSpinnerAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdType());
+                idNumberEditTextAddBeneficiary.setHint(datumLable_languages.getIdNumber());
+                idNumberEditTextAddBeneficiary.setFloatingLabelText(datumLable_languages.getIdNumber());
                 nextAddBeneficiaryTextView.setText(datumLable_languages.getNext());
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
 //                nationalitySpinnerAddBeneficiary.setHint(datumLable_languages.getNationality());
@@ -787,7 +787,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     }
 
 
-    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary,R.id.countrySpinnerSignUp})
+    @OnClick({R.id.menuImageViewHeader2, R.id.nextAddBeneficiaryTextView, R.id.dateOfBirthEditTextAddBeneficiary, R.id.appImageViewHeader2, R.id.countryEditTextAddBeneficiary, R.id.idIssueDateEditTextAddBeneficiary, R.id.idExpireyDateEditTextAddBeneficiary, R.id.countrySpinnerSignUp})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.menuImageViewHeader2:
@@ -812,6 +812,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             case R.id.idIssueDateEditTextAddBeneficiary:
                 if (dateOfBirthEditTextAddBeneficiary.getText().toString().length() == 0) {
                     Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, dateofbirthmsg);
+                } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
+                } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
+                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
                 } else {
                     Constants.hideKeyboard(SelectBeneficiaryViewActivity.this);
 //                dateOfBirthDialog();
@@ -1083,27 +1087,51 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
         } else if (cityId == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select city");
             checkFlag = false;
-        } else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
-            checkFlag = false;
-        } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
+        }
+//        else if (idTypeSpinnerAddBeneficiary == null && idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
+//            checkFlag = false;
+//        } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() == null) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
+//
+//            checkFlag = false;
+//        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idnumbermsg);
+//            checkFlag = false;
+//        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "ID Number should be" + " " + idtypeminlength + " " + "digits");
+//            checkFlag = false;
+//        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
+//            checkFlag = false;
+//        } else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
+//            checkFlag = false;
+//        } else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
+//            checkFlag = false;
+//        }
 
-            checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
+        //idtype spinner validation
+        else if (idTypeSpinnerAddBeneficiary.getSelectedItem() != null && idNumberEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idnumbermsg);
             checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "ID Number should be" + " " + idtypeminlength + " " + "digits");
-            checkFlag = false;
-        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength) {
-            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
-            checkFlag = false;
-        } else if (idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() != null && idNumberEditTextAddBeneficiary.getText().toString().length() != 0 && idIssueDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Issue Date");
             checkFlag = false;
-        } else if (idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
+        } else if (idTypeSpinnerAddBeneficiary.getSelectedItem() != null && idNumberEditTextAddBeneficiary.getText().toString().length() != 0 && idIssueDateEditTextAddBeneficiary.getText().toString().length() != 0 && idExpireyDateEditTextAddBeneficiary.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select Id Expirey Date");
+            checkFlag = false;
+        }
+//        if idnumber entered validation
+        else if ((idNumberEditTextAddBeneficiary.getText().toString().length() != 0) && (idTypeSpinnerAddBeneficiary.getSelectedItem() == null)) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, idtypemsg);
+            checkFlag = false;
+        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() != 0 && (idNumberEditTextAddBeneficiary.getText().toString().length() < idtypeminlength)) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "ID Number should be" + " " + idtypeminlength + " " + "digits");
+            checkFlag = false;
+        } else if (idNumberEditTextAddBeneficiary.getText().toString().length() != 0 && (idNumberEditTextAddBeneficiary.getText().toString().length() > idtypemaxlength)) {
+            Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, valididnumbermsg);
             checkFlag = false;
         } else if (customerRelationShipSpinnerAddBeneficiary == null && customerRelationShipSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please select any one customer Relation");
@@ -1220,6 +1248,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             }
         }
     }
+
     public void updateMobileCountrySelection(List<CountryData> countryListPojosupdated, int position) {
         countryCodeTextViewSignUp.setText(countryListPojosupdated.get(position).getCountryDialCode());
         Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojosupdated.get(position).getCountryFlagImage()).into(countryCodeImageViewSignUp);
@@ -1749,7 +1778,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
                 countryshortcode = countryListPojos.get(i).getCountryShortCode();
                 CountryName = countryListPojos.get(i).getCountryName();
 
-                countryCodeTextViewSignUp.setText( countryListPojos.get(i).getCountryDialCode());
+                countryCodeTextViewSignUp.setText(countryListPojos.get(i).getCountryDialCode());
                 Picasso.with(SelectBeneficiaryViewActivity.this).load(Constants.FLAG_URL + countryListPojos.get(i).getCountryFlagImage()).into(countryCodeImageViewSignUp);
                 break;
 //                            }

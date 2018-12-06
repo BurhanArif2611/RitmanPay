@@ -442,7 +442,12 @@ public class UploadDocumentListAdapter extends RecyclerView.Adapter<UploadDocume
 //                        kycUploadedDocumentListJsonPojos.get(0).getData().get(uploadDocForPosition).setKycdocnameID(response.body().get(0).getInfo().get(0).getKycdocnameID());
 //                        kycUploadedDocumentListJsonPojos.get(0).getData().get(uploadDocForPosition).setKycdocnameName(response.body().get(0).getInfo().get(0).getKycdocnameName());
                         kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserID(String.valueOf(userId));
-                        kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycImage(response.body().get(0).getInfo().get(uploadDocForPosition).getUserkycImage());
+                        for (int i=0;i<response.body().get(0).getInfo().size();i++) {
+                            if (kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getKycdoctypeID().equalsIgnoreCase(String.valueOf(response.body().get(0).getInfo().get(i).getKycdoctypeID()))&&kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).getKycdocnameID().equalsIgnoreCase(String.valueOf(response.body().get(0).getInfo().get(i).getKycdocnameID())))
+                            {
+                                kycUploadedDocumentListJsonPojos.get(uploadDocForPosition).setUserkycImage(response.body().get(0).getInfo().get(i).getUserkycImage());
+                            }
+                        }
 //                        int counter1 = 0;
 //                        for (int i = 0; i < kycUploadedDocumentListJsonPojos.size(); i++) {
 //                            if (kycUploadedDocumentListJsonPojos.get(i).getUserkycImage().equals("")) {

@@ -1025,6 +1025,7 @@ public class ProfileActivity extends ActionBarActivity {
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
 //                    }
+
                     try {
                         imgName1 = "img" + timeForImageName;
                     } catch (Exception e) {
@@ -1043,12 +1044,6 @@ public class ProfileActivity extends ActionBarActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-//                    if (IsNetworkConnection.checkNetworkConnection(ProfileActivity.this)) {
-//                        uploadProfilePicture();
-//                    } else {
-//                        Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, nointernetmsg);
-//                    }
                     break;
                 case SELECT_PICTURE:
                     timeForImageName = System.currentTimeMillis();
@@ -1076,7 +1071,7 @@ public class ProfileActivity extends ActionBarActivity {
 
                     CustomLog.d("System out", "width " + imageWidth);
                     CustomLog.d("System out", "height " + imageHeight);
-
+                    compressedImage = file;
 //                    if (imageWidth < 400 || imageHeight < 700) {
 //                        compressedImage = file;
 //                    } else {
@@ -1093,13 +1088,25 @@ public class ProfileActivity extends ActionBarActivity {
 //                            e.printStackTrace();
 //                        }
 //                    }
+                    try {
+                        compressedImage = new Compressor(this)
+//                                .setMaxWidth(640)
+//                                .setMaxHeight(480)
+//                                .setQuality(75)
+                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                                .compressToFile(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     try {
                         Intent i = new Intent(getApplicationContext(), CropActivity.class);
                         i.putExtra("fileUri", pictureUri.toString());
                         i.putExtra("width", String.valueOf(imageWidth));
                         i.putExtra("height", String.valueOf(imageHeight));
-                        i.putExtra("imgStrPath", file.getPath());
+                        i.putExtra("imgStrPath", compressedImage.getPath());
 //                    i.putExtra("fileName", imgStorepath);
                         startActivityForResult(i, 525);
                     } catch (Exception e) {

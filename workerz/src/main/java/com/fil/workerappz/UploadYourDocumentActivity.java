@@ -3,6 +3,7 @@ package com.fil.workerappz;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -43,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -497,22 +500,23 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
 
                 CustomLog.d("System out", "width " + imageWidth);
                 CustomLog.d("System out", "height " + imageHeight);
+                compressedImage = file;
 
 //                if (imageWidth < 400 || imageHeight < 700) {
 //                    compressedImage = file;
 //                } else {
-//                    try {
-//                        compressedImage = new Compressor(this)
+                    try {
+                        compressedImage = new Compressor(this)
 //                                .setMaxWidth(640)
 //                                .setMaxHeight(480)
 //                                .setQuality(75)
-//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
-//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
-//                                .compressToFile(file);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                                .compressToFile(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 //                }
 
                 try {
@@ -520,7 +524,7 @@ public class UploadYourDocumentActivity extends ActionBarActivity {
                     i.putExtra("fileUri", pictureUri.toString());
                     i.putExtra("width", String.valueOf(imageWidth));
                     i.putExtra("height", String.valueOf(imageHeight));
-                    i.putExtra("imgStrPath", file.getPath());
+                    i.putExtra("imgStrPath", compressedImage.getPath());
 //                    i.putExtra("fileName", imgStorepath);
                     startActivityForResult(i, 525);
                 } catch (Exception e) {
