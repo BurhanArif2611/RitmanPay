@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/LinearBeneficiarSendLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -299,8 +302,30 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_11ssp" />
         </LinearLayout>
-    </LinearLayout>
-
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/incomeSourceAddBeneficiary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_10ssp"
+        app:ms_alignLabels="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:ms_alwaysShowFloatingLabel="true"
+        app:ms_arrowColor="@color/colorGreen"
+        app:ms_arrowSize="@dimen/_12sdp"
+        app:ms_baseColor="@color/colorSpinner"
+        app:ms_enableErrorLabel="false"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelColor="@color/colorSpinnerText"
+        app:ms_floatingLabelText="@string/source_income"
+        app:ms_highlightColor="@color/colorGreen"
+        app:ms_hint="@string/source_income"
+        app:ms_hintColor="@color/colorSpinnerText"
+        app:ms_hintTextSize="@dimen/_10ssp"
+        app:ms_multiline="false"
+        app:ms_thickness="0.5dp" />
     <TextView
         android:id="@+id/send_now_textview"
         style="@style/CustomButtonStyle"
@@ -310,4 +335,7 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/yellow_btn" />
+    </LinearLayout>
+</ScrollView>
+
 </LinearLayout>

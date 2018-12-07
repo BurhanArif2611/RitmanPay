@@ -558,7 +558,8 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
             } else {
                 jsonObject.put("BankName", bankNameNewEditTextAddBeneficiary.getText().toString());
             }
-            jsonObject.put("BankCountry", "IND");
+//            jsonObject.put("BankCountry", "IND");
+            jsonObject.put("BankCountry", countryShortCode);
             jsonObject.put("BranchNameAndAddress", bankAddressEditTextAddBeneficiary.getText().toString());
 //            jsonObject.put("BankCode", bankCodeEditTextAddBeneficiary.getText().toString());
             if (spinnerflag) {

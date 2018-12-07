@@ -98,11 +98,12 @@ public class WalletMoneyTransferFragment extends BaseFragment {
         descriptionSendMoneyEditText.getText().clear();
     }
 
-    public static WalletMoneyTransferFragment newInstance(int userId, QuickPayDataPojo quickPayData) {
+    public static WalletMoneyTransferFragment newInstance(int userId, QuickPayDataPojo quickPayData, String dateofbirth) {
         WalletMoneyTransferFragment fragment = new WalletMoneyTransferFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", userId);
         bundle.putSerializable("quick_pay_object", quickPayData);
+        bundle.putString("date_of_birth", dateofbirth);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -119,6 +120,7 @@ public class WalletMoneyTransferFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         userId = getArguments().getInt("user_id");
+       String userdateofBirth = getArguments().getString("date_of_birth");
         quickPayData = (QuickPayDataPojo) getArguments().getSerializable("quick_pay_object");
         sessionManager = new SessionManager(getActivity());
 

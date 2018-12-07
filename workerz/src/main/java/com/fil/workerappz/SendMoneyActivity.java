@@ -103,7 +103,7 @@ public class SendMoneyActivity extends ActionBarActivity {
         sendMoneyTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         sendMoneyTabLayout.setTabMode(TabLayout.GRAVITY_FILL);
 
-        final SendMoneyPagerAdapter sendMoneyPagerAdapter = new SendMoneyPagerAdapter(getSupportFragmentManager(), arrayList, getMyUserId(), quickPayData);
+        final SendMoneyPagerAdapter sendMoneyPagerAdapter = new SendMoneyPagerAdapter(getSupportFragmentManager(), arrayList, getMyUserId(), quickPayData,getUserData().getuserDateOfBirth());
 
         sendMoneyViewPager.setAdapter(sendMoneyPagerAdapter);
         sendMoneyTabLayout.post(new Runnable() {

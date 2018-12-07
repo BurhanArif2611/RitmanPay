@@ -164,7 +164,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
     private String countryshortcode;
     private String activitytype;
     private int countryId;
-    private String idtypeId;
+    private String idtypeId="";
     private String IDtype_Description = "";
     private String dateofbirth = "", idissuedate = "", idexpireydate = "";
     private String nationality;

@@ -621,7 +621,8 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
             jsonObject.put("IDNumber", beneficiaryinfoPojo.getIDNumber());
             jsonObject.put("IDType", beneficiaryinfoPojo.getIDType());
             jsonObject.put("IDtype_Description", beneficiaryinfoPojo.getIDtype_Description());
-            jsonObject.put("PayOutCurrency", "INR");
+//            jsonObject.put("PayOutCurrency", "INR");
+            jsonObject.put("PayOutCurrency", beneficiaryinfoPojo.getPayoutcurrency());
             jsonObject.put("PaymentMode", "BANK");
 //            jsonObject.put("PayOutBranchCode", bankCodeEditTextAddBeneficiary.getText().toString());
             jsonObject.put("PayOutBranchCode", ifscCodeEditTextAddBeneficiaryNext.getText().toString());

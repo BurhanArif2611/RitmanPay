@@ -223,6 +223,8 @@
     <string name="bank_address">Bank Address*</string>
     <string name="id_type">Id type*</string>
     <string name="relation_with_customer">Relation With Customer*</string>
+    <string name="source_income">Source of Income*</string>
+    <string name="source_fund">Source of Fund*</string>
     <string name="id_type_">Id type:</string>
     <string name="dest_add">Destination address*</string>
     <string name="dest_land">Destination landmark</string>

@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,8 +19,10 @@ import android.widget.TextView;
 import com.fil.workerappz.pojo.BeneficiaryInfoListPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
+import com.fil.workerappz.pojo.RelationshipListJsonPojo;
 import com.fil.workerappz.pojo.SendMoneyBeneficiaryJsonPojo;
 import com.fil.workerappz.pojo.SendReceiveMoneyJsonPojo;
+import com.fil.workerappz.pojo.SourceOfFundJsonPojo;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
@@ -35,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,6 +104,9 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
     TextView accountBalanceTextViewSendMoney;
     @BindView(R.id.textviewbalnceSendMoney)
     TextView textviewbalnceSendMoney;
+    @BindView(R.id.incomeSourceAddBeneficiary)
+    MaterialSpinner incomeSourceAddBeneficiary;
+
     private ArrayList<SendReceiveMoneyJsonPojo> sendReceiveMoneyJsonPojos = new ArrayList<>();
     private ArrayList<SendMoneyBeneficiaryJsonPojo> sendReceiveMoneyBeneficiaryJsonPojos = new ArrayList<>();
     private BeneficiaryInfoListPojo beneficiaryInfoListPojo;
@@ -109,7 +117,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private LabelListData datumLable_languages = new LabelListData();
     private String vaildamountmsg, sendmoneymsg, receivemoneymsg;
-    private String nointernetmsg;
+    private String nointernetmsg,incomeId="",incomename="";
+    private final ArrayList<SourceOfFundJsonPojo.Datum> fundListPojos = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +139,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             if (datumLable_languages != null) {
 
                 titleTextViewViewHeader2.setText(datumLable_languages.getBeneficiaryInfo());
-                EdittextSendMoney.setHint(datumLable_languages.getSendMoney()+"*");
+                EdittextSendMoney.setHint(datumLable_languages.getSendMoney() + "*");
                 EdittextReceiveMoney.setHint(datumLable_languages.getReceiveMoney());
                 sendNowTextview.setText(datumLable_languages.getSendNow());
                 sendingamountTextview.setText(datumLable_languages.getSendingAmount() + ":");
@@ -187,9 +196,15 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
         filterImageViewHeader2.setVisibility(View.INVISIBLE);
         beneficiaryInfoListPojo = (BeneficiaryInfoListPojo) getIntent().getSerializableExtra("beneficiary_data");
         textReceiverCountryName.setText(beneficiaryInfoListPojo.getPayoutcurrency());
-        textviewbalnceSendMoney.setText("Current Available Balance"+":");
+        textviewbalnceSendMoney.setText("Current Available Balance" + ":");
 
-
+        if (IsNetworkConnection.checkNetworkConnection(BeneficiaryInfoSendActivity.this)) {
+           incomeListJsonCall();
+        }
+        else
+        {
+            Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, nointernetmsg);
+        }
         EdittextSendMoney.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View arg0, boolean hasfocus) {
@@ -510,6 +525,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             jsonObject.put("Remitter_PayIn_Amt", totalpayable);
             jsonObject.put("Message_ToBeneficiary", "");
             jsonObject.put("transactionCurrency", payincurrency);
+            jsonObject.put("SourceofIncome", incomeId);
+            jsonObject.put("CustomerRelation ", beneficiaryInfoListPojo.getRelation());
 
 
         } catch (JSONException e) {
@@ -549,8 +566,8 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
                                 Intent mIntent;
 //                                mIntent = new Intent(BeneficiaryInfoSendActivity.this, HomeActivity.class);
                                 mIntent = new Intent(BeneficiaryInfoSendActivity.this, TransactionReceiptActivity.class);
-                                mIntent.putExtra("transactionnumber",sendReceiveMoneyBeneficiaryJsonPojos.get(0).getData().getRPTxnNo());
-                                mIntent.putExtra("beneficiarMobileNumber",beneficiaryInfoListPojo.getTelephone());
+                                mIntent.putExtra("transactionnumber", sendReceiveMoneyBeneficiaryJsonPojos.get(0).getData().getRPTxnNo());
+                                mIntent.putExtra("beneficiarMobileNumber", beneficiaryInfoListPojo.getTelephone());
                                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mIntent);
 
@@ -573,6 +590,74 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<List<SendMoneyBeneficiaryJsonPojo>> call, Throwable t) {
+                Constants.closeProgress();
+            }
+        });
+    }
+
+    private void incomeListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userMobile", "0");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(BeneficiaryInfoSendActivity.this);
+        CustomLog.d("System out", "relation json " + json);
+        Call<List<SourceOfFundJsonPojo>> call = RestClient.get().sourceofFundListJsonCall(json);
+
+        call.enqueue(new Callback<List<SourceOfFundJsonPojo>>() {
+            @Override
+            public void onResponse(Call<List<SourceOfFundJsonPojo>> call, Response<List<SourceOfFundJsonPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    fundListPojos.clear();
+
+                    if (response.body().get(0).getStatus() == true) {
+                        ArrayList<String> fundList = new ArrayList<>();
+                        fundListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < fundListPojos.size(); i++) {
+                            fundList.add(fundListPojos.get(i).getSourceName());
+
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(fundListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = fundListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(BeneficiaryInfoSendActivity.this, android.R.layout.simple_spinner_item, fundList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        incomeSourceAddBeneficiary.setAdapter(adapter);
+
+                        incomeSourceAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    incomeId = fundListPojos.get(position).getID();
+                                    incomename = fundListPojos.get(position).getSourceName();
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SourceOfFundJsonPojo>> call, Throwable t) {
                 Constants.closeProgress();
             }
         });

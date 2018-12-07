@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -28,23 +27,20 @@ import com.fil.workerappz.pojo.CreateCustomerListJsonPojo;
 import com.fil.workerappz.pojo.IdTypeListJsonPojo;
 import com.fil.workerappz.pojo.LabelListData;
 import com.fil.workerappz.pojo.MessagelistData;
-import com.fil.workerappz.pojo.UserListPojo;
+import com.fil.workerappz.pojo.SourceOfFundJsonPojo;
 import com.fil.workerappz.retrofit.RestClient;
 import com.fil.workerappz.utils.Constants;
 import com.fil.workerappz.utils.CustomLog;
 import com.fil.workerappz.utils.IsNetworkConnection;
 import com.fil.workerappz.utils.SessionManager;
-import com.google.gson.Gson;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -65,6 +61,12 @@ import retrofit2.Response;
 public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
     private final ArrayList<IdTypeListJsonPojo> idTypePojos = new ArrayList<>();
+    @BindView(R.id.idExpireyDatecustomerEditTextAddBeneficiary)
+    MaterialEditText idExpireyDatecustomerEditTextAddBeneficiary;
+    @BindView(R.id.idExpireyDatecustomerTextViewAddBeneficiary)
+    TextView idExpireyDatecustomerTextViewAddBeneficiary;
+    @BindView(R.id.findSourceSpinnerAddBeneficiary)
+    MaterialSpinner findSourceSpinnerAddBeneficiary;
     private Calendar myCalendar1 = Calendar.getInstance();
     @BindView(R.id.customerInfoTextView)
     TextView customerInfoTextView;
@@ -84,17 +86,19 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     LinearLayout addBeneficiaryCustomerInfoLinearlayout;
     private Unbinder unbinder;
     private String idtype;
-    private String comefrom;
+    private String comefrom, userdateofBirth = "";
     int userId;
     private ArrayList<CreateCustomerListJsonPojo> createCustomerListJsonPojos = new ArrayList<>();
     private LabelListData datumLable_languages = new LabelListData();
     private MessagelistData datumLable_languages_msg = new MessagelistData();
     private SessionManager sessionManager;
-    private String idtypemsg, idnumbermsg, valididnumbermsg, dateofbirthmsg, iddescriptionmsg;
+    private String idtypemsg, idnumbermsg, valididnumbermsg, dateofbirthmsg, iddescriptionmsg, idexpireydate = "";
     private String nointernetmsg;
     private int idtypemaxlength = 15;
     private int idtypeminlength = 7;
     private ActionBarActivity activity;
+    private String fundId="",fundname="";
+    private final ArrayList<SourceOfFundJsonPojo.Datum> fundListPojos = new ArrayList<>();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -107,6 +111,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         if (isVisibleToUser) {
             if (IsNetworkConnection.checkNetworkConnection(getActivity())) {
                 idTypeJsonCall();
+                incomeListJsonCall();
             } else {
                 Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), nointernetmsg);
             }
@@ -114,6 +119,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             // fragment is no longer visible
         }
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -164,13 +170,13 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
             if (datumLable_languages != null) {
 
-                idNumberEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdNumber()+"*");
-                idNumberEditTextAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdNumber()+"*");
-                dateofBirthEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getDateOfBirth()+"*");
+                idNumberEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdNumber() + "*");
+                idNumberEditTextAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdNumber() + "*");
+                dateofBirthEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getDateOfBirth() + "*");
                 idDescriptionEditTextAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIDDESCRIPTION());
                 idDescriptionEditTextAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIDDESCRIPTION());
-                idtypeSpinnerAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdType()+"*");
-                idtypeSpinnerAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdType()+"*");
+                idtypeSpinnerAddBeneficiaryCustomerInfo.setHint(datumLable_languages.getIdType() + "*");
+                idtypeSpinnerAddBeneficiaryCustomerInfo.setFloatingLabelText(datumLable_languages.getIdType() + "*");
                 nextTextview.setHint(datumLable_languages.getAdd());
                 customerInfoTextView.setText(datumLable_languages.getCustomerInfo());
                 nointernetmsg = datumLable_languages.getNoInternetConnectionAvailable();
@@ -210,6 +216,14 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                 DataPickerDialog1();
             }
         });
+        idExpireyDatecustomerEditTextAddBeneficiary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Constants.hideKeyboard(getActivity());
+//                dateOfBirthDialog();
+                DataPickerDialogIdExpireyDate();
+            }
+        });
 
         idNumberEditTextAddBeneficiaryCustomerInfo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -232,6 +246,61 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
 
         return view;
+    }
+
+    private void DataPickerDialogIdExpireyDate() {
+
+        String getfromdate = userdateofBirth;
+        String getfrom[] = getfromdate.split("/");
+
+
+        final Calendar myCalendar = Calendar.getInstance();
+        final int mYear = Integer.parseInt(getfrom[2]);
+        final int mMonth = Integer.parseInt(getfrom[1]);
+        final int mDay = Integer.parseInt(getfrom[0]);
+
+        Calendar mincalendar = Calendar.getInstance();
+        mincalendar.set(mYear, mMonth - 1, mDay);
+        int themeResId = 2;
+
+
+        DatePickerDialog dpd = new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.d("year", year + "");
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+//                Calendar minAdultAge = new GregorianCalendar();
+//                minAdultAge.add(Calendar.YEAR, mYear);
+//                minAdultAge.add(Calendar.MONTH, mMonth-1);
+//                minAdultAge.add(Calendar.DAY_OF_MONTH, mDay);
+////                minAdultAge.add(Calendar.YEAR, -18);
+//                if (minAdultAge.before(myCalendar)) {
+//                    Constants.showMessage(addBeneficiaryActivityLinearLayout, SelectBeneficiaryViewActivity.this, "Please Enter Valid Date");
+//                } else {
+                myCalendar1 = myCalendar;
+                updateLabelIdExpireyDate();
+//                }
+            }
+        }, mYear, mMonth - 1, mDay);
+
+        dpd.getDatePicker().setMinDate(mincalendar.getTimeInMillis());
+
+        dpd.show();
+
+    }
+
+    private void updateLabelIdExpireyDate() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        idExpireyDatecustomerEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
+
+        idexpireydate = Constants.formatDate(idExpireyDatecustomerEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy");
+
     }
 
     public static void OnlyCharacter1(MaterialEditText editText) {
@@ -319,6 +388,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         comefrom = getArguments().getString("come_from");
+        userdateofBirth = getArguments().getString("date_of_birth");
         userId = getArguments().getInt("user_id");
     }
 
@@ -446,6 +516,9 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         } else if (idtypeSpinnerAddBeneficiaryCustomerInfo.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idtypemsg);
 
+        } else if (findSourceSpinnerAddBeneficiary.getSelectedItem() == null) {
+            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select source of fund");
+
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idnumbermsg);
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < idtypeminlength) {
@@ -474,11 +547,12 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         }
     }
 
-    public AddBeneficiaryCustomerInfoFragment newInstance(String bank, int userId) {
+    public AddBeneficiaryCustomerInfoFragment newInstance(String bank, int userId, String dateofbirth) {
         AddBeneficiaryCustomerInfoFragment fragment = new AddBeneficiaryCustomerInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("come_from", bank);
         bundle.putInt("user_id", userId);
+        bundle.putString("date_of_birth", dateofbirth);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -494,8 +568,10 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             jsonObject.put("userDateOfBirth", "");
             jsonObject.put("IDType", idtype);
             jsonObject.put("IDtype_Description", idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString());
-            jsonObject.put("IDExpiryDate", "12/31/2099");
+//            jsonObject.put("IDExpiryDate", "12/31/2099");
+            jsonObject.put("IDExpiryDate", idexpireydate);
             jsonObject.put("IDNumber", String.valueOf(idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString()));
+            jsonObject.put("SourceOfFund ",fundId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -561,6 +637,73 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             public void onFailure(Call<List<CreateCustomerListJsonPojo>> call, Throwable t) {
                 Constants.closeProgress();
                 t.printStackTrace();
+            }
+        });
+    }
+    private void incomeListJsonCall() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userMobile", "0");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[" + jsonObject + "]";
+        Constants.showProgress(getActivity());
+        CustomLog.d("System out", "relation json " + json);
+        Call<List<SourceOfFundJsonPojo>> call = RestClient.get().sourceofFundListJsonCall(json);
+
+        call.enqueue(new Callback<List<SourceOfFundJsonPojo>>() {
+            @Override
+            public void onResponse(Call<List<SourceOfFundJsonPojo>> call, Response<List<SourceOfFundJsonPojo>> response) {
+                Constants.closeProgress();
+                if (response.body() != null && response.body() instanceof ArrayList) {
+                    fundListPojos.clear();
+
+                    if (response.body().get(0).getStatus() == true) {
+                        ArrayList<String> fundList = new ArrayList<>();
+                        fundListPojos.addAll(response.body().get(0).getData());
+                        for (int i = 0; i < fundListPojos.size(); i++) {
+                            fundList.add(fundListPojos.get(i).getSourceName());
+
+//                            if (CountryCodegoogle.equalsIgnoreCase(new String(Base64.decode(fundListPojos.get(i).getCountryName().trim().getBytes(), Base64.DEFAULT)))) {
+//                                countryId = fundListPojos.get(i).getCountryID();
+//                                break;
+//                            }
+
+
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, fundList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        findSourceSpinnerAddBeneficiary.setAdapter(adapter);
+
+                        findSourceSpinnerAddBeneficiary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if (position != -1) {
+                                    fundId = fundListPojos.get(position).getID();
+                                    fundname = fundListPojos.get(position).getSourceName();
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    } else {
+//                        Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this,"sorry,record not found");
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SourceOfFundJsonPojo>> call, Throwable t) {
+                Constants.closeProgress();
             }
         });
     }

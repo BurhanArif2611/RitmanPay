@@ -36,6 +36,7 @@ import com.fil.workerappz.pojo.RelationshipListJsonPojo;
 import com.fil.workerappz.pojo.SendMoneyBeneficiaryJsonPojo;
 import com.fil.workerappz.pojo.SendPaymentJsonPojo;
 import com.fil.workerappz.pojo.SendReceiveMoneyJsonPojo;
+import com.fil.workerappz.pojo.SourceOfFundJsonPojo;
 import com.fil.workerappz.pojo.StateListPojo;
 import com.fil.workerappz.pojo.TransactionHistoryListJsonPojo;
 import com.fil.workerappz.pojo.TransactionReceiptListJsonPojo;
@@ -97,7 +98,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("users/verify-security-question")
-    Call<List<VerifySecurityListPojo>>verifySecurityQuestionJsonCall(@Field("json") String json);
+    Call<List<VerifySecurityListPojo>> verifySecurityQuestionJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/send-ding-transfer")
@@ -134,6 +135,10 @@ public interface RestApi {
     @FormUrlEncoded
     @POST("users/get-relationships")
     Call<List<RelationshipListJsonPojo>> userRelationShipListJsonCall(@Field("json") String json);
+
+    @FormUrlEncoded
+    @POST("users/get-sourceoffund")
+    Call<List<SourceOfFundJsonPojo>>sourceofFundListJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-balance")
@@ -193,7 +198,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("wallettransactions/get-mode-wise-country")
-    Call<List<ModeWiseCountryListJsonPojo>>getModeWiseCountryJsonCall(@Field("json") String json);
+    Call<List<ModeWiseCountryListJsonPojo>> getModeWiseCountryJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("users/update-user")
@@ -288,7 +293,7 @@ public interface RestApi {
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-providers")
-    Call<List<GetProvidersList>>getProvidersJsonCall(@Field("json") String json);
+    Call<List<GetProvidersList>> getProvidersJsonCall(@Field("json") String json);
 
     @FormUrlEncoded
     @POST("wallettransactions/get-ding-regions")
