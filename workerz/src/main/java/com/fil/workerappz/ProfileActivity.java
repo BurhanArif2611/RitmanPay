@@ -314,6 +314,8 @@ public class ProfileActivity extends ActionBarActivity {
 
 
         }
+        emiratesIdEditTextProfile.setHint(getResources().getString(R.string.second_id));
+        emiratesIdEditTextProfile.setFloatingLabelText(getResources().getString(R.string.second_id));
 //        layoutManager = new LinearLayoutManager(ProfileActivity.this);
 //        securityQuestionsRecyclerView.setLayoutManager(layoutManager);
         appImageViewHeader1.setVisibility(View.VISIBLE);
@@ -405,7 +407,42 @@ public class ProfileActivity extends ActionBarActivity {
                 OnlyCharacter(lastNameEditTextProfile);
             }
         });
+        passportNoEditTextProfile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(passportNoEditTextProfile);
+            }
+        });
+        emiratesIdEditTextProfile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(emiratesIdEditTextProfile);
+            }
+        });
     }
 
 //    private void questionListJsonCall() {
@@ -449,7 +486,72 @@ public class ProfileActivity extends ActionBarActivity {
 //        });
 //    }
 
+    public static void OnlyCharacter1(MaterialEditText editText) {
+//        if (editText.getText().toString().length() > 0) {
+//
+//            char x;
+//            int[] t = new int[editText.getText().toString()
+//                    .length()];
+//
+//            for (int i = 0; i < editText.getText().toString()
+//                    .length(); i++) {
+//                x = editText.getText().toString().charAt(i);
+//                int z = (int) x;
+//                t[i] = z;
+//
+//                if ((z > 64 && z < 91)
+//                        || (z > 96 && z < 123)|| (z > 47 && z < 58) ) {
+//
+//                }
+//                else {
+//
+//                    editText.setText(editText
+//                            .getText()
+//                            .toString()
+//                            .substring(
+//                                    0,
+//                                    (editText.getText()
+//                                            .toString().length()) - 1));
+//                    editText.setSelection(editText
+//                            .getText().length());
+//                }
+//                Log.d("System out", "decimal value of character" + z);
+//
+//            }
+//        }
 
+        if (editText.getText().toString().length() > 0) {
+
+            char x;
+            int[] t = new int[editText.getText().toString()
+                    .length()];
+
+            for (int i = 0; i < editText.getText().toString()
+                    .length(); i++) {
+                x = editText.getText().toString().charAt(i);
+                int z = (int) x;
+                t[i] = z;
+
+                if ((z > 64 && z < 91)
+                        || (z > 96 && z < 123) || (z >= 48 && z <= 57)) {
+
+                } else {
+
+                    editText.setText(editText
+                            .getText()
+                            .toString()
+                            .substring(
+                                    0,
+                                    (editText.getText()
+                                            .toString().length()) - 1));
+                    editText.setSelection(editText
+                            .getText().length());
+                }
+
+            }
+        }
+
+    }
     private void questionListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -840,10 +942,19 @@ public class ProfileActivity extends ActionBarActivity {
         } else if (passportNoEditTextProfile.getText().toString().length() == 0) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, passportmsg);
             checkFlag = false;
-        } else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
-            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
+        }
+//        else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
+//            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, emiratesidmsg);
+//            checkFlag = false;
+//        }
+        else if (emiratesIdEditTextProfile.getText().toString().length() == 0) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, getResources().getString(R.string.Please_enter_second_id));
             checkFlag = false;
-        } else if (securityQuestionsEditTexProfile.getText().toString().equals("")) {
+        } else if (emiratesIdEditTextProfile.getText().toString().length() < 3) {
+            Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, getResources().getString(R.string.second_Id_validation_msg));
+            checkFlag = false;
+        }
+        else if (securityQuestionsEditTexProfile.getText().toString().equals("")) {
             Constants.showMessage(mainProfileActivityLinearLayout, ProfileActivity.this, "Please select any one sequrity answer");
             checkFlag = false;
         }

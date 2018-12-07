@@ -225,7 +225,7 @@ public class SignUpSubmitActivity extends ActionBarActivity {
                 mobileNoEditTextSignUpSubmit.setHint(datumLable_languages.getMobileNumber() + "*");
                 mobileNoEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getMobileNumber() + "*");
                 emailEditTextSignUpSubmit.setHint(datumLable_languages.getEmail() + "*");
-                emailEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmail() + "*");
+                emailEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getEmail() +"*");
                 addressEditTextSignUpSubmit.setHint(datumLable_languages.getAddress() + "*");
                 addressEditTextSignUpSubmit.setFloatingLabelText(datumLable_languages.getAddress() + "*");
                 countryOfResidenceSpinnerSignUpSubmit.setHint(datumLable_languages.getCountryOfResidence() + "*");
@@ -269,6 +269,8 @@ public class SignUpSubmitActivity extends ActionBarActivity {
         }
         landmarkEditTextSignUp.setHint(getResources().getString(R.string.landmark) + "*");
         landmarkEditTextSignUp.setFloatingLabelText(getResources().getString(R.string.landmark) + "*");
+        emiratesIdEditTextSignUpSubmit.setHint(getResources().getString(R.string.second_id));
+        emiratesIdEditTextSignUpSubmit.setFloatingLabelText(getResources().getString(R.string.second_id));
         if (datumLable_languages_msg != null) {
             firstname = datumLable_languages_msg.getEnterFirstName();
             lastname = datumLable_languages_msg.getEnterLastName();
@@ -470,6 +472,24 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 OnlyCharacter1(passportNoEditTextSignUpSubmit);
+            }
+        });
+        emiratesIdEditTextSignUpSubmit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if(!charSequence.equals("") ) {
+//                    //do your work here
+//                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                OnlyCharacter1(emiratesIdEditTextSignUpSubmit);
             }
         });
 
@@ -760,12 +780,13 @@ public class SignUpSubmitActivity extends ActionBarActivity {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, passportvalidationmsg);
             checkFlag = false;
         } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() == 0) {
-            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, emiratesidmsg);
+            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, getResources().getString(R.string.Please_enter_second_id));
             checkFlag = false;
-        } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() < 7) {
-            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, emiratesvalidationmsg);
+        } else if (emiratesIdEditTextSignUpSubmit.getText().toString().length() < 3) {
+            Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, getResources().getString(R.string.second_Id_validation_msg));
             checkFlag = false;
-        } else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
+        }
+        else if (inputType == false && Constants.validateEmail(emailEditTextSignUpSubmit.getText().toString().trim()) == false) {
             Constants.showMessage(mainLinearLayoutSignUpSubmit, SignUpSubmitActivity.this, validemail);
             checkFlag = false;
         } else if (securityQuestionsEditTextSignUpSubmit.getText().toString().equals("")) {
