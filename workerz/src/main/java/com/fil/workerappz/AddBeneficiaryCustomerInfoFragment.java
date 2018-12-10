@@ -207,6 +207,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         }
         idNumberEditTextAddBeneficiaryCustomerInfo.setText(sessionManager.userProfileData().getUserEmiratesID());
+        idExpireyDatecustomerEditTextAddBeneficiary.setHint(getResources().getString(R.string.id_expirey_date)+"*");
+        idExpireyDatecustomerEditTextAddBeneficiary.setFloatingLabelText(getResources().getString(R.string.id_expirey_date)+"*");
         dateofBirthTextViewAddBeneficiaryCustomerInfo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -532,9 +534,9 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
         }
-//        else if (idExpireyDatecustomerEditTextAddBeneficiary.getText().toString().length() == 0) {
-//            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select Id Expirey Date");
-//        }
+        else if (idExpireyDatecustomerEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select Id Expirey Date");
+        }
         else if (findSourceSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select source of fund");
         }

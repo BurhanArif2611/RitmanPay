@@ -530,7 +530,7 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             jsonObject.put("Message_ToBeneficiary", "");
             jsonObject.put("transactionCurrency", payincurrency);
             jsonObject.put("SourceofIncome", incomeId);
-            jsonObject.put("CustomerRelation ", beneficiaryInfoListPojo.getRelation());
+            jsonObject.put("CustomerRelation", beneficiaryInfoListPojo.getRelation());
 
 
         } catch (JSONException e) {
