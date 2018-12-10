@@ -516,15 +516,18 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         } else if (idtypeSpinnerAddBeneficiaryCustomerInfo.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idtypemsg);
 
-        } else if (findSourceSpinnerAddBeneficiary.getSelectedItem() == null) {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select source of fund");
-
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() == 0) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), idnumbermsg);
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < idtypeminlength) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "ID Number should be" + " " + idtypeminlength + " " + "digits");
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
+        }
+        else if (idExpireyDatecustomerEditTextAddBeneficiary.getText().toString().length() == 0) {
+            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select Id Expirey Date");
+        }
+        else if (findSourceSpinnerAddBeneficiary.getSelectedItem() == null) {
+            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select source of fund");
         }
 //        else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() < 7) {
 //            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);

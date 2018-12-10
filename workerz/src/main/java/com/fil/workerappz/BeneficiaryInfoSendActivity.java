@@ -340,6 +340,10 @@ public class BeneficiaryInfoSendActivity extends ActionBarActivity {
             Constants.showMessage(LinearBeneficiarSendLayout, BeneficiaryInfoSendActivity.this, receivemoneymsg);
             checkFlag = false;
         }
+        else if (incomeSourceAddBeneficiary.getSelectedItem() == null) {
+            Constants.showMessage(LinearBeneficiarSendLayout,BeneficiaryInfoSendActivity.this, "Please select source of income");
+            checkFlag = false;
+        }
         return checkFlag;
     }
 

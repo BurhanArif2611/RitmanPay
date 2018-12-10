@@ -222,6 +222,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
                                 beneficiaryInfoListPojo.setPayoutcountry(quickPayData.getBenificaryPayoutCountryCode());
                                 beneficiaryInfoListPojo.setBeneficiarynumber(quickPayData.getBenificaryBeneficiaryNo());
                                 beneficiaryInfoListPojo.setPayoutbranchcode(quickPayData.getBenificaryPayOutBranchCode());
+                                beneficiaryInfoListPojo.setRelation(quickPayData.getBenificaryCustomerRelation());
                                 String type = "";
                                 if (activitytype.equalsIgnoreCase("cashquickpay")) {
                                     type = "CASH";
@@ -269,6 +270,7 @@ public class BeneficiaryPinVerificationActivity extends ActionBarActivity {
                                 beneficiaryInfoListPojo.setPayoutcountry(bankbenefiardata.getBenificaryPayoutCountryCode());
                                 beneficiaryInfoListPojo.setBeneficiarynumber(bankbenefiardata.getBenificaryBeneficiaryNo());
                                 beneficiaryInfoListPojo.setPayoutbranchcode(bankbenefiardata.getBenificaryPayOutBranchCode());
+                                beneficiaryInfoListPojo.setRelation(bankbenefiardata.getBenificaryCustomerRelation());
                                 String type = "";
                                 if (activitytype.equalsIgnoreCase("cash")) {
                                     type = "CASH";
