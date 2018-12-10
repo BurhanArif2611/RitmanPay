@@ -149,8 +149,6 @@
           android:textColor="@color/colorBlack"
           android:textSize="@dimen/_10ssp"
           app:ms_alignLabels="true"
-          android:layout_marginLeft="@dimen/_10sdp"
-          android:layout_marginRight="@dimen/_10sdp"
           android:layout_marginTop="@dimen/_15sdp"
           app:ms_alwaysShowFloatingLabel="true"
           app:ms_arrowColor="@color/colorGreen"

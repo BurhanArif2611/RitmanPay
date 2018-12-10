@@ -97,7 +97,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
     private int idtypemaxlength = 15;
     private int idtypeminlength = 7;
     private ActionBarActivity activity;
-    private String fundId="",fundname="";
+    private String fundId = "", fundname = "";
     private final ArrayList<SourceOfFundJsonPojo.Datum> fundListPojos = new ArrayList<>();
 
     @Override
@@ -206,6 +206,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
 
         }
+        idNumberEditTextAddBeneficiaryCustomerInfo.setText(sessionManager.userProfileData().getUserEmiratesID());
         dateofBirthTextViewAddBeneficiaryCustomerInfo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -252,12 +253,20 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
 
         String getfromdate = userdateofBirth;
         String getfrom[] = getfromdate.split("/");
-
+        final int mYear, mMonth, mDay;
 
         final Calendar myCalendar = Calendar.getInstance();
-        final int mYear = Integer.parseInt(getfrom[2]);
-        final int mMonth = Integer.parseInt(getfrom[1]);
-        final int mDay = Integer.parseInt(getfrom[0]);
+        if (getfrom.length > 1) {
+            mYear = Integer.parseInt(getfrom[2]);
+            mMonth = Integer.parseInt(getfrom[1]);
+            mDay = Integer.parseInt(getfrom[0]);
+        } else {
+            String getfrom1[] = getfromdate.split("-");
+            mYear = Integer.parseInt(getfrom1[2]);
+            mMonth = Integer.parseInt(getfrom1[1]);
+            mDay = Integer.parseInt(getfrom1[0]);
+
+        }
 
         Calendar mincalendar = Calendar.getInstance();
         mincalendar.set(mYear, mMonth - 1, mDay);
@@ -523,9 +532,9 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         } else if (idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString().length() > idtypemaxlength) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), valididnumbermsg);
         }
-        else if (idExpireyDatecustomerEditTextAddBeneficiary.getText().toString().length() == 0) {
-            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select Id Expirey Date");
-        }
+//        else if (idExpireyDatecustomerEditTextAddBeneficiary.getText().toString().length() == 0) {
+//            Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select Id Expirey Date");
+//        }
         else if (findSourceSpinnerAddBeneficiary.getSelectedItem() == null) {
             Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), "Please select source of fund");
         }
@@ -568,13 +577,13 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
         try {
             jsonObject.put("userID", String.valueOf(userId));
 //            jsonObject.put("userDateOfBirth", Constants.formatDate(dateofBirthEditTextAddBeneficiaryCustomerInfo.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy"));
-            jsonObject.put("userDateOfBirth", "");
+            jsonObject.put("userDateOfBirth",sessionManager.userProfileData().getuserDateOfBirth());
             jsonObject.put("IDType", idtype);
             jsonObject.put("IDtype_Description", idDescriptionEditTextAddBeneficiaryCustomerInfo.getText().toString());
 //            jsonObject.put("IDExpiryDate", "12/31/2099");
             jsonObject.put("IDExpiryDate", idexpireydate);
             jsonObject.put("IDNumber", String.valueOf(idNumberEditTextAddBeneficiaryCustomerInfo.getText().toString()));
-            jsonObject.put("SourceOfFund ",fundId);
+            jsonObject.put("SourceOfFund", fundId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -643,6 +652,7 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             }
         });
     }
+
     private void incomeListJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {

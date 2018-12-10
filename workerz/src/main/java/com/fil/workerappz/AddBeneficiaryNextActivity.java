@@ -669,12 +669,14 @@ public class AddBeneficiaryNextActivity extends ActionBarActivity {
                     if (!bankNetworkListJsonPojos.get(0).equals(null)) {
                         if (bankNetworkListJsonPojos.get(0).getStatus()) {
                             if (bankNetworkListJsonPojos.get(0).getData() != null) {
+                                Constants.showProgress(AddBeneficiaryNextActivity.this);
                                 Object object = bankNetworkListJsonPojos.get(0).getData();
 //                                String jsonStr = String.valueOf(object);
 //                                jsonStr = jsonStr.substring(jsonStr.indexOf("[") + 1);
                                 Log.d("system out", object.toString());
                                 Log.d("system out banknetwork", new Gson().toJson(bankNetworkListJsonPojos.get(0).getData().toString()));
 
+                                Constants.closeProgress();
                                 if (object instanceof ArrayList) {
                                     data = new Gson().fromJson(new Gson().toJson(bankNetworkListJsonPojos.get(0).getData()), new TypeToken<ArrayList<BankDataPojo>>() {
                                     }.getType());
