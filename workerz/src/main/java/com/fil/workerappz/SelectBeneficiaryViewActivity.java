@@ -324,7 +324,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             zipcodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryZipCode());
             emailEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryEmailID());
             mobileNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());
-            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
+            if ((!bankbenefiardata.getBenificaryDateOfBirth().equalsIgnoreCase(""))) {
+                dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
+                dateofbirth = bankbenefiardata.getBenificaryDateOfBirth();
+            }
             idIssueDateEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryIDTypeIssueDate(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idissuedate = bankbenefiardata.getBenificaryIDTypeIssueDate();
             if ((!bankbenefiardata.getBenificaryIDTypeExpiryDate().equalsIgnoreCase(""))) {
@@ -368,7 +371,10 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
             zipcodeEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryZipCode());
             emailEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryEmailID());
             mobileNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryTelephone());
-            dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
+            if ((!bankbenefiardata.getBenificaryDateOfBirth().equalsIgnoreCase(""))) {
+                dateOfBirthEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryDateOfBirth(), "MM/dd/yyyy", "dd/MM/yyyy"));
+                dateofbirth = bankbenefiardata.getBenificaryDateOfBirth();
+            }
             idNumberEditTextAddBeneficiary.setText(bankbenefiardata.getBenificaryIDNumber());
             idIssueDateEditTextAddBeneficiary.setText(Constants.formatDate(bankbenefiardata.getBenificaryIDTypeIssueDate(), "MM/dd/yyyy", "dd/MM/yyyy"));
             idissuedate = bankbenefiardata.getBenificaryIDTypeIssueDate();
@@ -780,7 +786,7 @@ public class SelectBeneficiaryViewActivity extends ActionBarActivity {
 
         dateOfBirthEditTextAddBeneficiary.setText(sdf.format(myCalendar1.getTime()));
 
-        dateofbirth = Constants.formatDate(dateOfBirthEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "dd MM yyyy");
+        dateofbirth = Constants.formatDate(dateOfBirthEditTextAddBeneficiary.getText().toString(), "dd/MM/yyyy", "MM/dd/yyyy");
         idIssueDateEditTextAddBeneficiary.setText("");
         idExpireyDateEditTextAddBeneficiary.setText("");
 

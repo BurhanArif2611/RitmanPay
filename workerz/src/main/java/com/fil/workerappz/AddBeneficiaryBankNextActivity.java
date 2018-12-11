@@ -614,7 +614,7 @@ public class AddBeneficiaryBankNextActivity extends ActionBarActivity {
                 }
 
             } else {
-                jsonObject.put("DateOfBirth", Constants.formatDate(beneficiaryinfoPojo.getDateOfBirth(), "dd MM yyyy", "MM/dd/yyyy"));
+                jsonObject.put("DateOfBirth", Constants.formatDate(beneficiaryinfoPojo.getDateOfBirth(), "MM/dd/yyyy", "MM/dd/yyyy"));
             }
             jsonObject.put("Telephone", beneficiaryinfoPojo.getTelephone());
             jsonObject.put("Nationality", beneficiaryinfoPojo.getNationality());

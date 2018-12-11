@@ -224,7 +224,13 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
             public void onClick(View view) {
                 Constants.hideKeyboard(getActivity());
 //                dateOfBirthDialog();
-                DataPickerDialogIdExpireyDate();
+                if (userdateofBirth!=null) {
+                    DataPickerDialogIdExpireyDate();
+                }
+                else
+                {
+                    DataPickerDialog1();
+                }
             }
         });
 
@@ -438,7 +444,8 @@ public class AddBeneficiaryCustomerInfoFragment extends BaseFragment {
                     Constants.showMessage(addBeneficiaryCustomerInfoLinearlayout, getActivity(), nointernetmsg);
                 } else {
                     myCalendar1 = myCalendar;
-                    updateLabel();
+//                    updateLabel();
+                    updateLabelIdExpireyDate();
                 }
             }
         }, mYear, mMonth, mDay);
