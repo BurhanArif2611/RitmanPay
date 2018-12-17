@@ -678,13 +678,15 @@ public class SignUpSubmitActivity extends ActionBarActivity {
 
     private void customTextView(TextView view) {
         SpannableStringBuilder spanTxt;
-        if (datumLable_languages.getByClicking() != null) {
-            spanTxt = new SpannableStringBuilder(
-                    datumLable_languages.getByClicking() + " ");
-        } else {
-            spanTxt = new SpannableStringBuilder("By Clicking Submit You are Agree With our");
+//        if (datumLable_languages.getByClicking() != null) {
+//            spanTxt = new SpannableStringBuilder(
+//                    datumLable_languages.getByClicking() + " ");
+//        } else {
+//            spanTxt = new SpannableStringBuilder("By Clicking Next You are Agree With our");
+//
+//        }
 
-        }
+        spanTxt = new SpannableStringBuilder("By Clicking Next You are Agree With our");
         spanTxt.append(datumLable_languages.getTermsConditions());
         spanTxt.setSpan(new ClickableSpan() {
             @Override
