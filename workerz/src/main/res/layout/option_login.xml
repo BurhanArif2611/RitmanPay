@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+<Button
+    android:layout_width="30sp"
+    android:layout_height="25sp"
+    android:background="@drawable/ic_arrow"
+    android:layout_margin="20sp"
+    >
+
+
+</Button>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10"
+        >
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="How would you want to login into your account?"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/blakish"
+                android:layout_marginTop="30sp"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginBottom="20sp"
+                >
+
+            </TextView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="15sp"
+                android:drawableLeft="@drawable/ic_sim"
+                android:drawablePadding="10dp"
+                android:textAllCaps="false"
+                android:id="@+id/umobile"
+                android:gravity="left|center_vertical"
+                android:drawableRight="@drawable/ic_black_arrow"
+                android:text="Using mobile number"
+                android:background="@drawable/edittext_grey"
+                >
+
+            </Button>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10sp"
+                android:textAllCaps="false"
+                android:id="@+id/ufinger"
+                android:gravity="left|center_vertical"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/ic_thumbcolour"
+                android:drawableRight="@drawable/ic_black_arrow"
+                android:text="Using FingerPrint"
+                android:background="@drawable/edittext_grey"
+                >
+
+            </Button>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:gravity="bottom"
+            >
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Already a User"
+                android:textSize="15dp"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:layout_marginTop="25sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginBottom="20sp"
+                >
+
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="SignUp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="25sp"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginBottom="20sp"
+                >
+
+            </TextView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

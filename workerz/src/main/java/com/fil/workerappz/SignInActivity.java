@@ -109,6 +109,7 @@ public class SignInActivity extends ActionBarActivity {
     private String emailmobilemsg, pinmsg, nointernetmsg;
     private String validemail;
     private String validmobilenumber;
+    private String mobileno,pass,sccp;
     private ArrayList<MessagelistData> Messagearray = new ArrayList<MessagelistData>();
 
     @Override
@@ -118,6 +119,18 @@ public class SignInActivity extends ActionBarActivity {
         ButterKnife.bind(this);
 
         sessionManager = new SessionManager(SignInActivity.this);
+
+
+        //////////////////////////////////////
+        //New Strings
+
+
+        mobileno=getIntent().getStringExtra("mobileno");
+        pass=getIntent().getStringExtra("pass");
+        sccp=getIntent().getStringExtra("ccp");
+
+        //////////////////////////////////////
+
 
 
         locale = getResources().getConfiguration().locale.getISO3Country();
@@ -259,7 +272,7 @@ public class SignInActivity extends ActionBarActivity {
             }
         });
 
-
+        userLoginJsonCall();
     }
 
     @OnClick({R.id.backImageViewHeader, R.id.forgotPinEditTextSignInActivity, R.id.signInTextViewSignInActivity, R.id.createNewAccountTextViewSignInActivity, R.id.countrySpinnerSignIn, R.id.alreadyhaveotptextviewSignIn})
@@ -350,12 +363,12 @@ public class SignInActivity extends ActionBarActivity {
     private void userLoginJsonCall() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("loginID", emailMobileNoEditTextSignInActivity.getText().toString().trim());
-            jsonObject.put("userCountryCode", countryCode);
+            jsonObject.put("loginID", mobileno);
+            jsonObject.put("userCountryCode", sccp);
             jsonObject.put("loginMode", signInWith);
             jsonObject.put("userDeviceType", Constants.device_type);
             jsonObject.put("userDeviceID", Constants.device_token);
-            jsonObject.put("userPassword", pinEditTextSignInActivity.getText().toString().trim());
+            jsonObject.put("userPassword", pass);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,12 @@
 <resources>
+    <array name="lang">
+        <item>Language</item>
+        <item>English</item>
+        <item>Urdu</item>
+
+    </array>
     <string name="facebook_app_id">729833804072709</string>
-    <string name="app_name">WorkerAppz</string>
+    <string name="app_name">RitmanPay</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="already_have_an_otp">Already have an otp?</string>
     <string name="sign_in">Sign In</string>
@@ -256,8 +262,8 @@
     <string name="service_provider">Service Provider*</string>
     <string name="browse_plans">Browse Plans*</string>
     <string name="filter_transactions">Filter Transactions</string>
-    <string name="bank_transfer">Bank Transfer</string>
-    <string name="cash_transfer">Cash Transfer</string>a
+    <string name="bank_transfer">Bank Transfer</string>a
+    <string name="cash_transfer">Cash Transfer</string>
     <string name="topup">TopUp</string>
     <string name="hi">Hi&#160;</string>
     <string name="good_to_have_you_back">Good to have you back</string>
@@ -289,5 +295,18 @@
     <string name="avail_points">Avail Points:</string>
     <string name="balance_points">Balance Points:</string>
     <string name="payoutagentname">PayoutAgentName:</string>
+
     <string name="customer_id">Customer ID:</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="action_settings">Settings</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <string name="previous">Previous</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="textOffer">We offer you the best Foreign \n Exchange rates</string>
+    <string name="create">Create an account</string>
+    <string name="already">Already a customer?</string>
+    <string name="check_rates">Check Our Rates</string>
 </resources>

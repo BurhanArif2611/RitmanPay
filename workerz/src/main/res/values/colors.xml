@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#1AB454</color>
-  <color name="colorAccent">#1AB454</color>
   <color name="colorGreen">#1AB454</color>
   <color name="colorWhite">#FFFFFF</color>
   <color name="colorBlack">#000000</color>
@@ -20,4 +18,14 @@
   <color name="Black">#000000</color>
   <color name="signInBackGround">#f0c6c6</color>
   <color name="signInErrorBackGround">#771a0e</color>
+
+  <color name="colorPrimary">#1DC791</color>
+  <color name="colorPrimaryDark">#3700B3</color>
+  <color name="colorAccent">#03DAC5</color>
+  <color name="darkgrey">#707070</color>
+  <color name="grey">#F6F6F6</color>
+  <color name="blakish">#505050</color>
+  <color name="black">#000000</color>
+  <color name="white">#ffffff</color>
+  <color name="colour_accent">#1889AC</color>
 </resources>

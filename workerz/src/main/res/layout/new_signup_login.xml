@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="2"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:weightSum="10"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_margin="15dp"
+        android:layout_weight="1.5"
+        android:weightSum="3">
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/image3"
+            android:src="@drawable/image3"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:background="@drawable/gradient_spinner"
+            android:entries="@array/lang"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/image8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.5"
+        android:src="@drawable/image8"
+        />
+
+</LinearLayout>
+
+
+
+<LinearLayout
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/offer"
+        android:layout_marginTop="50px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/textOffer"
+        android:textSize="40px"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/rate"
+        android:layout_marginTop="50px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/check_rates"
+        android:textSize="40px"
+        android:background="@drawable/underline_black"
+        android:textStyle="bold"
+        />
+
+
+
+    <Button
+        android:id="@+id/buttonCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50px"
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:text="@string/create"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_design"/>
+    <Button
+        android:id="@+id/already"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50px"
+        android:text="@string/already"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+
+        android:layout_marginRight="40px"
+        android:layout_marginLeft="40px"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_design"/>
+
+</LinearLayout>
+
+
+
+
+</LinearLayout>

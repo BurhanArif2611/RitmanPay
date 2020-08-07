@@ -89,13 +89,35 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
     private String accessTokenNew = "", email = "", userPin = "", mobilenumber, validmobilenumber, comeFrom = "";
     private LabelListData datumLable_languages = new LabelListData();
 
-
+    String  scountrysignup,scitysignup,slnamesignup2,snationalitysignup,sfnamesignup,smnamesignup,slnamesignup,semailsignup,sotp,sbankAiqmano,sbankAdob,sccp,smobileno;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.signup_activity);
+
+
+
+        //////////////////////////////////////
+        //New Strings
+
+        sbankAiqmano =getIntent().getStringExtra("sbankAiqmano");
+        sbankAdob =getIntent().getStringExtra("sbankAdob");
+        sccp =getIntent().getStringExtra("sccp");
+        smobileno =getIntent().getStringExtra("smobileno");
+        sotp =getIntent().getStringExtra("sotp");
+        sfnamesignup =getIntent().getStringExtra("sfnamesignup");
+        smnamesignup =getIntent().getStringExtra("smnamesignup");
+        slnamesignup =getIntent().getStringExtra("slnamesignup");
+        semailsignup =getIntent().getStringExtra("semailsignup");
+
+        scountrysignup =getIntent().getStringExtra("scountrysignup");
+        scitysignup =getIntent().getStringExtra("scitysignup");
+        slnamesignup2 =getIntent().getStringExtra("slnamesignup2");
+        snationalitysignup =getIntent().getStringExtra("snationalitysignup");
+        //////////////////////////////////////
+
         ButterKnife.bind(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -117,7 +139,7 @@ public class SignUpActivity extends ActionBarActivity implements GoogleApiClient
                 .build();
 
         fbLoginCall();
-        if (comeFrom.equalsIgnoreCase("log out")) {
+        if (comeFrom.equals("log out")) {
             logoutUser();
         } else {
 
